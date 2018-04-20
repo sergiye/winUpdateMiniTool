@@ -60,7 +60,8 @@ public partial class WuMgr : Form {
   public WuMgr() {
     InitializeComponent();
 
-    //notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
+    Icon = Icon.ExtractAssociatedIcon(typeof(WuMgr).Assembly.Location);
+    notifyIcon.Icon = Icon;
     notifyIcon.Text = Program.APP_TITLE;
 
     if (Program.TestArg("-tray")) {
