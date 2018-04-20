@@ -86,7 +86,7 @@ internal class WuAgent {
     AppLog.Line("Windows Update Agent Version: {0}", currentVersion);
 
     mUpdateSession = new UpdateSession {
-      ClientApplicationID = Program.MF_M_NAME
+      ClientApplicationID = Program.APP_TITLE
     };
     //mUpdateSession.UserLocale = 1033; // always show strings in englisch
 

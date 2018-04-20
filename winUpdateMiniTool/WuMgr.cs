@@ -61,7 +61,7 @@ public partial class WuMgr : Form {
     InitializeComponent();
 
     //notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
-    notifyIcon.Text = Program.MF_M_NAME;
+    notifyIcon.Text = Program.APP_TITLE;
 
     if (Program.TestArg("-tray")) {
       allowshowdisplay = false;
@@ -69,7 +69,7 @@ public partial class WuMgr : Form {
     }
 
     if (!MiscFunc.IsRunningAsUwp())
-      Text = $"{Program.MF_M_NAME} v{Program.MVersion}";
+      Text = $"{Program.APP_TITLE} v{Program.MVersion}";
 
     Localize();
 
@@ -94,7 +94,7 @@ public partial class WuMgr : Form {
     agent.Finished += OnFinished;
 
     if (!agent.IsActive())
-      if (MessageBox.Show("Windows Update Service is not available, try to start it?", Program.MF_M_NAME, MessageBoxButtons.YesNo) == DialogResult.Yes) {
+      if (MessageBox.Show("Windows Update Service is not available, try to start it?", Program.APP_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
         agent.EnableWuAuServ();
         agent.Init();
       }
@@ -311,7 +311,7 @@ public partial class WuMgr : Form {
           if (lastBaloon < DateTime.Now.AddHours(-4)) {
             lastBaloon = DateTime.Now;
             notifyIcon.ShowBalloonTip(int.MaxValue, "Please Check For Updates",
-              $"{Program.MF_M_NAME} couldn't check for updates for {daysDue} days, please check for updates manually and resolve possible issues", ToolTipIcon.Warning);
+              $"{Program.APP_TITLE} couldn't check for updates for {daysDue} days, please check for updates manually and resolve possible issues", ToolTipIcon.Warning);
           }
         }
       }
@@ -320,7 +320,7 @@ public partial class WuMgr : Form {
         if (lastBaloon < DateTime.Now.AddHours(-4)) {
           lastBaloon = DateTime.Now;
           notifyIcon.ShowBalloonTip(int.MaxValue, "New Updates found",
-              string.Format("{0} has found {1} new updates, please review the updates and install them", Program.MF_M_NAME,
+              string.Format("{0} has found {1} new updates, please review the updates and install them", Program.APP_TITLE,
                   string.Join(Environment.NewLine, agent.MPendingUpdates.Select(x => $"- {x.Title}"))),
               ToolTipIcon.Info);
         }
@@ -689,7 +689,7 @@ public partial class WuMgr : Form {
     var startInfo = Program.PrepExec(exec, silent);
     startInfo.WorkingDirectory = dir;
     if (!Program.DoExec(startInfo))
-      MessageBox.Show("Failed to start tool", Program.MF_M_NAME);
+      MessageBox.Show("Failed to start tool", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
@@ -749,7 +749,7 @@ public partial class WuMgr : Form {
 
   private void btnDownload_Click(object sender, EventArgs e) {
     if (!chkManual.Checked && !MiscFunc.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Program.MF_M_NAME);
+      MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Program. APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -765,7 +765,7 @@ public partial class WuMgr : Form {
 
   private void btnInstall_Click(object sender, EventArgs e) {
     if (!MiscFunc.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to install updates.", Program.MF_M_NAME);
+      MessageBox.Show("Administrator privileges are required in order to install updates.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -781,7 +781,7 @@ public partial class WuMgr : Form {
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
     if (!MiscFunc.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to remove updates.", Program.MF_M_NAME);
+      MessageBox.Show("Administrator privileges are required in order to remove updates.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -898,13 +898,13 @@ public partial class WuMgr : Form {
   private void ShowResult(WuAgent.AgentOperation op, WuAgent.RetCodes ret, bool reboot = false) {
     if (op == WuAgent.AgentOperation.DownloadingUpdates && chkManual.Checked) {
       if (ret == WuAgent.RetCodes.Success) {
-        MessageBox.Show($"Updates downloaded to {agent.DlPath}, ready to be installed by the user.", Program.MF_M_NAME, MessageBoxButtons.OK,
+        MessageBox.Show($"Updates downloaded to {agent.DlPath}, ready to be installed by the user.", Program.APP_TITLE, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show($"Updates downloaded to {agent.DlPath}, some updates failed to download.", Program.MF_M_NAME, MessageBoxButtons.OK,
+        MessageBox.Show($"Updates downloaded to {agent.DlPath}, some updates failed to download.", Program.APP_TITLE, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -912,13 +912,13 @@ public partial class WuMgr : Form {
 
     if (op == WuAgent.AgentOperation.InstallingUpdates && reboot) {
       if (ret == WuAgent.RetCodes.Success) {
-        MessageBox.Show("Updates successfully installed, however, a reboot is required.", Program.MF_M_NAME, MessageBoxButtons.OK,
+        MessageBox.Show("Updates successfully installed, however, a reboot is required.", Program.APP_TITLE, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show("Installation of some Updates has failed, also a reboot is required.", Program.MF_M_NAME, MessageBoxButtons.OK,
+        MessageBox.Show("Installation of some Updates has failed, also a reboot is required.", Program.APP_TITLE, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -955,8 +955,7 @@ public partial class WuMgr : Form {
     var action = GetOpStr(op);
 
     resultShown = true;
-    MessageBox.Show($"{action} failed: {status}.", Program.MF_M_NAME, MessageBoxButtons.OK,
-        MessageBoxIcon.Error);
+    MessageBox.Show($"{action} failed: {status}.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
     resultShown = false;
   }
 
@@ -1028,7 +1027,7 @@ public partial class WuMgr : Form {
         var test = Gpo.GetDisableAu();
         Gpo.DisableAu(true);
         if (!test)
-          MessageBox.Show("For the new configuration to fully take effect a reboot is required.");
+          MessageBox.Show("For the new configuration to fully take effect a reboot is required.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
 
       Gpo.ConfigAu(Gpo.AuOptions.Disabled);
@@ -1057,7 +1056,7 @@ public partial class WuMgr : Form {
       }
       else {
         if (!chkDisableAU.Checked)
-          switch (MessageBox.Show("Your version of Windows does not respect the standard GPO's, to keep automatic Windows updates blocked, update facilitation services must be disabled.", Program.MF_M_NAME, MessageBoxButtons.YesNoCancel)) {
+          switch (MessageBox.Show("Your version of Windows does not respect the standard GPO's, to keep automatic Windows updates blocked, update facilitation services must be disabled.", Program.APP_TITLE, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
             case DialogResult.Yes:
               chkDisableAU.Checked = true; // Note: this triggers chkDisableAU_CheckedChanged
               break;
