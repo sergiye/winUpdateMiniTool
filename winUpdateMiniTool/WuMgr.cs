@@ -15,8 +15,7 @@ using WUApiLib;
 namespace winUpdateMiniTool;
 
 public partial class WuMgr : Form {
-  private const int WmSyscommand = 0x112;
-
+  
   public const int MF_BITMAP = 0x00000004;
   public const int MF_CHECKED = 0x00000008;
   public const int MF_DISABLED = 0x00000002;
@@ -30,26 +29,25 @@ public partial class WuMgr : Form {
   public const int MF_STRING = 0x00000000;
   public const int MF_UNCHECKED = 0x00000000;
   private const int MfByposition = 0x400;
-
   public const int MF_BYCOMMAND = 0x000;
-
+  //private const int WmSyscommand = 0x112;
   //public const Int32 MF_REMOVE = 0x1000;
-  private const int MymenuAbout = 1000;
+  //private const int MymenuAbout = 1000;
   private static Timer mTimer;
   private readonly WuAgent agent;
   private readonly int idleDelay;
   private readonly Gpo.Respect mGpoRespect = Gpo.Respect.Unknown;
-  private readonly float mSearchBoxHeight;
+  //private readonly float mSearchBoxHeight;
   private readonly MenuItem mToolsMenu;
   private readonly float mWinVersion;
-  private bool allowshowdisplay = true;
+  private bool allowShowDisplay = true;
   private AutoUpdateOptions autoUpdate = AutoUpdateOptions.No;
   private bool bUpdateList;
   private bool checkChecks;
   private UpdateLists currentList = UpdateLists.UpdateHistory;
-  private bool doUpdte;
+  private bool doUpdate;
   private bool ignoreChecks;
-  private DateTime lastBaloon = DateTime.MinValue;
+  private DateTime lastBalloon = DateTime.MinValue;
   private DateTime lastCheck = DateTime.MaxValue;
   private string mSearchFilter;
   private bool mSuspendUpdate;
@@ -65,14 +63,25 @@ public partial class WuMgr : Form {
     notifyIcon.Text = Program.APP_TITLE;
 
     if (Program.TestArg("-tray")) {
-      allowshowdisplay = false;
+      allowShowDisplay = false;
       notifyIcon.Visible = true;
     }
 
     if (!MiscFunc.IsRunningAsUwp())
       Text = $"{Program.APP_TITLE} v{Program.MVersion}";
 
-    Localize();
+    btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
+    btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
+    btnHidden.Text = string.Format("Hidden Updates ({0})", 0);
+    btnHistory.Text = string.Format("Update History ({0})", 0);
+
+    toolTip.SetToolTip(btnSearch, "Search");
+    toolTip.SetToolTip(btnInstall, "Install");
+    toolTip.SetToolTip(btnDownload, "Download");
+    toolTip.SetToolTip(btnHide, "Hide");
+    toolTip.SetToolTip(btnGetLink, "Get Links");
+    toolTip.SetToolTip(btnUnInstall, "Uninstall");
+    toolTip.SetToolTip(btnCancel, "Cancel");
 
     btnSearch.Image = new Bitmap(Resources.icons8_available_updates_32, new Size(25, 25));
     btnInstall.Image = new Bitmap(Resources.icons8_software_installer_32, new Size(25, 25));
@@ -87,7 +96,6 @@ public partial class WuMgr : Form {
     foreach (var line in AppLog.GetLog())
       logBox.AppendText(line + Environment.NewLine);
     logBox.ScrollToCaret();
-
 
     agent = WuAgent.GetInstance();
     agent.Progress += OnProgress;
@@ -119,8 +127,7 @@ public partial class WuMgr : Form {
       chkBlockMS.Enabled = false;
     chkBlockMS.CheckState = (CheckState)Gpo.GetBlockMs();
 
-    int day, time;
-    switch (Gpo.GetAu(out day, out time)) {
+    switch (Gpo.GetAu(out int day, out int time)) {
       case Gpo.AuOptions.Default:
         radDefault.Checked = true;
         break;
@@ -165,7 +172,6 @@ public partial class WuMgr : Form {
     chkNoUAC.Checked = Program.IsSkipUacRun();
     chkNoUAC.Enabled = MiscFunc.IsAdministrator();
     chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !MiscFunc.IsRunningAsUwp();
-
 
     chkOffline.Checked = MiscFunc.ParseInt(GetConfig("Offline", "0")) != 0;
     chkDownload.Checked = MiscFunc.ParseInt(GetConfig("Download", "1")) != 0;
@@ -222,43 +228,33 @@ public partial class WuMgr : Form {
 
     LoadProviders(source);
 
-    mSearchBoxHeight = panelList.RowStyles[2].Height;
-    panelList.RowStyles[2].Height = 0;
+    //mSearchBoxHeight = panelList.RowStyles[2].Height;
+    //panelList.RowStyles[2].Height = 0;
 
     chkGrupe.Checked = MiscFunc.ParseInt(GetConfig("GroupUpdates", "1")) != 0;
     updateView.ShowGroups = chkGrupe.Checked;
 
     mSuspendUpdate = false;
 
-
     if (Program.TestArg("-provisioned"))
       tabs.Enabled = false;
 
-
-    mToolsMenu = new MenuItem();
-    mToolsMenu.Text = "&Tools";
+    mToolsMenu = new MenuItem("&Tools");
 
     BuildToolsMenu();
 
     notifyIcon.ContextMenu = new ContextMenu();
-
-    MenuItem menuExit = new();
-    menuExit.Text = "E&xit";
-    menuExit.Click += menuExit_Click;
-
-    notifyIcon.ContextMenu.MenuItems.AddRange([mToolsMenu, new MenuItem("-"), menuExit]);
-
+    notifyIcon.ContextMenu.MenuItems.AddRange([mToolsMenu, new MenuItem("-"), new MenuItem("E&xit", menuExit_Click)]);
 
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    InsertMenu(menuHandle, 5, MfByposition | MfSeparator, 0, string.Empty); // <-- Add a menu seperator
+    InsertMenu(menuHandle, 5, MfByposition | MfSeparator, 0, string.Empty); // <-- Add a menu separator
     InsertMenu(menuHandle, 6, MfByposition | MfPopup, (int)mToolsMenu.Handle, mToolsMenu.Text);
     // InsertMenu(MenuHandle, 7, MF_BYPOSITION, MYMENU_ABOUT, menuAbout.Text);
-
 
     UpdateCounts();
     SwitchList(UpdateLists.UpdateHistory);
 
-    doUpdte = Program.TestArg("-update");
+    doUpdate = Program.TestArg("-update");
 
     mTimer = new Timer();
     mTimer.Interval = 250; // 4 times per second
@@ -284,7 +280,7 @@ public partial class WuMgr : Form {
   }
 
   protected override void SetVisibleCore(bool value) {
-    base.SetVisibleCore(allowshowdisplay ? value : allowshowdisplay);
+    base.SetVisibleCore(allowShowDisplay ? value : allowShowDisplay);
   }
 
   private void PipesMessageHandler(PipeIpc.PipeServer pipe, string data) {
@@ -309,8 +305,8 @@ public partial class WuMgr : Form {
           updateNow = true;
         }
         else if (daysDue > GetGraceDays()) {
-          if (lastBaloon < DateTime.Now.AddHours(-4)) {
-            lastBaloon = DateTime.Now;
+          if (lastBalloon < DateTime.Now.AddHours(-4)) {
+            lastBalloon = DateTime.Now;
             notifyIcon.ShowBalloonTip(int.MaxValue, "Please Check For Updates",
               $"{Program.APP_TITLE} couldn't check for updates for {daysDue} days, please check for updates manually and resolve possible issues", ToolTipIcon.Warning);
           }
@@ -318,8 +314,8 @@ public partial class WuMgr : Form {
       }
 
       if (agent.MPendingUpdates.Count > 0)
-        if (lastBaloon < DateTime.Now.AddHours(-4)) {
-          lastBaloon = DateTime.Now;
+        if (lastBalloon < DateTime.Now.AddHours(-4)) {
+          lastBalloon = DateTime.Now;
           notifyIcon.ShowBalloonTip(int.MaxValue, "New Updates found",
               string.Format("{0} has found {1} new updates, please review the updates and install them", Program.APP_TITLE,
                   string.Join(Environment.NewLine, agent.MPendingUpdates.Select(x => $"- {x.Title}"))),
@@ -327,8 +323,8 @@ public partial class WuMgr : Form {
         }
     }
 
-    if ((doUpdte || updateNow && !resultShown) && agent.IsActive()) {
-      doUpdte = false;
+    if ((doUpdate || updateNow && !resultShown) && agent.IsActive()) {
+      doUpdate = false;
       if (chkOffline.Checked)
         agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked);
       else
@@ -342,10 +338,6 @@ public partial class WuMgr : Form {
 
     if (checkChecks)
       UpdateState();
-  }
-
-  private void WuMgr_Load(object sender, EventArgs e) {
-    Width = 900;
   }
 
   private int GetAutoUpdateDue() {
@@ -374,16 +366,16 @@ public partial class WuMgr : Form {
   }
 
   private int GetGraceDays() {
-    switch (autoUpdate) {
-      case AutoUpdateOptions.EveryMonth: return 15;
-      default: return 3;
-    }
+    return autoUpdate switch {
+      AutoUpdateOptions.EveryMonth => 15,
+      _ => 3,
+    };
   }
 
   private void WuMgr_FormClosing(object sender, FormClosingEventArgs e) {
-    if (notifyIcon.Visible && allowshowdisplay) {
+    if (notifyIcon.Visible && allowShowDisplay) {
       e.Cancel = true;
-      allowshowdisplay = false;
+      allowShowDisplay = false;
       Hide();
       return;
     }
@@ -394,12 +386,12 @@ public partial class WuMgr : Form {
   }
 
   private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
-    if (allowshowdisplay) {
-      allowshowdisplay = false;
+    if (allowShowDisplay) {
+      allowShowDisplay = false;
       Hide();
     }
     else {
-      allowshowdisplay = true;
+      allowShowDisplay = true;
       Show();
     }
   }
@@ -511,15 +503,13 @@ public partial class WuMgr : Form {
           break;
       }
 
-
-      string[] strings =
-      [
-          update.Title,
-                update.Category,
-                currentList == UpdateLists.UpdateHistory ? update.ApplicationId : update.Kb,
-                update.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern),
-                FileOps.FormatSize(update.Size),
-                state
+      string[] strings = [
+        update.Title,
+              update.Category,
+              currentList == UpdateLists.UpdateHistory ? update.ApplicationId : update.Kb,
+              update.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern),
+              FileOps.FormatSize(update.Size),
+              state
       ];
 
       if (mSearchFilter != null) {
@@ -534,11 +524,9 @@ public partial class WuMgr : Form {
           continue;
       }
 
-      ListViewItem item = new(strings);
+      var item = new ListViewItem(strings);
       item.SubItems[3].Tag = update.Date;
       item.SubItems[4].Tag = update.Size;
-
-
       item.Tag = update;
 
       if (currentList == UpdateLists.PendingUpdates) {
@@ -632,10 +620,8 @@ public partial class WuMgr : Form {
   }
 
   private void BuildToolsMenu() {
-    wuauMenu = new MenuItem();
-    wuauMenu.Text = "Windows Update Service";
+    wuauMenu = new MenuItem("Windows Update Service", menuWuAu_Click);
     wuauMenu.Checked = agent.TestWuAuServ();
-    wuauMenu.Click += menuWuAu_Click;
     mToolsMenu.MenuItems.Add(wuauMenu);
     mToolsMenu.MenuItems.Add(new MenuItem("-"));
 
@@ -644,9 +630,7 @@ public partial class WuMgr : Form {
         var iniName = Path.GetFileName(subDir);
         var iniPath = subDir + @"\" + iniName + ".ini";
 
-        MenuItem toolMenu = new();
-        toolMenu.Text = Program.IniReadValue("Root", "Name", iniName, iniPath);
-
+        var toolMenu = new MenuItem(Program.IniReadValue("Root", "Name", iniName, iniPath));
         var exec = Program.IniReadValue("Root", "Exec", "", iniPath);
         var silent = MiscFunc.ParseInt(Program.IniReadValue("Root", "Silent", "0", iniPath)) != 0;
         if (exec.Length > 0) {
@@ -884,7 +868,7 @@ public partial class WuMgr : Form {
       if (MiscFunc.ParseInt(Program.IniReadValue("Options", "Refresh", "0")) == 1 &&
           (agent.CurOperation() == WuAgent.AgentOperation.InstallingUpdates ||
            agent.CurOperation() == WuAgent.AgentOperation.RemovingUpdates))
-        doUpdte = true;
+        doUpdate = true;
     }
   }
 
@@ -1172,27 +1156,22 @@ public partial class WuMgr : Form {
     Process.Start(target);
   }
 
-
   public string GetConfig(string name, string def = "") {
     return Program.IniReadValue("Options", name, def);
-    //var subKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Xanatos\Windows Update Manager", true);
-    //return subKey.GetValue(name, def).ToString();
   }
 
   public void SetConfig(string name, string value) {
     if (mSuspendUpdate)
       return;
     Program.IniWriteValue("Options", name, value);
-    //var subKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Xanatos\Windows Update Manager", true);
-    //subKey.SetValue(name, value);
   }
 
   [DllImport("User32.dll")]
   public static extern int SetForegroundWindow(int hWnd);
 
   private void notifyIcon_BalloonTipClicked(object sender, EventArgs e) {
-    if (!allowshowdisplay) {
-      allowshowdisplay = true;
+    if (!allowShowDisplay) {
+      allowShowDisplay = true;
       Show();
     }
 
@@ -1208,68 +1187,9 @@ public partial class WuMgr : Form {
     updateView.Sort();
   }
 
-
-  private void Localize() {
-    btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
-    btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
-    btnHidden.Text = string.Format("Hidden Updates ({0})", 0);
-    btnHistory.Text = string.Format("Update History ({0})", 0);
-
-    toolTip.SetToolTip(btnSearch, "Search");
-    toolTip.SetToolTip(btnInstall, "Install");
-    toolTip.SetToolTip(btnDownload, "Download");
-    toolTip.SetToolTip(btnHide, "Hide");
-    toolTip.SetToolTip(btnGetLink, "Get Links");
-    toolTip.SetToolTip(btnUnInstall, "Uninstall");
-    toolTip.SetToolTip(btnCancel, "Cancel");
-
-    updateView.Columns[0].Text = "Title";
-    updateView.Columns[1].Text = "Category";
-    updateView.Columns[2].Text = "KB Article";
-    updateView.Columns[3].Text = "Date";
-    updateView.Columns[4].Text = "Size";
-    updateView.Columns[5].Text = "State";
-
-    chkGrupe.Text = "Group Updates";
-    chkAll.Text = "Select All";
-
-    lblSupport.Text = "Support Url";
-    lblSearch.Text = "Search filter:";
-    tabOptions.Text = "Options";
-
-    chkOffline.Text = "Offline Mode";
-    chkDownload.Text = "Download wsusscn2.cab";
-    chkManual.Text = "'Manual' Download/Install";
-    chkOld.Text = "Include superseded";
-    chkMsUpd.Text = "Register Microsoft Update";
-
-    gbStartup.Text = "Startup";
-    chkAutoRun.Text = "Run in background";
-    dlAutoCheck.Items.Clear();
-    dlAutoCheck.Items.Add("No auto search for updates");
-    dlAutoCheck.Items.Add("Search for updates every day");
-    dlAutoCheck.Items.Add("Search for updates once a week");
-    dlAutoCheck.Items.Add("Search for updates every month");
-    chkNoUAC.Text = "Always run as Administrator";
-
-
-    tabAU.Text = "Auto Update";
-
-    chkBlockMS.Text = "Block Access to WU Servers";
-    radDisable.Text = "Disable Automatic Update";
-    chkDisableAU.Text = "Disable Update Facilitators";
-    radNotify.Text = "Notification Only";
-    radDownload.Text = "Download Only";
-    radSchedule.Text = "Scheduled & Installation";
-    radDefault.Text = "Automatic Update (default)";
-    chkHideWU.Text = "Hide WU Settings Page";
-    chkStore.Text =  "Disable Store Auto Update";
-    chkDrivers.Text = "Include Drivers";
-  }
-
   protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
     if (keyData == (Keys.Control | Keys.F)) {
-      panelList.RowStyles[2].Height = mSearchBoxHeight;
+      //panelList.RowStyles[2].Height = mSearchBoxHeight;
       txtFilter.SelectAll();
       txtFilter.Focus();
       return true;
@@ -1294,7 +1214,7 @@ public partial class WuMgr : Form {
   }
 
   private void btnSearchOff_Click(object sender, EventArgs e) {
-    panelList.RowStyles[2].Height = 0;
+    //panelList.RowStyles[2].Height = 0;
     mSearchFilter = null;
     LoadList();
   }
@@ -1385,5 +1305,18 @@ public partial class WuMgr : Form {
         inv = 1;
       col = column;
     }
+  }
+
+  private void updateView_SizeChanged(object sender, EventArgs e) {
+    var otherColumnsWidth = 0;
+    for (var i = 1; i < updateView.Columns.Count; i++)
+      otherColumnsWidth += updateView.Columns[i].Width;
+    updateView.Columns[0].Width = updateView.Width - otherColumnsWidth - 30;
+  }
+
+  private void UpdateView_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e) {
+    if (e.ColumnIndex == 0)
+      return;
+    updateView_SizeChanged(sender, EventArgs.Empty);
   }
 }
