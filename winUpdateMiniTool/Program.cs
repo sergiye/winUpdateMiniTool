@@ -116,7 +116,7 @@ internal static class Program {
     agent.Init();
     Application.EnableVisualStyles();
     Application.SetCompatibleTextRenderingDefault(false);
-    Application.Run(new WuMgr());
+    Application.Run(new MainForm());
     agent.UnInit();
     ExecOnClose();
   }

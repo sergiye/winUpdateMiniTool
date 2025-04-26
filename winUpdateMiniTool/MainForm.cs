@@ -14,7 +14,7 @@ using WUApiLib;
 
 namespace winUpdateMiniTool;
 
-public partial class WuMgr : Form {
+public partial class MainForm : Form {
   
   public const int MF_BITMAP = 0x00000004;
   public const int MF_CHECKED = 0x00000008;
@@ -55,10 +55,10 @@ public partial class WuMgr : Form {
   private bool suspendChange;
   private MenuItem wuauMenu;
 
-  public WuMgr() {
+  public MainForm() {
     InitializeComponent();
 
-    Icon = Icon.ExtractAssociatedIcon(typeof(WuMgr).Assembly.Location);
+    Icon = Icon.ExtractAssociatedIcon(typeof(MainForm).Assembly.Location);
     notifyIcon.Icon = Icon;
     notifyIcon.Text = Program.APP_TITLE;
 

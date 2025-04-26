@@ -2,7 +2,7 @@
 
 namespace winUpdateMiniTool
 {
-    partial class WuMgr
+    partial class MainForm
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -876,7 +876,7 @@ namespace winUpdateMiniTool
       this.Controls.Add(this.panelList);
       this.Controls.Add(this.tableLayoutPanel2);
       this.MinimumSize = new System.Drawing.Size(700, 485);
-      this.Name = "WuMgr";
+      this.Name = "MainForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Windows Update Mini Tool";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WuMgr_FormClosing);
