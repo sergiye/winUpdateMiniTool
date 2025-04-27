@@ -35,6 +35,13 @@ namespace winUpdateMiniTool
       this.chkAutoRun = new System.Windows.Forms.CheckBox();
       this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
       this.panelList = new System.Windows.Forms.Panel();
+      this.updateView = new winUpdateMiniTool.Common.ListViewExtended();
+      this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
       this.lblSupport = new System.Windows.Forms.LinkLabel();
       this.chkGrupe = new System.Windows.Forms.CheckBox();
@@ -44,8 +51,8 @@ namespace winUpdateMiniTool
       this.txtFilter = new System.Windows.Forms.TextBox();
       this.lblSearch = new System.Windows.Forms.Label();
       this.logBox = new System.Windows.Forms.RichTextBox();
-      this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-      this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+      this.panelLeft = new System.Windows.Forms.Panel();
+      this.panelControls = new System.Windows.Forms.Panel();
       this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
       this.btnSearch = new System.Windows.Forms.Button();
       this.btnDownload = new System.Windows.Forms.Button();
@@ -86,18 +93,11 @@ namespace winUpdateMiniTool
       this.radDisable = new System.Windows.Forms.RadioButton();
       this.dlShDay = new System.Windows.Forms.ComboBox();
       this.dlShTime = new System.Windows.Forms.ComboBox();
-      this.updateView = new winUpdateMiniTool.Common.ListViewExtended();
-      this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.panelList.SuspendLayout();
       this.tableLayoutPanel7.SuspendLayout();
       this.tableLayoutPanel3.SuspendLayout();
-      this.tableLayoutPanel2.SuspendLayout();
-      this.tableLayoutPanel4.SuspendLayout();
+      this.panelLeft.SuspendLayout();
+      this.panelControls.SuspendLayout();
       this.flowLayoutPanel1.SuspendLayout();
       this.tableLayoutPanel5.SuspendLayout();
       this.tabs.SuspendLayout();
@@ -132,11 +132,65 @@ namespace winUpdateMiniTool
       this.panelList.Controls.Add(this.tableLayoutPanel3);
       this.panelList.Controls.Add(this.logBox);
       this.panelList.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.panelList.Location = new System.Drawing.Point(188, 0);
+      this.panelList.Location = new System.Drawing.Point(180, 0);
       this.panelList.Margin = new System.Windows.Forms.Padding(0);
       this.panelList.Name = "panelList";
-      this.panelList.Size = new System.Drawing.Size(643, 447);
+      this.panelList.Size = new System.Drawing.Size(684, 441);
       this.panelList.TabIndex = 1;
+      // 
+      // updateView
+      // 
+      this.updateView.CheckBoxes = true;
+      this.updateView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
+      this.updateView.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.updateView.FullRowSelect = true;
+      this.updateView.HideSelection = false;
+      this.updateView.Location = new System.Drawing.Point(0, 20);
+      this.updateView.Name = "updateView";
+      this.updateView.ShowItemToolTips = true;
+      this.updateView.Size = new System.Drawing.Size(684, 302);
+      this.updateView.TabIndex = 2;
+      this.updateView.UseCompatibleStateImageBehavior = false;
+      this.updateView.View = System.Windows.Forms.View.Details;
+      this.updateView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.updateView_ColumnClick);
+      this.updateView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.updateView_ItemChecked);
+      this.updateView.SelectedIndexChanged += new System.EventHandler(this.updateView_SelectedIndexChanged);
+      this.updateView.SizeChanged += new System.EventHandler(this.updateView_SizeChanged);
+      // 
+      // columnHeader1
+      // 
+      this.columnHeader1.Text = "Title";
+      this.columnHeader1.Width = 154;
+      // 
+      // columnHeader2
+      // 
+      this.columnHeader2.Text = "Category";
+      this.columnHeader2.Width = 100;
+      // 
+      // columnHeader3
+      // 
+      this.columnHeader3.Text = "KB Article";
+      this.columnHeader3.Width = 80;
+      // 
+      // columnHeader4
+      // 
+      this.columnHeader4.Text = "Date";
+      this.columnHeader4.Width = 100;
+      // 
+      // columnHeader5
+      // 
+      this.columnHeader5.Text = "Size";
+      // 
+      // columnHeader6
+      // 
+      this.columnHeader6.Text = "State";
+      this.columnHeader6.Width = 200;
       // 
       // tableLayoutPanel7
       // 
@@ -154,14 +208,14 @@ namespace winUpdateMiniTool
       this.tableLayoutPanel7.Name = "tableLayoutPanel7";
       this.tableLayoutPanel7.RowCount = 1;
       this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
-      this.tableLayoutPanel7.Size = new System.Drawing.Size(643, 20);
+      this.tableLayoutPanel7.Size = new System.Drawing.Size(684, 20);
       this.tableLayoutPanel7.TabIndex = 5;
       // 
       // lblSupport
       // 
       this.lblSupport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.lblSupport.AutoSize = true;
-      this.lblSupport.Location = new System.Drawing.Point(571, 5);
+      this.lblSupport.Location = new System.Drawing.Point(612, 5);
       this.lblSupport.Name = "lblSupport";
       this.lblSupport.Size = new System.Drawing.Size(69, 13);
       this.lblSupport.TabIndex = 0;
@@ -208,17 +262,17 @@ namespace winUpdateMiniTool
       this.tableLayoutPanel3.Controls.Add(this.txtFilter, 1, 0);
       this.tableLayoutPanel3.Controls.Add(this.lblSearch, 0, 0);
       this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 328);
+      this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 322);
       this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
       this.tableLayoutPanel3.Name = "tableLayoutPanel3";
       this.tableLayoutPanel3.RowCount = 1;
       this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-      this.tableLayoutPanel3.Size = new System.Drawing.Size(643, 25);
+      this.tableLayoutPanel3.Size = new System.Drawing.Size(684, 25);
       this.tableLayoutPanel3.TabIndex = 6;
       // 
       // btnSearchOff
       // 
-      this.btnSearchOff.Location = new System.Drawing.Point(621, 3);
+      this.btnSearchOff.Location = new System.Drawing.Point(662, 3);
       this.btnSearchOff.Name = "btnSearchOff";
       this.btnSearchOff.Size = new System.Drawing.Size(19, 19);
       this.btnSearchOff.TabIndex = 0;
@@ -233,7 +287,7 @@ namespace winUpdateMiniTool
             | System.Windows.Forms.AnchorStyles.Right)));
       this.txtFilter.Location = new System.Drawing.Point(103, 3);
       this.txtFilter.Name = "txtFilter";
-      this.txtFilter.Size = new System.Drawing.Size(512, 20);
+      this.txtFilter.Size = new System.Drawing.Size(553, 20);
       this.txtFilter.TabIndex = 1;
       this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
       // 
@@ -250,53 +304,38 @@ namespace winUpdateMiniTool
       // logBox
       // 
       this.logBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.logBox.Location = new System.Drawing.Point(0, 353);
+      this.logBox.Location = new System.Drawing.Point(0, 347);
       this.logBox.Name = "logBox";
       this.logBox.ReadOnly = true;
-      this.logBox.Size = new System.Drawing.Size(643, 94);
+      this.logBox.Size = new System.Drawing.Size(684, 94);
       this.logBox.TabIndex = 4;
       this.logBox.Text = "";
       // 
-      // tableLayoutPanel2
+      // panelLeft
       // 
-      this.tableLayoutPanel2.ColumnCount = 1;
-      this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-      this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 0);
-      this.tableLayoutPanel2.Controls.Add(this.tabs, 0, 1);
-      this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-      this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-      this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-      this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-      this.tableLayoutPanel2.RowCount = 2;
-      this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-      this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-      this.tableLayoutPanel2.Size = new System.Drawing.Size(188, 447);
-      this.tableLayoutPanel2.TabIndex = 0;
+      this.panelLeft.Controls.Add(this.panelControls);
+      this.panelLeft.Controls.Add(this.tabs);
+      this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
+      this.panelLeft.Location = new System.Drawing.Point(0, 0);
+      this.panelLeft.Margin = new System.Windows.Forms.Padding(0);
+      this.panelLeft.Name = "panelLeft";
+      this.panelLeft.Size = new System.Drawing.Size(180, 441);
+      this.panelLeft.TabIndex = 0;
       // 
-      // tableLayoutPanel4
+      // panelControls
       // 
-      this.tableLayoutPanel4.ColumnCount = 1;
-      this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-      this.tableLayoutPanel4.Controls.Add(this.flowLayoutPanel1, 0, 4);
-      this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 5);
-      this.tableLayoutPanel4.Controls.Add(this.btnHistory, 0, 3);
-      this.tableLayoutPanel4.Controls.Add(this.btnHidden, 0, 2);
-      this.tableLayoutPanel4.Controls.Add(this.btnInstalled, 0, 1);
-      this.tableLayoutPanel4.Controls.Add(this.btnWinUpd, 0, 0);
-      this.tableLayoutPanel4.Controls.Add(this.lblStatus, 0, 6);
-      this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-      this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-      this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-      this.tableLayoutPanel4.RowCount = 7;
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-      this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-      this.tableLayoutPanel4.Size = new System.Drawing.Size(186, 210);
-      this.tableLayoutPanel4.TabIndex = 0;
+      this.panelControls.Controls.Add(this.lblStatus);
+      this.panelControls.Controls.Add(this.tableLayoutPanel5);
+      this.panelControls.Controls.Add(this.flowLayoutPanel1);
+      this.panelControls.Controls.Add(this.btnHistory);
+      this.panelControls.Controls.Add(this.btnHidden);
+      this.panelControls.Controls.Add(this.btnInstalled);
+      this.panelControls.Controls.Add(this.btnWinUpd);
+      this.panelControls.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.panelControls.Location = new System.Drawing.Point(0, 0);
+      this.panelControls.Name = "panelControls";
+      this.panelControls.Size = new System.Drawing.Size(180, 208);
+      this.panelControls.TabIndex = 0;
       // 
       // flowLayoutPanel1
       // 
@@ -306,7 +345,8 @@ namespace winUpdateMiniTool
       this.flowLayoutPanel1.Controls.Add(this.btnUnInstall);
       this.flowLayoutPanel1.Controls.Add(this.btnHide);
       this.flowLayoutPanel1.Controls.Add(this.btnGetLink);
-      this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 123);
+      this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+      this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 92);
       this.flowLayoutPanel1.Name = "flowLayoutPanel1";
       this.flowLayoutPanel1.Size = new System.Drawing.Size(180, 29);
       this.flowLayoutPanel1.TabIndex = 4;
@@ -373,14 +413,13 @@ namespace winUpdateMiniTool
       // 
       // tableLayoutPanel5
       // 
-      this.tableLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.tableLayoutPanel5.ColumnCount = 2;
       this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
       this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
       this.tableLayoutPanel5.Controls.Add(this.btnCancel, 1, 0);
       this.tableLayoutPanel5.Controls.Add(this.progTotal, 0, 0);
-      this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 160);
+      this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
+      this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 121);
       this.tableLayoutPanel5.Name = "tableLayoutPanel5";
       this.tableLayoutPanel5.RowCount = 1;
       this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
@@ -411,11 +450,10 @@ namespace winUpdateMiniTool
       // 
       // btnHistory
       // 
-      this.btnHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.btnHistory.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnHistory.AutoSize = true;
-      this.btnHistory.Location = new System.Drawing.Point(3, 93);
+      this.btnHistory.Dock = System.Windows.Forms.DockStyle.Top;
+      this.btnHistory.Location = new System.Drawing.Point(0, 69);
       this.btnHistory.Name = "btnHistory";
       this.btnHistory.Size = new System.Drawing.Size(180, 23);
       this.btnHistory.TabIndex = 6;
@@ -425,11 +463,10 @@ namespace winUpdateMiniTool
       // 
       // btnHidden
       // 
-      this.btnHidden.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.btnHidden.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnHidden.AutoSize = true;
-      this.btnHidden.Location = new System.Drawing.Point(3, 63);
+      this.btnHidden.Dock = System.Windows.Forms.DockStyle.Top;
+      this.btnHidden.Location = new System.Drawing.Point(0, 46);
       this.btnHidden.Name = "btnHidden";
       this.btnHidden.Size = new System.Drawing.Size(180, 23);
       this.btnHidden.TabIndex = 7;
@@ -439,11 +476,10 @@ namespace winUpdateMiniTool
       // 
       // btnInstalled
       // 
-      this.btnInstalled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.btnInstalled.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnInstalled.AutoSize = true;
-      this.btnInstalled.Location = new System.Drawing.Point(3, 33);
+      this.btnInstalled.Dock = System.Windows.Forms.DockStyle.Top;
+      this.btnInstalled.Location = new System.Drawing.Point(0, 23);
       this.btnInstalled.Name = "btnInstalled";
       this.btnInstalled.Size = new System.Drawing.Size(180, 23);
       this.btnInstalled.TabIndex = 8;
@@ -453,11 +489,10 @@ namespace winUpdateMiniTool
       // 
       // btnWinUpd
       // 
-      this.btnWinUpd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.btnWinUpd.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnWinUpd.AutoSize = true;
-      this.btnWinUpd.Location = new System.Drawing.Point(3, 3);
+      this.btnWinUpd.Dock = System.Windows.Forms.DockStyle.Top;
+      this.btnWinUpd.Location = new System.Drawing.Point(0, 0);
       this.btnWinUpd.Name = "btnWinUpd";
       this.btnWinUpd.Size = new System.Drawing.Size(180, 23);
       this.btnWinUpd.TabIndex = 0;
@@ -467,23 +502,22 @@ namespace winUpdateMiniTool
       // 
       // lblStatus
       // 
-      this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lblStatus.AutoSize = true;
-      this.lblStatus.Location = new System.Drawing.Point(3, 194);
+      this.lblStatus.Dock = System.Windows.Forms.DockStyle.Top;
+      this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.lblStatus.Location = new System.Drawing.Point(0, 149);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(180, 13);
       this.lblStatus.TabIndex = 9;
       // 
       // tabs
       // 
-      this.tabs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.tabs.Controls.Add(this.tabOptions);
       this.tabs.Controls.Add(this.tabAU);
-      this.tabs.Location = new System.Drawing.Point(3, 217);
+      this.tabs.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.tabs.Location = new System.Drawing.Point(0, 208);
       this.tabs.Name = "tabs";
       this.tabs.SelectedIndex = 0;
-      this.tabs.Size = new System.Drawing.Size(182, 227);
+      this.tabs.Size = new System.Drawing.Size(180, 233);
       this.tabs.TabIndex = 1;
       // 
       // tabOptions
@@ -498,7 +532,7 @@ namespace winUpdateMiniTool
       this.tabOptions.Location = new System.Drawing.Point(4, 22);
       this.tabOptions.Name = "tabOptions";
       this.tabOptions.Padding = new System.Windows.Forms.Padding(3);
-      this.tabOptions.Size = new System.Drawing.Size(174, 201);
+      this.tabOptions.Size = new System.Drawing.Size(172, 207);
       this.tabOptions.TabIndex = 0;
       this.tabOptions.Text = "Options";
       this.tabOptions.UseVisualStyleBackColor = true;
@@ -630,7 +664,7 @@ namespace winUpdateMiniTool
       this.tabAU.Location = new System.Drawing.Point(4, 22);
       this.tabAU.Name = "tabAU";
       this.tabAU.Padding = new System.Windows.Forms.Padding(3);
-      this.tabAU.Size = new System.Drawing.Size(174, 201);
+      this.tabAU.Size = new System.Drawing.Size(177, 207);
       this.tabAU.TabIndex = 1;
       this.tabAU.Text = "Auto Update";
       this.tabAU.UseVisualStyleBackColor = true;
@@ -814,68 +848,14 @@ namespace winUpdateMiniTool
       this.dlShTime.TabIndex = 6;
       this.dlShTime.SelectedIndexChanged += new System.EventHandler(this.dlShTime_SelectedIndexChanged);
       // 
-      // updateView
-      // 
-      this.updateView.CheckBoxes = true;
-      this.updateView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
-      this.updateView.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.updateView.HideSelection = false;
-      this.updateView.Location = new System.Drawing.Point(0, 20);
-      this.updateView.Name = "updateView";
-      this.updateView.ShowItemToolTips = true;
-      this.updateView.Size = new System.Drawing.Size(643, 308);
-      this.updateView.TabIndex = 2;
-      this.updateView.UseCompatibleStateImageBehavior = false;
-      this.updateView.View = System.Windows.Forms.View.Details;
-      this.updateView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.updateView_ColumnClick);
-      this.updateView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.updateView_ItemChecked);
-      this.updateView.SelectedIndexChanged += new System.EventHandler(this.updateView_SelectedIndexChanged);
-      this.updateView.SizeChanged += new System.EventHandler(this.updateView_SizeChanged);
-      this.updateView.ColumnWidthChanged += UpdateView_ColumnWidthChanged;
-      // 
-      // columnHeader1
-      // 
-      this.columnHeader1.Text = "Title";
-      this.columnHeader1.Width = 154;
-      // 
-      // columnHeader2
-      // 
-      this.columnHeader2.Text = "Category";
-      this.columnHeader2.Width = 100;
-      // 
-      // columnHeader3
-      // 
-      this.columnHeader3.Text = "KB Article";
-      this.columnHeader3.Width = 80;
-      // 
-      // columnHeader4
-      // 
-      this.columnHeader4.Text = "Date";
-      this.columnHeader4.Width = 100;
-      // 
-      // columnHeader5
-      // 
-      this.columnHeader5.Text = "Size";
-      // 
-      // columnHeader6
-      // 
-      this.columnHeader6.Text = "State";
-      this.columnHeader6.Width = 200;
-      // 
-      // WuMgr
+      // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(831, 447);
+      this.ClientSize = new System.Drawing.Size(864, 441);
       this.Controls.Add(this.panelList);
-      this.Controls.Add(this.tableLayoutPanel2);
-      this.MinimumSize = new System.Drawing.Size(700, 485);
+      this.Controls.Add(this.panelLeft);
+      this.MinimumSize = new System.Drawing.Size(640, 480);
       this.Name = "MainForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Windows Update Mini Tool";
@@ -885,9 +865,9 @@ namespace winUpdateMiniTool
       this.tableLayoutPanel7.PerformLayout();
       this.tableLayoutPanel3.ResumeLayout(false);
       this.tableLayoutPanel3.PerformLayout();
-      this.tableLayoutPanel2.ResumeLayout(false);
-      this.tableLayoutPanel4.ResumeLayout(false);
-      this.tableLayoutPanel4.PerformLayout();
+      this.panelLeft.ResumeLayout(false);
+      this.panelControls.ResumeLayout(false);
+      this.panelControls.PerformLayout();
       this.flowLayoutPanel1.ResumeLayout(false);
       this.tableLayoutPanel5.ResumeLayout(false);
       this.tabs.ResumeLayout(false);
@@ -905,8 +885,8 @@ namespace winUpdateMiniTool
     private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Panel panelList;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Panel panelLeft;
+        private System.Windows.Forms.Panel panelControls;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnDownload;

@@ -37,7 +37,6 @@ public partial class MainForm : Form {
   private readonly WuAgent agent;
   private readonly int idleDelay;
   private readonly Gpo.Respect mGpoRespect = Gpo.Respect.Unknown;
-  //private readonly float mSearchBoxHeight;
   private readonly MenuItem mToolsMenu;
   private readonly float mWinVersion;
   private bool allowShowDisplay = true;
@@ -227,9 +226,6 @@ public partial class MainForm : Form {
     }
 
     LoadProviders(source);
-
-    //mSearchBoxHeight = panelList.RowStyles[2].Height;
-    //panelList.RowStyles[2].Height = 0;
 
     chkGrupe.Checked = MiscFunc.ParseInt(GetConfig("GroupUpdates", "1")) != 0;
     updateView.ShowGroups = chkGrupe.Checked;
@@ -1189,7 +1185,6 @@ public partial class MainForm : Form {
 
   protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
     if (keyData == (Keys.Control | Keys.F)) {
-      //panelList.RowStyles[2].Height = mSearchBoxHeight;
       txtFilter.SelectAll();
       txtFilter.Focus();
       return true;
@@ -1214,7 +1209,6 @@ public partial class MainForm : Form {
   }
 
   private void btnSearchOff_Click(object sender, EventArgs e) {
-    //panelList.RowStyles[2].Height = 0;
     mSearchFilter = null;
     LoadList();
   }
