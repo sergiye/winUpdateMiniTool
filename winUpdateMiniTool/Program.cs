@@ -14,10 +14,9 @@ using winUpdateMiniTool.Common;
 namespace winUpdateMiniTool;
 
 internal static class Program {
-  private const string AppTaskName = "wumtNoUAC";
+  private const string MF_APP_TASK_NAME = "wumtNoUAC";
   private static string[] args;
   private static bool mConsole;
-  public static string MVersion;
   private static string appPath;
   public static string WrkPath;
   private static WuAgent agent;
@@ -47,11 +46,9 @@ internal static class Program {
 
     Console.WriteLine(@"Starting...");
 
-    var assembly = typeof(Program).Assembly;
-    WrkPath = appPath = Path.GetDirectoryName(assembly.Location);
-    MVersion = assembly.GetName().Version.ToString(3);
+    WrkPath = appPath = Path.GetDirectoryName(Updater.CurrentFileLocation);
 
-    AppLog.Line("{0}, Version v{1}", Updater.ApplicationTitle, MVersion);
+    AppLog.Line("{0}, Version v{1}", Updater.ApplicationTitle, Updater.CurrentVersion);
     AppLog.Line("This Tool is Open Source under the GNU General Public License, Version 3\r\n");
 
     Ipc = new PipeIpc("wumt_pipe");
@@ -323,7 +320,7 @@ internal static class Program {
       TaskScheduler.TaskScheduler service = new();
       service.Connect();
       var folder = service.GetFolder(@"\"); // root
-      var task = folder.GetTask(AppTaskName);
+      var task = folder.GetTask(MF_APP_TASK_NAME);
       return task != null;
     }
     catch (Exception e) {
@@ -359,7 +356,7 @@ internal static class Program {
         action.WorkingDirectory = appPath;
         action.Arguments = "-NoUAC $(Arg0)";
 
-        var registeredTask = folder.RegisterTaskDefinition(AppTaskName, task,
+        var registeredTask = folder.RegisterTaskDefinition(MF_APP_TASK_NAME, task,
             (int)_TASK_CREATION.TASK_CREATE_OR_UPDATE, null, null,
             _TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN);
 
@@ -378,7 +375,7 @@ internal static class Program {
         }
       }
       else {
-        folder.DeleteTask(AppTaskName, 0);
+        folder.DeleteTask(MF_APP_TASK_NAME, 0);
       }
     }
     catch (Exception err) {
@@ -398,7 +395,7 @@ internal static class Program {
       TaskScheduler.TaskScheduler service = new();
       service.Connect();
       var folder = service.GetFolder(@"\");
-      var task = folder.GetTask(AppTaskName);
+      var task = folder.GetTask(MF_APP_TASK_NAME);
       AppLog.Line("Trying to SkipUAC ...");
       var action = (IExecAction)task.Definition.Actions[1];
       if (action.Path.Equals(typeof(Program).Assembly.Location, StringComparison.CurrentCultureIgnoreCase)) {

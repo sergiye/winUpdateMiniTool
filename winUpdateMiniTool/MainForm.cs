@@ -17,24 +17,25 @@ namespace winUpdateMiniTool;
 
 public partial class MainForm : Form {
   
-  public const int MF_BITMAP = 0x00000004;
-  public const int MF_CHECKED = 0x00000008;
-  public const int MF_DISABLED = 0x00000002;
-  public const int MF_ENABLED = 0x00000000;
-  public const int MF_GRAYED = 0x00000001;
-  public const int MF_MENUBARBREAK = 0x00000020;
-  public const int MF_MENUBREAK = 0x00000040;
-  public const int MF_OWNERDRAW = 0x00000100;
-  private const int MfPopup = 0x00000010;
-  private const int MfSeparator = 0x00000800;
-  public const int MF_STRING = 0x00000000;
-  public const int MF_UNCHECKED = 0x00000000;
-  private const int MfByposition = 0x400;
-  public const int MF_BYCOMMAND = 0x000;
-  private const int WmSyscommand = 0x112;
-  //public const Int32 MF_REMOVE = 0x1000;
-  private const int SysMenuCheckUpdates = 1000;
-  private const int SysMenuAboutId = 1001;
+  // private const int MF_BITMAP = 0x00000004;
+  // private const int MF_CHECKED = 0x00000008;
+  // private const int MF_DISABLED = 0x00000002;
+  // private const int MF_ENABLED = 0x00000000;
+  // private const int MF_GRAYED = 0x00000001;
+  // private const int MF_MENUBARBREAK = 0x00000020;
+  // private const int MF_MENUBREAK = 0x00000040;
+  // private const int MF_OWNERDRAW = 0x00000100;
+  // private const int MF_STRING = 0x00000000;
+  // private const int MF_UNCHECKED = 0x00000000;
+  // private const int MF_BYCOMMAND = 0x000;
+  //private const Int32 MF_REMOVE = 0x1000;
+  private const int MF_POPUP = 0x00000010;
+  private const int MF_SEPARATOR = 0x00000800;
+  private const int MF_BY_POSITION = 0x400;
+  private const int MF_WM_SYS_COMMAND = 0x112;
+  private const int MF_SYS_MENU_CHECK_UPDATES = 1000;
+  private const int MF_SYS_MENU_ABOUT_ID = 1001;
+  
   private static Timer mTimer;
   private readonly WuAgent agent;
   private readonly int idleDelay;
@@ -69,7 +70,7 @@ public partial class MainForm : Form {
     }
 
     if (!MiscFunc.IsRunningAsUwp())
-      Text = $"{Updater.ApplicationTitle} v{Program.MVersion}";
+      Text = $"{Updater.ApplicationTitle} v{Updater.CurrentVersion}";
 
     btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
     btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
@@ -151,6 +152,7 @@ public partial class MainForm : Form {
       dlShTime.SelectedIndex = time;
     }
     catch {
+      // ignored
     }
 
     if (mWinVersion >= 10) // 10 or abive
@@ -164,6 +166,7 @@ public partial class MainForm : Form {
       dlAutoCheck.SelectedIndex = MiscFunc.ParseInt(GetConfig("AutoUpdate", "0"));
     }
     catch {
+      // ignored
     }
 
     chkAutoRun.Checked = Program.IsAutoStart();
@@ -245,10 +248,10 @@ public partial class MainForm : Form {
     notifyIcon.ContextMenu.MenuItems.AddRange([mToolsMenu, new MenuItem("-"), new MenuItem("E&xit", menuExit_Click)]);
 
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    InsertMenu(menuHandle, 5, MfByposition | MfSeparator, 0, string.Empty); // <-- Add a menu separator
-    InsertMenu(menuHandle, 6, MfByposition | MfPopup, (int)mToolsMenu.Handle, mToolsMenu.Text);
-    InsertMenu(menuHandle, 7, MfByposition, SysMenuCheckUpdates, "Check for new version");
-    InsertMenu(menuHandle, 8, MfByposition, SysMenuAboutId, "&About…");
+    InsertMenu(menuHandle, 5, MF_BY_POSITION | MF_SEPARATOR, 0, string.Empty); // <-- Add a menu separator
+    InsertMenu(menuHandle, 6, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, mToolsMenu.Text);
+    InsertMenu(menuHandle, 7, MF_BY_POSITION, MF_SYS_MENU_CHECK_UPDATES, "Check for new version");
+    InsertMenu(menuHandle, 8, MF_BY_POSITION, MF_SYS_MENU_ABOUT_ID, "&About…");
 
     UpdateCounts();
     SwitchList(UpdateLists.UpdateHistory);
@@ -277,13 +280,13 @@ public partial class MainForm : Form {
   protected override void WndProc(ref Message m) {
 
     base.WndProc(ref m);
-    if (m.Msg == WmSyscommand) {
+    if (m.Msg == MF_WM_SYS_COMMAND) {
       switch ((int)m.WParam) {
-        case SysMenuAboutId:
+        case MF_SYS_MENU_ABOUT_ID:
           var asm = GetType().Assembly;
           MessageBox.Show($"{Updater.ApplicationTitle} {asm.GetName().Version.ToString(3)} {(Environment.Is64BitProcess ? "x64" : "x32")}\nWritten by Sergiy Egoshyn (egoshin.sergey@gmail.com)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
           break;
-        case SysMenuCheckUpdates:
+        case MF_SYS_MENU_CHECK_UPDATES:
           Updater.CheckForUpdates(false);
           break;
       }
@@ -470,31 +473,19 @@ public partial class MainForm : Form {
 
     updateView.Items.Clear();
     List<ListViewItem> items = [];
-    for (var i = 0; i < list.Count; i++) {
-      var update = list[i];
+    foreach (var update in list) {
       var state = "";
       switch (update.State) {
         case MsUpdate.UpdateState.History:
-          switch ((OperationResultCode)update.ResultCode) {
-            case OperationResultCode.orcNotStarted:
-              state = "Not Started";
-              break;
-            case OperationResultCode.orcInProgress:
-              state = "In Progress";
-              break;
-            case OperationResultCode.orcSucceeded:
-              state = "Succeeded";
-              break;
-            case OperationResultCode.orcSucceededWithErrors:
-              state = "Succeeded with Errors";
-              break;
-            case OperationResultCode.orcFailed:
-              state = "Failed";
-              break;
-            case OperationResultCode.orcAborted:
-              state = "Aborted";
-              break;
-          }
+          state = (OperationResultCode) update.ResultCode switch {
+            OperationResultCode.orcNotStarted => "Not Started",
+            OperationResultCode.orcInProgress => "In Progress",
+            OperationResultCode.orcSucceeded => "Succeeded",
+            OperationResultCode.orcSucceededWithErrors => "Succeeded with Errors",
+            OperationResultCode.orcFailed => "Failed",
+            OperationResultCode.orcAborted => "Aborted",
+            _ => state
+          };
 
           state += " (0x" + string.Format("{0:X8}", update.HResult) + ")";
           break;
@@ -534,11 +525,11 @@ public partial class MainForm : Form {
 
       string[] strings = [
         update.Title,
-              update.Category,
-              currentList == UpdateLists.UpdateHistory ? update.ApplicationId : update.Kb,
-              update.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern),
-              FileOps.FormatSize(update.Size),
-              state
+        update.Category,
+        currentList == UpdateLists.UpdateHistory ? update.ApplicationId : update.Kb,
+        update.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern),
+        FileOps.FormatSize(update.Size),
+        state
       ];
 
       if (mSearchFilter != null) {
@@ -592,7 +583,7 @@ public partial class MainForm : Form {
     //updateView.SetGroupState(ListViewGroupState.Collapsible);
   }
 
-  public List<MsUpdate> GetUpdates() {
+  private List<MsUpdate> GetUpdates() {
     List<MsUpdate> updates = [];
     foreach (ListViewItem item in updateView.CheckedItems)
       updates.Add((MsUpdate)item.Tag);
@@ -726,10 +717,10 @@ public partial class MainForm : Form {
 
   private void menuRefresh_Click(object sender, EventArgs e) {
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    RemoveMenu(menuHandle, 6, MfByposition);
+    RemoveMenu(menuHandle, 6, MF_BY_POSITION);
     mToolsMenu.MenuItems.Clear();
     BuildToolsMenu();
-    InsertMenu(menuHandle, 6, MfByposition | MfPopup, (int)mToolsMenu.Handle, "&Tools");
+    InsertMenu(menuHandle, 6, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, "&Tools");
   }
 
   private void btnWinUpd_CheckedChanged(object sender, EventArgs e) {
@@ -753,11 +744,9 @@ public partial class MainForm : Form {
   private void btnSearch_Click(object sender, EventArgs e) {
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = WuAgent.RetCodes.Undefined;
-    if (chkOffline.Checked)
-      ret = agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked);
-    else
-      ret = agent.SearchForUpdates(dlSource.Text, chkOld.Checked);
+    var ret = chkOffline.Checked 
+      ? agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked) 
+      : agent.SearchForUpdates(dlSource.Text, chkOld.Checked);
     ShowResult(WuAgent.AgentOperation.CheckingUpdates, ret);
   }
 
@@ -769,11 +758,9 @@ public partial class MainForm : Form {
 
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = WuAgent.RetCodes.Undefined;
-    if (chkManual.Checked)
-      ret = agent.DownloadUpdatesManually(GetUpdates());
-    else
-      ret = agent.DownloadUpdates(GetUpdates());
+    var ret = chkManual.Checked 
+      ? agent.DownloadUpdatesManually(GetUpdates()) 
+      : agent.DownloadUpdates(GetUpdates());
     ShowResult(WuAgent.AgentOperation.DownloadingUpdates, ret);
   }
 
@@ -785,11 +772,9 @@ public partial class MainForm : Form {
 
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = WuAgent.RetCodes.Undefined;
-    if (chkManual.Checked)
-      ret = agent.DownloadUpdatesManually(GetUpdates(), true);
-    else
-      ret = agent.DownloadUpdates(GetUpdates(), true);
+    var ret = chkManual.Checked 
+      ? agent.DownloadUpdatesManually(GetUpdates(), true) 
+      : agent.DownloadUpdates(GetUpdates(), true);
     ShowResult(WuAgent.AgentOperation.InstallingUpdates, ret);
   }
 
@@ -801,8 +786,7 @@ public partial class MainForm : Form {
 
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = WuAgent.RetCodes.Undefined;
-    ret = agent.UnInstallUpdatesManually(GetUpdates());
+    var ret = agent.UnInstallUpdatesManually(GetUpdates());
     ShowResult(WuAgent.AgentOperation.RemovingUpdates, ret);
   }
 
@@ -1169,34 +1153,31 @@ public partial class MainForm : Form {
 
   private void updateView_SelectedIndexChanged(object sender, EventArgs e) {
     lblSupport.Visible = false;
-    if (updateView.SelectedItems.Count == 1) {
-      var update = (MsUpdate)updateView.SelectedItems[0].Tag;
-      if (update.Kb != null && update.Kb.Length > 2) {
-        lblSupport.Links[0].LinkData = "https://support.microsoft.com/help/" + update.Kb.Substring(2);
-        lblSupport.Links[0].Visited = false;
-        lblSupport.Visible = true;
-        toolTip.SetToolTip(lblSupport, lblSupport.Links[0].LinkData.ToString());
-      }
-    }
+    if (updateView.SelectedItems.Count != 1) return;
+    var update = (MsUpdate)updateView.SelectedItems[0].Tag;
+    if (update.Kb == null || update.Kb.Length <= 2) return;
+    lblSupport.Links[0].LinkData = "https://support.microsoft.com/help/" + update.Kb.Substring(2);
+    lblSupport.Links[0].Visited = false;
+    lblSupport.Visible = true;
+    toolTip.SetToolTip(lblSupport, lblSupport.Links[0].LinkData.ToString());
   }
 
   private void lblSupport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-    var target = e.Link.LinkData as string;
-    Process.Start(target);
+    if (e.Link.LinkData is string target) Process.Start(target);
   }
 
-  public string GetConfig(string name, string def = "") {
+  private string GetConfig(string name, string def = "") {
     return Program.IniReadValue("Options", name, def);
   }
 
-  public void SetConfig(string name, string value) {
+  private void SetConfig(string name, string value) {
     if (mSuspendUpdate)
       return;
     Program.IniWriteValue("Options", name, value);
   }
 
   [DllImport("User32.dll")]
-  public static extern int SetForegroundWindow(int hWnd);
+  private static extern int SetForegroundWindow(int hWnd);
 
   private void notifyIcon_BalloonTipClicked(object sender, EventArgs e) {
     if (!allowShowDisplay) {
@@ -1210,35 +1191,34 @@ public partial class MainForm : Form {
   }
 
   private void updateView_ColumnClick(object sender, ColumnClickEventArgs e) {
-    if (updateView.ListViewItemSorter == null)
-      updateView.ListViewItemSorter = new ListViewItemComparer();
+    updateView.ListViewItemSorter ??= new ListViewItemComparer();
     ((ListViewItemComparer)updateView.ListViewItemSorter).Update(e.Column);
     updateView.Sort();
   }
 
   protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
-    if (keyData == (Keys.Control | Keys.F)) {
-      txtFilter.SelectAll();
-      txtFilter.Focus();
-      return true;
-    }
+    switch (keyData) {
+      case Keys.Control | Keys.F:
+        txtFilter.SelectAll();
+        txtFilter.Focus();
+        return true;
+      case Keys.Control | Keys.C: {
+        var info = "";
+        foreach (ListViewItem item in updateView.SelectedItems) {
+          if (info.Length != 0)
+            info += "\r\n";
+          info += item.Text;
+          for (var i = 1; i < item.SubItems.Count; i++)
+            info += "; " + item.SubItems[i].Text;
+        }
 
-    if (keyData == (Keys.Control | Keys.C)) {
-      var info = "";
-      foreach (ListViewItem item in updateView.SelectedItems) {
         if (info.Length != 0)
-          info += "\r\n";
-        info += item.Text;
-        for (var i = 1; i < item.SubItems.Count; i++)
-          info += "; " + item.SubItems[i].Text;
+          Clipboard.SetText(info);
+        return true;
       }
-
-      if (info.Length != 0)
-        Clipboard.SetText(info);
-      return true;
+      default:
+        return base.ProcessCmdKey(ref msg, keyData);
     }
-
-    return base.ProcessCmdKey(ref msg, keyData);
   }
 
   private void btnSearchOff_Click(object sender, EventArgs e) {
@@ -1307,13 +1287,8 @@ public partial class MainForm : Form {
 
   // Implements the manual sorting of items by columns.
   private class ListViewItemComparer : IComparer {
-    private int col;
-    private int inv;
-
-    public ListViewItemComparer() {
-      col = 0;
-      inv = 1;
-    }
+    private int col = 0;
+    private int inv = 1;
 
     public int Compare(object x, object y) {
       if (col == 3) // date
@@ -1326,10 +1301,7 @@ public partial class MainForm : Form {
     }
 
     public void Update(int column) {
-      if (col == column)
-        inv = -inv;
-      else
-        inv = 1;
+      inv = col == column ? -inv : 1;
       col = column;
     }
   }
