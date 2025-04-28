@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using sergiye.Common;
 using TaskScheduler;
 using winUpdateMiniTool.Common;
 
@@ -14,7 +15,6 @@ namespace winUpdateMiniTool;
 
 internal static class Program {
   private const string AppTaskName = "wumtNoUAC";
-  public const string APP_TITLE = "Windows Update Mini Tool";
   private static string[] args;
   private static bool mConsole;
   public static string MVersion;
@@ -43,7 +43,7 @@ internal static class Program {
     }
 
     if (TestArg("-dbg_wait"))
-      MessageBox.Show("Waiting for debugger. (press ok when attached)", APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("Waiting for debugger. (press ok when attached)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
     Console.WriteLine(@"Starting...");
 
@@ -51,7 +51,7 @@ internal static class Program {
     WrkPath = appPath = Path.GetDirectoryName(assembly.Location);
     MVersion = assembly.GetName().Version.ToString(3);
 
-    AppLog.Line("{0}, Version v{1}", APP_TITLE, MVersion);
+    AppLog.Line("{0}, Version v{1}", Updater.ApplicationTitle, MVersion);
     AppLog.Line("This Tool is Open Source under the GNU General Public License, Version 3\r\n");
 
     Ipc = new PipeIpc("wumt_pipe");
@@ -62,7 +62,7 @@ internal static class Program {
       client.Send("show");
       var ret = client.Read(1000);
       if (!ret.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
-        MessageBox.Show("Application is already running.", APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show("Application is already running.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -106,7 +106,7 @@ internal static class Program {
           Directory.CreateDirectory(WrkPath);
       }
       catch {
-        MessageBox.Show($"Can't write to working directory: {WrkPath}", APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageBox.Show($"Can't write to working directory: {WrkPath}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
     }
 
@@ -437,7 +437,7 @@ internal static class Program {
             "-help\t\tShow this help message"
     ];
     if (!mConsole) {
-      MessageBox.Show(message + string.Join("\r\n", help), APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(message + string.Join("\r\n", help), Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
     else {
       Console.WriteLine(message);

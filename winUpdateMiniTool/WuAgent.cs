@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Windows.Threading;
+using sergiye.Common;
 using winUpdateMiniTool.Common;
 using WUApiLib;
 using StringCollection = System.Collections.Specialized.StringCollection;
@@ -86,7 +87,7 @@ internal class WuAgent {
     AppLog.Line("Windows Update Agent Version: {0}", currentVersion);
 
     mUpdateSession = new UpdateSession {
-      ClientApplicationID = Program.APP_TITLE
+      ClientApplicationID = Updater.ApplicationTitle
     };
     //mUpdateSession.UserLocale = 1033; // always show strings in englisch
 

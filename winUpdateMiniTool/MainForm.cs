@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using sergiye.Common;
 using winUpdateMiniTool.Common;
 using winUpdateMiniTool.Properties;
 using WUApiLib;
@@ -30,9 +31,10 @@ public partial class MainForm : Form {
   public const int MF_UNCHECKED = 0x00000000;
   private const int MfByposition = 0x400;
   public const int MF_BYCOMMAND = 0x000;
-  //private const int WmSyscommand = 0x112;
+  private const int WmSyscommand = 0x112;
   //public const Int32 MF_REMOVE = 0x1000;
-  // private const int MymenuAbout = 1000;
+  private const int SysMenuCheckUpdates = 1000;
+  private const int SysMenuAboutId = 1001;
   private static Timer mTimer;
   private readonly WuAgent agent;
   private readonly int idleDelay;
@@ -59,7 +61,7 @@ public partial class MainForm : Form {
 
     Icon = Icon.ExtractAssociatedIcon(typeof(MainForm).Assembly.Location);
     notifyIcon.Icon = Icon;
-    notifyIcon.Text = Program.APP_TITLE;
+    notifyIcon.Text = Updater.ApplicationTitle;
 
     if (Program.TestArg("-tray")) {
       allowShowDisplay = false;
@@ -67,7 +69,7 @@ public partial class MainForm : Form {
     }
 
     if (!MiscFunc.IsRunningAsUwp())
-      Text = $"{Program.APP_TITLE} v{Program.MVersion}";
+      Text = $"{Updater.ApplicationTitle} v{Program.MVersion}";
 
     btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
     btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
@@ -102,7 +104,7 @@ public partial class MainForm : Form {
     agent.Finished += OnFinished;
 
     if (!agent.IsActive())
-      if (MessageBox.Show("Windows Update Service is not available, try to start it?", Program.APP_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+      if (MessageBox.Show("Windows Update Service is not available, try to start it?", Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
         agent.EnableWuAuServ();
         agent.Init();
       }
@@ -245,7 +247,8 @@ public partial class MainForm : Form {
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
     InsertMenu(menuHandle, 5, MfByposition | MfSeparator, 0, string.Empty); // <-- Add a menu separator
     InsertMenu(menuHandle, 6, MfByposition | MfPopup, (int)mToolsMenu.Handle, mToolsMenu.Text);
-    // InsertMenu(menuHandle, 7, MfByposition, MymenuAbout, "About");
+    InsertMenu(menuHandle, 7, MfByposition, SysMenuCheckUpdates, "Check for new version");
+    InsertMenu(menuHandle, 8, MfByposition, SysMenuAboutId, "&About…");
 
     UpdateCounts();
     SwitchList(UpdateLists.UpdateHistory);
@@ -259,8 +262,38 @@ public partial class MainForm : Form {
 
     Program.Ipc.PipeMessage += PipesMessageHandler;
     Program.Ipc.Listen();
+    
+    //will display prompt only if update available & when main form displayed
+    var timer = new Timer();
+    timer.Interval = 1000;
+    timer.Tick += (_, _) => {
+      timer.Enabled = false;
+      timer.Enabled = !Updater.CheckForUpdates(true);
+    };
+    timer.Enabled = true;
+
   }
 
+  protected override void WndProc(ref Message m) {
+
+    base.WndProc(ref m);
+    if (m.Msg == WmSyscommand) {
+      switch ((int)m.WParam) {
+        case SysMenuAboutId:
+          var asm = GetType().Assembly;
+          MessageBox.Show($"{Updater.ApplicationTitle} {asm.GetName().Version.ToString(3)} {(Environment.Is64BitProcess ? "x64" : "x32")}\nWritten by Sergiy Egoshyn (egoshin.sergey@gmail.com)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+          break;
+        case SysMenuCheckUpdates:
+          Updater.CheckForUpdates(false);
+          break;
+      }
+    // } else if (m.Msg == Common.WM_SHOWME) {
+    //   if (WindowState == FormWindowState.Minimized)
+    //     WindowState = FormWindowState.Normal;
+    //   Activate();
+    }
+  }
+  
   [DllImport("user32.dll")]
   private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
@@ -304,7 +337,7 @@ public partial class MainForm : Form {
           if (lastBalloon < DateTime.Now.AddHours(-4)) {
             lastBalloon = DateTime.Now;
             notifyIcon.ShowBalloonTip(int.MaxValue, "Please Check For Updates",
-              $"{Program.APP_TITLE} couldn't check for updates for {daysDue} days, please check for updates manually and resolve possible issues", ToolTipIcon.Warning);
+              $"{Updater.ApplicationTitle} couldn't check for updates for {daysDue} days, please check for updates manually and resolve possible issues", ToolTipIcon.Warning);
           }
         }
       }
@@ -313,7 +346,7 @@ public partial class MainForm : Form {
         if (lastBalloon < DateTime.Now.AddHours(-4)) {
           lastBalloon = DateTime.Now;
           notifyIcon.ShowBalloonTip(int.MaxValue, "New Updates found",
-              string.Format("{0} has found {1} new updates, please review the updates and install them", Program.APP_TITLE,
+              string.Format("{0} has found {1} new updates, please review the updates and install them", Updater.ApplicationTitle,
                   string.Join(Environment.NewLine, agent.MPendingUpdates.Select(x => $"- {x.Title}"))),
               ToolTipIcon.Info);
         }
@@ -670,7 +703,7 @@ public partial class MainForm : Form {
     var startInfo = Program.PrepExec(exec, silent);
     startInfo.WorkingDirectory = dir;
     if (!Program.DoExec(startInfo))
-      MessageBox.Show("Failed to start tool", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      MessageBox.Show("Failed to start tool", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
@@ -730,7 +763,7 @@ public partial class MainForm : Form {
 
   private void btnDownload_Click(object sender, EventArgs e) {
     if (!chkManual.Checked && !MiscFunc.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Program. APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -746,7 +779,7 @@ public partial class MainForm : Form {
 
   private void btnInstall_Click(object sender, EventArgs e) {
     if (!MiscFunc.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to install updates.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("Administrator privileges are required in order to install updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -762,7 +795,7 @@ public partial class MainForm : Form {
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
     if (!MiscFunc.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required in order to remove updates.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show("Administrator privileges are required in order to remove updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -879,13 +912,13 @@ public partial class MainForm : Form {
   private void ShowResult(WuAgent.AgentOperation op, WuAgent.RetCodes ret, bool reboot = false) {
     if (op == WuAgent.AgentOperation.DownloadingUpdates && chkManual.Checked) {
       if (ret == WuAgent.RetCodes.Success) {
-        MessageBox.Show($"Updates downloaded to {agent.DlPath}, ready to be installed by the user.", Program.APP_TITLE, MessageBoxButtons.OK,
+        MessageBox.Show($"Updates downloaded to {agent.DlPath}, ready to be installed by the user.", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show($"Updates downloaded to {agent.DlPath}, some updates failed to download.", Program.APP_TITLE, MessageBoxButtons.OK,
+        MessageBox.Show($"Updates downloaded to {agent.DlPath}, some updates failed to download.", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -893,13 +926,13 @@ public partial class MainForm : Form {
 
     if (op == WuAgent.AgentOperation.InstallingUpdates && reboot) {
       if (ret == WuAgent.RetCodes.Success) {
-        MessageBox.Show("Updates successfully installed, however, a reboot is required.", Program.APP_TITLE, MessageBoxButtons.OK,
+        MessageBox.Show("Updates successfully installed, however, a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show("Installation of some Updates has failed, also a reboot is required.", Program.APP_TITLE, MessageBoxButtons.OK,
+        MessageBox.Show("Installation of some Updates has failed, also a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -936,7 +969,7 @@ public partial class MainForm : Form {
     var action = GetOpStr(op);
 
     resultShown = true;
-    MessageBox.Show($"{action} failed: {status}.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    MessageBox.Show($"{action} failed: {status}.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
     resultShown = false;
   }
 
@@ -1008,7 +1041,7 @@ public partial class MainForm : Form {
         var test = Gpo.GetDisableAu();
         Gpo.DisableAu(true);
         if (!test)
-          MessageBox.Show("For the new configuration to fully take effect a reboot is required.", Program.APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+          MessageBox.Show("For the new configuration to fully take effect a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
 
       Gpo.ConfigAu(Gpo.AuOptions.Disabled);
@@ -1037,7 +1070,7 @@ public partial class MainForm : Form {
       }
       else {
         if (!chkDisableAU.Checked)
-          switch (MessageBox.Show("Your version of Windows does not respect the standard GPO's, to keep automatic Windows updates blocked, update facilitation services must be disabled.", Program.APP_TITLE, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+          switch (MessageBox.Show("Your version of Windows does not respect the standard GPO's, to keep automatic Windows updates blocked, update facilitation services must be disabled.", Updater.ApplicationTitle, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
             case DialogResult.Yes:
               chkDisableAU.Checked = true; // Note: this triggers chkDisableAU_CheckedChanged
               break;
