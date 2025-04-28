@@ -1,4 +1,5 @@
-﻿using winUpdateMiniTool.Common;
+﻿using System.Windows.Forms;
+using winUpdateMiniTool.Common;
 
 namespace winUpdateMiniTool
 {
@@ -162,6 +163,7 @@ namespace winUpdateMiniTool
       this.updateView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.updateView_ItemChecked);
       this.updateView.SelectedIndexChanged += new System.EventHandler(this.updateView_SelectedIndexChanged);
       this.updateView.SizeChanged += new System.EventHandler(this.updateView_SizeChanged);
+      this.updateView.ColumnWidthChanged += new ColumnWidthChangedEventHandler(this.UpdateView_ColumnWidthChanged);
       // 
       // columnHeader1
       // 

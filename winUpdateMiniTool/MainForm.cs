@@ -32,7 +32,7 @@ public partial class MainForm : Form {
   public const int MF_BYCOMMAND = 0x000;
   //private const int WmSyscommand = 0x112;
   //public const Int32 MF_REMOVE = 0x1000;
-  //private const int MymenuAbout = 1000;
+  // private const int MymenuAbout = 1000;
   private static Timer mTimer;
   private readonly WuAgent agent;
   private readonly int idleDelay;
@@ -245,7 +245,7 @@ public partial class MainForm : Form {
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
     InsertMenu(menuHandle, 5, MfByposition | MfSeparator, 0, string.Empty); // <-- Add a menu separator
     InsertMenu(menuHandle, 6, MfByposition | MfPopup, (int)mToolsMenu.Handle, mToolsMenu.Text);
-    // InsertMenu(MenuHandle, 7, MF_BYPOSITION, MYMENU_ABOUT, menuAbout.Text);
+    // InsertMenu(menuHandle, 7, MfByposition, MymenuAbout, "About");
 
     UpdateCounts();
     SwitchList(UpdateLists.UpdateHistory);
