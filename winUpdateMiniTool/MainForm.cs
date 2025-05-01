@@ -487,7 +487,8 @@ public partial class MainForm : Form {
             _ => state
           };
 
-          state += " (0x" + string.Format("{0:X8}", update.HResult) + ")";
+          if (update.HResult != 0)
+            state += " (0x" + string.Format("{0:X8}", update.HResult) + ")";
           break;
 
         default:

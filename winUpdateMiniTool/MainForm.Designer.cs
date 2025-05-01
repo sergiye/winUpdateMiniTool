@@ -453,11 +453,10 @@ namespace winUpdateMiniTool
       // btnHistory
       // 
       this.btnHistory.Appearance = System.Windows.Forms.Appearance.Button;
-      this.btnHistory.AutoSize = true;
       this.btnHistory.Dock = System.Windows.Forms.DockStyle.Top;
       this.btnHistory.Location = new System.Drawing.Point(0, 69);
       this.btnHistory.Name = "btnHistory";
-      this.btnHistory.Size = new System.Drawing.Size(180, 23);
+      this.btnHistory.Size = new System.Drawing.Size(180, 30);
       this.btnHistory.TabIndex = 6;
       this.btnHistory.Text = "Update History";
       this.btnHistory.UseVisualStyleBackColor = true;
@@ -466,11 +465,10 @@ namespace winUpdateMiniTool
       // btnHidden
       // 
       this.btnHidden.Appearance = System.Windows.Forms.Appearance.Button;
-      this.btnHidden.AutoSize = true;
       this.btnHidden.Dock = System.Windows.Forms.DockStyle.Top;
       this.btnHidden.Location = new System.Drawing.Point(0, 46);
       this.btnHidden.Name = "btnHidden";
-      this.btnHidden.Size = new System.Drawing.Size(180, 23);
+      this.btnHidden.Size = new System.Drawing.Size(180, 30);
       this.btnHidden.TabIndex = 7;
       this.btnHidden.Text = "Hidden Updates";
       this.btnHidden.UseVisualStyleBackColor = true;
@@ -479,11 +477,10 @@ namespace winUpdateMiniTool
       // btnInstalled
       // 
       this.btnInstalled.Appearance = System.Windows.Forms.Appearance.Button;
-      this.btnInstalled.AutoSize = true;
       this.btnInstalled.Dock = System.Windows.Forms.DockStyle.Top;
       this.btnInstalled.Location = new System.Drawing.Point(0, 23);
       this.btnInstalled.Name = "btnInstalled";
-      this.btnInstalled.Size = new System.Drawing.Size(180, 23);
+      this.btnInstalled.Size = new System.Drawing.Size(180, 30);
       this.btnInstalled.TabIndex = 8;
       this.btnInstalled.Text = "Installed Updates";
       this.btnInstalled.UseVisualStyleBackColor = true;
@@ -492,11 +489,10 @@ namespace winUpdateMiniTool
       // btnWinUpd
       // 
       this.btnWinUpd.Appearance = System.Windows.Forms.Appearance.Button;
-      this.btnWinUpd.AutoSize = true;
       this.btnWinUpd.Dock = System.Windows.Forms.DockStyle.Top;
       this.btnWinUpd.Location = new System.Drawing.Point(0, 0);
       this.btnWinUpd.Name = "btnWinUpd";
-      this.btnWinUpd.Size = new System.Drawing.Size(180, 23);
+      this.btnWinUpd.Size = new System.Drawing.Size(180, 30);
       this.btnWinUpd.TabIndex = 0;
       this.btnWinUpd.Text = "Windows Updates";
       this.btnWinUpd.UseVisualStyleBackColor = true;

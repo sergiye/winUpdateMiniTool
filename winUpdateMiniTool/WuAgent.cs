@@ -41,11 +41,11 @@ internal class WuAgent {
 
   private static WuAgent mInstance;
   public static readonly string MsUpdGuid = "7971f918-a847-4430-9279-4a52d1efe18d"; // Microsoft Update
-  public static string WinUpdUid = "9482f4b4-e343-43b6-b170-9a65bc822c77"; // Windows Update
-  public static string WsUsUid = "3da21691-e39d-4da6-8a4b-b43877bcb1b7"; // Windows Server Update Service
-  public static string DCatGuid = "8b24b027-1dee-babb-9a95-3517dfb9c552"; // DCat Fighting Prod - Windows Insider Program
-  public static string WinStorGuid = "117cab2d-82b1-4b5a-a08c-4d62dbee7782 "; // Windows Store
-  public static string WinStorDCat2Guid = "855e8a7c-ecb4-4ca3-b045-1dfa50104289"; // Windows Store (DCat Prod) - Insider Updates for Store Apps
+  // public static string WinUpdUid = "9482f4b4-e343-43b6-b170-9a65bc822c77"; // Windows Update
+  // public static string WsUsUid = "3da21691-e39d-4da6-8a4b-b43877bcb1b7"; // Windows Server Update Service
+  // public static string DCatGuid = "8b24b027-1dee-babb-9a95-3517dfb9c552"; // DCat Fighting Prod - Windows Insider Program
+  // public static string WinStorGuid = "117cab2d-82b1-4b5a-a08c-4d62dbee7782 "; // Windows Store
+  // public static string WinStorDCat2Guid = "855e8a7c-ecb4-4ca3-b045-1dfa50104289"; // Windows Store (DCat Prod) - Insider Updates for Store Apps
 
   private readonly Dispatcher mDispatcher;
   private const string MMyOfflineSvc = "Offline Sync Service";
