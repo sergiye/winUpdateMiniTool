@@ -24,6 +24,10 @@ The tool only gathers information's about installed and missing updates, all dat
 
 This tool is inspired by the [Windows Update Mini Tool (WUMT)](https://www.majorgeeks.com/files/details/windows_update_minitool.html), however in comparison to WUMT it is written in pure .NET instead of C/C++, and it is open source.
 
+## Preview of the application UI
+
+[<img src="https://github.com/sergiye/winUpdateMiniTool/raw/master/preview.png" alt="Themes" width="300"/>](https://raw.githubusercontent.com/sergiye/winUpdateMiniTool/master/preview.png)
+
 ## Download
 
 **The recommended way to get the program is BUILD from source**
