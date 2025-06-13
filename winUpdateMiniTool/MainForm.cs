@@ -41,6 +41,7 @@ public partial class MainForm : Form {
   private readonly int idleDelay;
   private readonly Gpo.Respect mGpoRespect = Gpo.Respect.Unknown;
   private readonly MenuItem mToolsMenu;
+  private readonly MenuItem themeMenuItem;
   private readonly float mWinVersion;
   private bool allowShowDisplay = true;
   private AutoUpdateOptions autoUpdate = AutoUpdateOptions.No;
@@ -241,17 +242,21 @@ public partial class MainForm : Form {
       tabs.Enabled = false;
 
     mToolsMenu = new MenuItem("&Tools");
+    themeMenuItem = new MenuItem("&Themes");
 
     BuildToolsMenu();
 
     notifyIcon.ContextMenu = new ContextMenu();
-    notifyIcon.ContextMenu.MenuItems.AddRange([mToolsMenu, new MenuItem("-"), new MenuItem("E&xit", menuExit_Click)]);
-
+    notifyIcon.ContextMenu.MenuItems.AddRange([mToolsMenu, themeMenuItem, new MenuItem("-"), new MenuItem("E&xit", menuExit_Click)]);
+    uint menuIndex = 4;
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    InsertMenu(menuHandle, 5, MF_BY_POSITION | MF_SEPARATOR, 0, string.Empty); // <-- Add a menu separator
-    InsertMenu(menuHandle, 6, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, mToolsMenu.Text);
-    InsertMenu(menuHandle, 7, MF_BY_POSITION, MF_SYS_MENU_CHECK_UPDATES, "Check for new version");
-    InsertMenu(menuHandle, 8, MF_BY_POSITION, MF_SYS_MENU_ABOUT_ID, "&About…");
+    InsertMenu(menuHandle, ++menuIndex, MF_BY_POSITION | MF_SEPARATOR, 0, string.Empty); // <-- Add a menu separator
+    themeMenuItem.Tag = ++menuIndex;
+    InsertMenu(menuHandle, (uint)themeMenuItem.Tag, MF_BY_POSITION | MF_POPUP, (int)themeMenuItem.Handle, themeMenuItem.Text);
+    mToolsMenu.Tag = menuIndex;
+    InsertMenu(menuHandle, (uint)mToolsMenu.Tag, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, mToolsMenu.Text);
+    InsertMenu(menuHandle, ++menuIndex, MF_BY_POSITION, MF_SYS_MENU_CHECK_UPDATES, "Check for new version");
+    InsertMenu(menuHandle, ++menuIndex, MF_BY_POSITION, MF_SYS_MENU_ABOUT_ID, "&About…");
 
     UpdateCounts();
     SwitchList(UpdateLists.UpdateHistory);
@@ -279,7 +284,83 @@ public partial class MainForm : Form {
     timer.Interval = 3000;
     timer.Enabled = true;
 
+    InitializeTheme();
   }
+
+  #region themes
+
+  private void OnThemeCurrentChecnged() {
+    tabs.Tag = Theme.SkipThemeTag;
+    //updateView.SelectedBackColor = Theme.Current.SelectedBackgroundColor;
+    //updateView.SelectedForeColor = Theme.Current.SelectedForegroundColor;
+    //updateView.Invalidate();
+    SwitchList(currentList);
+  }
+
+  private void InitializeTheme() {
+
+    //mainMenu.Renderer = new ThemedToolStripRenderer();
+    //notifyMenu.Renderer = new ThemedToolStripRenderer();
+    //notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
+    Theme.OnCurrentChecnged -= OnThemeCurrentChecnged;
+    OnThemeCurrentChecnged(); //apply current theme colors
+    Theme.OnCurrentChecnged += OnThemeCurrentChecnged;
+
+    var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
+    RemoveMenu(menuHandle, (uint)themeMenuItem.Tag, MF_BY_POSITION);
+    themeMenuItem.MenuItems.Clear();
+
+    if (Theme.SupportsAutoThemeSwitching()) {
+      themeMenuItem.MenuItems.Add(new RadioButtonMenuItem("Auto", (o, e) => {
+        (o as RadioButtonMenuItem).Checked = true;
+        Theme.SetAutoTheme();
+        Program.IniWriteValue("Root", "Theme", "auto");
+      }));
+    }
+
+    var settingsTheme = Program.IniReadValue("Root", "Theme", "");
+    var allThemes = CustomTheme.GetAllThemes("themes", "winUpdateMiniTool.themes").OrderBy(x => x.DisplayName).ToList();
+    var setTheme = allThemes.FirstOrDefault(theme => settingsTheme == theme.Id);
+    if (setTheme != null) {
+      Theme.Current = setTheme;
+    }
+
+    AddThemeMenuItems(allThemes.Where(t => t is not CustomTheme));
+    var customThemes = allThemes.Where(t => t is CustomTheme).ToList();
+    if (customThemes.Count > 0) {
+      themeMenuItem.MenuItems.Add("-");
+      AddThemeMenuItems(customThemes);
+    }
+
+    if (setTheme == null && themeMenuItem.MenuItems.Count > 0)
+      themeMenuItem.MenuItems[0].PerformClick();
+
+    InsertMenu(menuHandle, (uint)themeMenuItem.Tag, MF_BY_POSITION | MF_POPUP, (int)themeMenuItem.Handle, themeMenuItem.Text);
+
+    Theme.Current.Apply(this);
+    SwitchList(currentList);
+  }
+
+  private void AddThemeMenuItems(IEnumerable<Theme> themes) {
+    foreach (var theme in themes) {
+      var item = new RadioButtonMenuItem(theme.DisplayName, OnThemeMenuItemClick);
+      item.Tag = theme;
+      themeMenuItem.MenuItems.Add(item);
+      if (Theme.Current != null && Theme.Current.Id == theme.Id) {
+        item.Checked = true;
+      }
+    }
+  }
+
+  private void OnThemeMenuItemClick(object sender, EventArgs e) {
+    if (sender is not RadioButtonMenuItem item || item.Tag is not Theme theme)
+      return;
+    item.Checked = true;
+    Theme.Current = theme;
+    Program.IniWriteValue("Root", "Theme", theme.Id);
+  }
+
+  #endregion
 
   protected override void WndProc(ref Message m) {
 
@@ -305,7 +386,7 @@ public partial class MainForm : Form {
   private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
   [DllImport("user32.dll")]
-  private static extern bool InsertMenu(IntPtr hMenu, int wPosition, int wFlags, int wIdNewItem, string lpNewItem);
+  private static extern bool InsertMenu(IntPtr hMenu, uint wPosition, int wFlags, int wIdNewItem, string lpNewItem);
 
   [DllImport("user32.dll")]
   private static extern bool RemoveMenu(IntPtr hMenu, uint uPosition, uint uFlags);
@@ -454,7 +535,7 @@ public partial class MainForm : Form {
     ignoreChecks = true;
     updateView.CheckBoxes = currentList != UpdateLists.UpdateHistory;
     ignoreChecks = false;
-    updateView.ForeColor = updateView.CheckBoxes && !agent.IsValid() ? Color.Gray : Color.Black;
+    updateView.ForeColor = updateView.CheckBoxes && !agent.IsValid() ? Theme.Current.LineColor : Theme.Current.ForegroundColor;
 
     switch (currentList) {
       case UpdateLists.PendingUpdates:
@@ -598,15 +679,14 @@ public partial class MainForm : Form {
   private void SwitchList(UpdateLists list) {
     if (suspendChange)
       return;
-
     suspendChange = true;
-    btnWinUpd.CheckState = list == UpdateLists.PendingUpdates ? CheckState.Checked : CheckState.Unchecked;
-    btnInstalled.CheckState = list == UpdateLists.InstaledUpdates ? CheckState.Checked : CheckState.Unchecked;
-    btnHidden.CheckState = list == UpdateLists.HiddenUpdates ? CheckState.Checked : CheckState.Unchecked;
-    btnHistory.CheckState = list == UpdateLists.UpdateHistory ? CheckState.Checked : CheckState.Unchecked;
-    suspendChange = false;
-
     currentList = list;
+   
+    btnWinUpd.BackColor = currentList == UpdateLists.PendingUpdates ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
+    btnInstalled.BackColor = currentList == UpdateLists.InstaledUpdates ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
+    btnHidden.BackColor = currentList == UpdateLists.HiddenUpdates ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
+    btnHistory.BackColor = currentList == UpdateLists.UpdateHistory ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
+    suspendChange = false;
 
     updateView.Columns[2].Text = currentList == UpdateLists.UpdateHistory
         ? "Application ID"
@@ -722,10 +802,10 @@ public partial class MainForm : Form {
 
   private void menuRefresh_Click(object sender, EventArgs e) {
     var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    RemoveMenu(menuHandle, 6, MF_BY_POSITION);
+    RemoveMenu(menuHandle, (uint)mToolsMenu.Tag, MF_BY_POSITION);
     mToolsMenu.MenuItems.Clear();
     BuildToolsMenu();
-    InsertMenu(menuHandle, 6, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, "&Tools");
+    InsertMenu(menuHandle, (uint)mToolsMenu.Tag, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, "&Tools");
   }
 
   private void btnWinUpd_CheckedChanged(object sender, EventArgs e) {
