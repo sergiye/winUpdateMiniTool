@@ -51,6 +51,18 @@ internal static class Program {
     AppLog.Line("{0}, Version v{1}", Updater.ApplicationTitle, Updater.CurrentVersion);
     AppLog.Line("This Tool is Open Source under the GNU General Public License, Version 3\r\n");
 
+    if (!OperatingSystemHelper.IsCompatible(false, out var errorMessage, out var fixAction)) {
+      if (fixAction != null) {
+        if (MessageBox.Show(errorMessage, Updater.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
+          fixAction?.Invoke();
+        }
+      }
+      else {
+        MessageBox.Show(errorMessage, Updater.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      }
+      Environment.Exit(0);
+    }
+
     Ipc = new PipeIpc("wumt_pipe");
 
     var client = Ipc.Connect(100);

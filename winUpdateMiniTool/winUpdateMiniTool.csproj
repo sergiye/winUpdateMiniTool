@@ -30,21 +30,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Common\ListViewExtended.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Update="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <Compile Update="*Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <None Update="app.manifest">
-      <SubType>Designer</SubType>
-    </None>
+    <Compile Include="..\..\common\sergiye.Common\Updater.cs" Link="Common\Updater.cs" />
+    <Compile Include="..\..\common\sergiye.Common\SerializerHelper.cs" Link="Common\SerializerHelper.cs" />
+    <Compile Include="..\..\common\sergiye.Common\OperatingSystemHelper.cs" Link="Common\OperatingSystemHelper.cs" />
+    <Compile Update="Common\ListViewExtended.cs" SubType="Component" />
+    <Compile Update="*Form.cs" SubType="Form" />
+    <Compile Update="MainForm.Designer.cs" DependentUpon="MainForm.cs" />
+    <EmbeddedResource Update="MainForm.resx" DependentUpon="MainForm.cs" />
+    <None Update="app.manifest" SubType="Designer" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="TaskScheduler">
@@ -73,4 +66,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Release' ">
+    <Exec Command="for %%f in ($(OutDir)\*) do if not %%~xf==.exe del /S /Q &quot;%%f&quot;" />
+  </Target>  
 </Project>
