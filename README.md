@@ -19,19 +19,21 @@ This tool is inspired by the [Windows Update Mini Tool (WUMT)](https://www.major
 
 [<img src="https://github.com/sergiye/winUpdateMiniTool/raw/master/preview.png" alt="Themes" width="300"/>](https://raw.githubusercontent.com/sergiye/winUpdateMiniTool/master/preview.png)
 
+Now supports `Light`/`Dark` themes with `Auto` switching mode and custom `themes` from external files - You can find examples [here](https://github.com/sergiye/winUpdateMiniTool/tree/master/themes)
+
 ## Download
 
-**The recommended way to get the program is BUILD from source**
-- Install git, Visual Studio
-- `git clone https://github.com/sergiye/winUpdateMiniTool.git`
-- build
-
-**or download build from [releases](https://github.com/sergiye/winUpdateMiniTool/releases).**
+The published version can be obtained from [releases](https://github.com/sergiye/winUpdateMiniTool/releases).
 
 ## How can I help improve it?
 The winUpdateMiniTool team welcomes feedback and contributions!<br/>
 You can check if it works properly on your PC. If you notice any inaccuracies, please send us a pull request. If you have any suggestions or improvements, don't hesitate to create an issue.
 
-## License
+Also, don't forget to star the repository to help other people find it.
 
-Windows Update Mini Tool is free and open source software licensed under GNU General Public License, Version 3 [GNU 3.0](https://www.gnu.org/licenses/gpl-3.0.html). You can use it for personal and commercial purposes.
+[![Star History Chart](https://api.star-history.com/svg?repos=sergiye/winUpdateMiniTool&type=Date)](https://star-history.com/#sergiye/winUpdateMiniTool&Date)
+
+[![Stargazers repo roster for @sergiye/winUpdateMiniTool](https://reporoster.com/stars/sergiye/winUpdateMiniTool)](https://github.com/sergiye/winUpdateMiniTool/stargazers)
+
+## Donate!
+Every [cup of coffee](https://patreon.com/SergiyE) you donate will help this app become better and let me know that this project is in demand.
