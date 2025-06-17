@@ -41,12 +41,7 @@ internal class MiscFunc {
   }
 
   public static int ParseInt(string str, int def = 0) {
-    try {
-      return int.Parse(str);
-    }
-    catch {
-      return def;
-    }
+    return int.TryParse(str, out var result) ? result : def;
   }
 
   public static Color? ParseColor(string input) {

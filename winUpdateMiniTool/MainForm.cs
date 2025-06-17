@@ -17,31 +17,10 @@ namespace winUpdateMiniTool;
 
 public partial class MainForm : Form {
   
-  // private const int MF_BITMAP = 0x00000004;
-  // private const int MF_CHECKED = 0x00000008;
-  // private const int MF_DISABLED = 0x00000002;
-  // private const int MF_ENABLED = 0x00000000;
-  // private const int MF_GRAYED = 0x00000001;
-  // private const int MF_MENUBARBREAK = 0x00000020;
-  // private const int MF_MENUBREAK = 0x00000040;
-  // private const int MF_OWNERDRAW = 0x00000100;
-  // private const int MF_STRING = 0x00000000;
-  // private const int MF_UNCHECKED = 0x00000000;
-  // private const int MF_BYCOMMAND = 0x000;
-  //private const Int32 MF_REMOVE = 0x1000;
-  private const int MF_POPUP = 0x00000010;
-  private const int MF_SEPARATOR = 0x00000800;
-  private const int MF_BY_POSITION = 0x400;
-  private const int MF_WM_SYS_COMMAND = 0x112;
-  private const int MF_SYS_MENU_CHECK_UPDATES = 1000;
-  private const int MF_SYS_MENU_ABOUT_ID = 1001;
-  
   private static Timer mTimer;
   private readonly WuAgent agent;
   private readonly int idleDelay;
   private readonly Gpo.Respect mGpoRespect = Gpo.Respect.Unknown;
-  private readonly MenuItem mToolsMenu;
-  private readonly MenuItem themeMenuItem;
   private readonly float mWinVersion;
   private bool allowShowDisplay = true;
   private AutoUpdateOptions autoUpdate = AutoUpdateOptions.No;
@@ -56,7 +35,7 @@ public partial class MainForm : Form {
   private bool mSuspendUpdate;
   private bool resultShown;
   private bool suspendChange;
-  private MenuItem wuauMenu;
+  private ToolStripMenuItem wuauMenu;
 
   public MainForm() {
     InitializeComponent();
@@ -162,11 +141,13 @@ public partial class MainForm : Form {
       // ignored
     }
 
-    chkAutoRun.Checked = Program.IsAutoStart();
+    if (Program.IsAutoStart())
+      chkAutoRun_CheckedChanged(null, EventArgs.Empty);
     if (MiscFunc.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
       chkAutoRun.Enabled = false;
     idleDelay = MiscFunc.ParseInt(GetConfig("IdleDelay", "20"));
-    chkNoUAC.Checked = Program.IsSkipUacRun();
+    if (Program.IsSkipUacRun())
+      chkNoUAC_CheckedChanged(null, EventArgs.Empty);
     chkNoUAC.Enabled = MiscFunc.IsAdministrator();
     chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !MiscFunc.IsRunningAsUwp();
 
@@ -233,22 +214,16 @@ public partial class MainForm : Form {
     if (Program.TestArg("-provisioned"))
       gbxAutoUpdate.Enabled = false;
 
-    mToolsMenu = new MenuItem("&Tools");
-    themeMenuItem = new MenuItem("&Themes");
+    notifyIcon.ContextMenuStrip = new ContextMenuStrip();
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Show/Hide", null, notifyIcon1_MouseDoubleClick));
+    notifyIcon.ContextMenuStrip.Items.Add("-");
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Site", null, siteToolStripMenuItem_Click));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Check for new version", null, checkForNewVersionToolStripMenuItem_Click));
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, aboutToolStripMenuItem_Click));
+    notifyIcon.ContextMenuStrip.Items.Add("-");
+    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, menuExit_Click));
 
     BuildToolsMenu();
-
-    notifyIcon.ContextMenu = new ContextMenu();
-    notifyIcon.ContextMenu.MenuItems.AddRange([mToolsMenu, themeMenuItem, new MenuItem("-"), new MenuItem("E&xit", menuExit_Click)]);
-    uint menuIndex = 4;
-    var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    InsertMenu(menuHandle, ++menuIndex, MF_BY_POSITION | MF_SEPARATOR, 0, string.Empty); // <-- Add a menu separator
-    themeMenuItem.Tag = ++menuIndex;
-    InsertMenu(menuHandle, (uint)themeMenuItem.Tag, MF_BY_POSITION | MF_POPUP, (int)themeMenuItem.Handle, themeMenuItem.Text);
-    mToolsMenu.Tag = menuIndex;
-    InsertMenu(menuHandle, (uint)mToolsMenu.Tag, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, mToolsMenu.Text);
-    InsertMenu(menuHandle, ++menuIndex, MF_BY_POSITION, MF_SYS_MENU_CHECK_UPDATES, "Check for new version");
-    InsertMenu(menuHandle, ++menuIndex, MF_BY_POSITION, MF_SYS_MENU_ABOUT_ID, "&About…");
 
     UpdateCounts();
     SwitchList(UpdateLists.UpdateHistory);
@@ -264,8 +239,8 @@ public partial class MainForm : Form {
     Program.Ipc.Listen();
     
     Updater.Subscribe(
-      (message, isError) => { MessageBox.Show(message, Updater.ApplicationName, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
-      (message) => { return MessageBox.Show(message, Updater.ApplicationName, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK; },
+      (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
+      (message) => { return MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK; },
       Application.Exit
     );
     var timer = new Timer();
@@ -296,21 +271,17 @@ public partial class MainForm : Form {
 
   private void InitializeTheme() {
 
-    updateView.Tag = Theme.SkipThemeWithChildsTag;
-    //mainMenu.Renderer = new ThemedToolStripRenderer();
-    //notifyMenu.Renderer = new ThemedToolStripRenderer();
-    //notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
-    Theme.OnCurrentChecnged -= OnThemeCurrentChecnged;
+    mainMenu.Renderer = new ThemedToolStripRenderer();
+    notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
+    Theme.OnCurrentChanged -= OnThemeCurrentChecnged;
     OnThemeCurrentChecnged(); //apply current theme colors
-    Theme.OnCurrentChecnged += OnThemeCurrentChecnged;
+    Theme.OnCurrentChanged += OnThemeCurrentChecnged;
 
-    var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    RemoveMenu(menuHandle, (uint)themeMenuItem.Tag, MF_BY_POSITION);
-    themeMenuItem.MenuItems.Clear();
+    themeMenuItem.DropDownItems.Clear();
 
     if (Theme.SupportsAutoThemeSwitching()) {
-      themeMenuItem.MenuItems.Add(new RadioButtonMenuItem("Auto", (o, e) => {
-        (o as RadioButtonMenuItem).Checked = true;
+      themeMenuItem.DropDownItems.Add(new ToolStripRadioButtonMenuItem("Auto", null, (o, e) => {
+        (o as ToolStripRadioButtonMenuItem).Checked = true;
         Theme.SetAutoTheme();
         Program.IniWriteValue("Root", "Theme", "auto");
       }));
@@ -326,14 +297,12 @@ public partial class MainForm : Form {
     AddThemeMenuItems(allThemes.Where(t => t is not CustomTheme));
     var customThemes = allThemes.Where(t => t is CustomTheme).ToList();
     if (customThemes.Count > 0) {
-      themeMenuItem.MenuItems.Add("-");
+      themeMenuItem.DropDownItems.Add("-");
       AddThemeMenuItems(customThemes);
     }
 
-    if (setTheme == null && themeMenuItem.MenuItems.Count > 0)
-      themeMenuItem.MenuItems[0].PerformClick();
-
-    InsertMenu(menuHandle, (uint)themeMenuItem.Tag, MF_BY_POSITION | MF_POPUP, (int)themeMenuItem.Handle, themeMenuItem.Text);
+    if (setTheme == null && themeMenuItem.DropDownItems.Count > 0)
+      themeMenuItem.DropDownItems[0].PerformClick();
 
     Theme.Current.Apply(this);
     SwitchList(currentList);
@@ -341,9 +310,9 @@ public partial class MainForm : Form {
 
   private void AddThemeMenuItems(IEnumerable<Theme> themes) {
     foreach (var theme in themes) {
-      var item = new RadioButtonMenuItem(theme.DisplayName, OnThemeMenuItemClick);
+      var item = new ToolStripRadioButtonMenuItem(theme.DisplayName, null, OnThemeMenuItemClick);
       item.Tag = theme;
-      themeMenuItem.MenuItems.Add(item);
+      themeMenuItem.DropDownItems.Add(item);
       if (Theme.Current != null && Theme.Current.Id == theme.Id) {
         item.Checked = true;
       }
@@ -351,7 +320,7 @@ public partial class MainForm : Form {
   }
 
   private void OnThemeMenuItemClick(object sender, EventArgs e) {
-    if (sender is not RadioButtonMenuItem item || item.Tag is not Theme theme)
+    if (sender is not ToolStripRadioButtonMenuItem item || item.Tag is not Theme theme)
       return;
     item.Checked = true;
     Theme.Current = theme;
@@ -360,34 +329,17 @@ public partial class MainForm : Form {
 
   #endregion
 
-  protected override void WndProc(ref Message m) {
-
-    base.WndProc(ref m);
-    if (m.Msg == MF_WM_SYS_COMMAND) {
-      switch ((int)m.WParam) {
-        case MF_SYS_MENU_ABOUT_ID:
-          var asm = GetType().Assembly;
-          MessageBox.Show($"{Updater.ApplicationTitle} {asm.GetName().Version.ToString(3)} {(Environment.Is64BitProcess ? "x64" : "x32")}\nWritten by Sergiy Egoshyn (egoshin.sergey@gmail.com)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-          break;
-        case MF_SYS_MENU_CHECK_UPDATES:
-          Updater.CheckForUpdates(false);
-          break;
-      }
-    // } else if (m.Msg == Common.WM_SHOWME) {
-    //   if (WindowState == FormWindowState.Minimized)
-    //     WindowState = FormWindowState.Normal;
-    //   Activate();
-    }
+  private void siteToolStripMenuItem_Click(object sender, EventArgs e) {
+    Updater.VisitAppSite();
   }
-  
-  [DllImport("user32.dll")]
-  private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
-  [DllImport("user32.dll")]
-  private static extern bool InsertMenu(IntPtr hMenu, uint wPosition, int wFlags, int wIdNewItem, string lpNewItem);
+  private void checkForNewVersionToolStripMenuItem_Click(object sender, EventArgs e) {
+    Updater.CheckForUpdates(false);
+  }
 
-  [DllImport("user32.dll")]
-  private static extern bool RemoveMenu(IntPtr hMenu, uint uPosition, uint uFlags);
+  private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+    MessageBox.Show($"{Updater.ApplicationTitle} {Updater.CurrentVersion} {(Environment.Is64BitProcess ? "x64" : "x32")}\nWritten by Sergiy Egoshyn (egoshin.sergey@gmail.com)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+  }
 
   private void LineLogger(object sender, AppLog.LogEventArgs args) {
     logBox.AppendText(args.Message + Environment.NewLine);
@@ -487,7 +439,7 @@ public partial class MainForm : Form {
     };
   }
 
-  private void WuMgr_FormClosing(object sender, FormClosingEventArgs e) {
+  private void MainFormClosing(object sender, FormClosingEventArgs e) {
     if (notifyIcon.Visible && allowShowDisplay) {
       e.Cancel = true;
       allowShowDisplay = false;
@@ -500,7 +452,7 @@ public partial class MainForm : Form {
     agent.Finished -= OnFinished;
   }
 
-  private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
+  private void notifyIcon1_MouseDoubleClick(object sender, EventArgs e) {
     if (allowShowDisplay) {
       allowShowDisplay = false;
       Hide();
@@ -721,17 +673,18 @@ public partial class MainForm : Form {
   }
 
   private void BuildToolsMenu() {
-    wuauMenu = new MenuItem("Windows Update Service", menuWuAu_Click);
+    toolsToolStripMenuItem.DropDownItems.Clear();
+    wuauMenu = new ToolStripMenuItem("Windows Update Service", null, menuWuAu_Click);
     wuauMenu.Checked = agent.TestWuAuServ();
-    mToolsMenu.MenuItems.Add(wuauMenu);
-    mToolsMenu.MenuItems.Add(new MenuItem("-"));
+    toolsToolStripMenuItem.DropDownItems.Add(wuauMenu);
+    toolsToolStripMenuItem.DropDownItems.Add("-");
 
     if (Directory.Exists(Program.GetToolsPath())) {
       foreach (var subDir in Directory.GetDirectories(Program.GetToolsPath())) {
         var iniName = Path.GetFileName(subDir);
         var iniPath = subDir + @"\" + iniName + ".ini";
 
-        var toolMenu = new MenuItem(Program.IniReadValue("Root", "Name", iniName, iniPath));
+        var toolMenu = new ToolStripMenuItem(Program.IniReadValue("Root", "Name", iniName, iniPath));
         var exec = Program.IniReadValue("Root", "Exec", "", iniPath);
         var silent = MiscFunc.ParseInt(Program.IniReadValue("Root", "Silent", "0", iniPath)) != 0;
         if (exec.Length > 0) {
@@ -749,26 +702,24 @@ public partial class MainForm : Form {
               break;
             }
 
-            MenuItem subMenu = new();
-            subMenu.Text = name;
-
+            var subMenu = new ToolStripMenuItem(name);
             var entryExec = Program.IniReadValue("Entry" + i, "Exec", "", iniPath);
             var entrySilent = MiscFunc.ParseInt(Program.IniReadValue("Entry" + i, "Silent", "0", iniPath)) != 0;
             subMenu.Click += delegate (object sender, EventArgs e) {
               menuExec_Click(sender, e, entryExec, subDir, entrySilent);
             };
 
-            toolMenu.MenuItems.Add(subMenu);
+            toolMenu.DropDownItems.Add(subMenu);
           }
         }
 
-        mToolsMenu.MenuItems.Add(toolMenu);
+        toolsToolStripMenuItem.DropDownItems.Add(toolMenu);
       }
 
-      mToolsMenu.MenuItems.Add(new MenuItem("-"));
+      toolsToolStripMenuItem.DropDownItems.Add("-");
     }
 
-    mToolsMenu.MenuItems.Add(new MenuItem("&Refresh", menuRefresh_Click));
+    toolsToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem("&Refresh", null, menuRefresh_Click));
   }
 
   private void menuExec_Click(object sender, EventArgs e, string exec, string dir, bool silent = false) {
@@ -779,6 +730,12 @@ public partial class MainForm : Form {
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
+    FormClosing -= MainFormClosing;
+    Visible = false;
+    notifyIcon.Visible = false;
+    notifyIcon.Dispose();
+    mTimer.Enabled = false;
+    mTimer.Dispose();
     Application.Exit();
   }
 
@@ -797,11 +754,7 @@ public partial class MainForm : Form {
   }
 
   private void menuRefresh_Click(object sender, EventArgs e) {
-    var menuHandle = GetSystemMenu(Handle, false); // Note: to restore default set true
-    RemoveMenu(menuHandle, (uint)mToolsMenu.Tag, MF_BY_POSITION);
-    mToolsMenu.MenuItems.Clear();
     BuildToolsMenu();
-    InsertMenu(menuHandle, (uint)mToolsMenu.Tag, MF_BY_POSITION | MF_POPUP, (int)mToolsMenu.Handle, "&Tools");
   }
 
   private void btnWinUpd_CheckedChanged(object sender, EventArgs e) {
@@ -1175,6 +1128,7 @@ public partial class MainForm : Form {
   }
 
   private void chkAutoRun_CheckedChanged(object sender, EventArgs e) {
+    chkAutoRun.Checked = !chkAutoRun.Checked;
     notifyIcon.Visible = dlAutoCheck.Enabled = chkAutoRun.Checked;
     autoUpdate = chkAutoRun.Checked ? (AutoUpdateOptions)dlAutoCheck.SelectedIndex : AutoUpdateOptions.No;
     if (mSuspendUpdate)
@@ -1204,6 +1158,7 @@ public partial class MainForm : Form {
   private void chkNoUAC_CheckedChanged(object sender, EventArgs e) {
     if (mSuspendUpdate)
       return;
+    chkNoUAC.Checked = !chkNoUAC.Checked;
     Program.SkipUacEnable(chkNoUAC.Checked);
   }
 
