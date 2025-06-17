@@ -86,14 +86,6 @@ public partial class MainForm : Form {
     toolTip.SetToolTip(btnUnInstall, "Uninstall");
     toolTip.SetToolTip(btnCancel, "Cancel");
 
-    btnSearch.Image = new Bitmap(Resources.icons8_available_updates_32, new Size(25, 25));
-    btnInstall.Image = new Bitmap(Resources.icons8_software_installer_32, new Size(25, 25));
-    btnDownload.Image = new Bitmap(Resources.icons8_downloading_updates_32, new Size(25, 25));
-    btnUnInstall.Image = new Bitmap(Resources.icons8_trash_32, new Size(25, 25));
-    btnHide.Image = new Bitmap(Resources.icons8_hide_32, new Size(25, 25));
-    btnGetLink.Image = new Bitmap(Resources.icons8_link_32, new Size(25, 25));
-    btnCancel.Image = new Bitmap(Resources.icons8_cancel_32, new Size(25, 25));
-
     AppLog.Logger += LineLogger;
 
     foreach (var line in AppLog.GetLog())
@@ -197,7 +189,7 @@ public partial class MainForm : Form {
 
     // Note: when running in the UWP sandbox we cant write the real registry even as admins
     if (!MiscFunc.IsAdministrator() || MiscFunc.IsRunningAsUwp())
-      foreach (Control ctl in tabAU.Controls)
+      foreach (Control ctl in gbxAutoUpdate.Controls)
         ctl.Enabled = false;
 
     chkOld.Checked = MiscFunc.ParseInt(GetConfig("IncludeOld", "0")) != 0;
@@ -239,7 +231,7 @@ public partial class MainForm : Form {
     mSuspendUpdate = false;
 
     if (Program.TestArg("-provisioned"))
-      tabs.Enabled = false;
+      gbxAutoUpdate.Enabled = false;
 
     mToolsMenu = new MenuItem("&Tools");
     themeMenuItem = new MenuItem("&Themes");
@@ -290,15 +282,21 @@ public partial class MainForm : Form {
   #region themes
 
   private void OnThemeCurrentChecnged() {
-    tabs.Tag = Theme.SkipThemeTag;
-    //updateView.SelectedBackColor = Theme.Current.SelectedBackgroundColor;
-    //updateView.SelectedForeColor = Theme.Current.SelectedForegroundColor;
-    //updateView.Invalidate();
+
+    btnSearch.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_available_updates_32, new Size(25, 25));
+    btnInstall.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_software_installer_32, new Size(25, 25));
+    btnDownload.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_downloading_updates_32, new Size(25, 25));
+    btnUnInstall.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_trash_32, new Size(25, 25));
+    btnHide.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_hide_32, new Size(25, 25));
+    btnGetLink.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_link_32, new Size(25, 25));
+    btnCancel.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_cancel_32, new Size(25, 25));
+
     SwitchList(currentList);
   }
 
   private void InitializeTheme() {
 
+    updateView.Tag = Theme.SkipThemeWithChildsTag;
     //mainMenu.Renderer = new ThemedToolStripRenderer();
     //notifyMenu.Renderer = new ThemedToolStripRenderer();
     //notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
@@ -705,9 +703,7 @@ public partial class MainForm : Form {
     var isChecked = updateView.CheckedItems.Count > 0;
 
     var busy = agent.IsBusy();
-    btnCancel.Visible = busy;
-    progTotal.Visible = busy;
-    lblStatus.Visible = busy;
+    panStatus.Visible = busy;
 
     var isValid = agent.IsValid();
     var isValid2 = isValid || chkManual.Checked;
