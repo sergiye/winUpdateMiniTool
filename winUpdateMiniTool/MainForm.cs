@@ -265,8 +265,6 @@ public partial class MainForm : Form {
     btnHide.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_hide_32, new Size(25, 25));
     btnGetLink.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_link_32, new Size(25, 25));
     btnCancel.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_cancel_32, new Size(25, 25));
-
-    SwitchList(currentList);
   }
 
   private void InitializeTheme() {
@@ -305,7 +303,6 @@ public partial class MainForm : Form {
       themeMenuItem.DropDownItems[0].PerformClick();
 
     Theme.Current.Apply(this);
-    SwitchList(currentList);
   }
 
   private void AddThemeMenuItems(IEnumerable<Theme> themes) {
@@ -631,11 +628,12 @@ public partial class MainForm : Form {
       return;
     suspendChange = true;
     currentList = list;
-   
-    btnWinUpd.BackColor = currentList == UpdateLists.PendingUpdates ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
-    btnInstalled.BackColor = currentList == UpdateLists.InstaledUpdates ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
-    btnHidden.BackColor = currentList == UpdateLists.HiddenUpdates ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
-    btnHistory.BackColor = currentList == UpdateLists.UpdateHistory ? Theme.Current.SelectedBackgroundColor: Theme.Current.BackgroundColor;
+
+    btnWinUpd.Checked = currentList == UpdateLists.PendingUpdates;
+    btnInstalled.Checked = currentList == UpdateLists.InstaledUpdates;
+    btnHidden.Checked = currentList == UpdateLists.HiddenUpdates;
+    btnHistory.Checked = currentList == UpdateLists.UpdateHistory;
+
     suspendChange = false;
 
     updateView.Columns[2].Text = currentList == UpdateLists.UpdateHistory

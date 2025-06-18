@@ -43,10 +43,10 @@ namespace winUpdateMiniTool {
       this.btnUnInstall = new System.Windows.Forms.Button();
       this.btnHide = new System.Windows.Forms.Button();
       this.btnGetLink = new System.Windows.Forms.Button();
-      this.btnHidden = new System.Windows.Forms.Button();
-      this.btnInstalled = new System.Windows.Forms.Button();
-      this.btnWinUpd = new System.Windows.Forms.Button();
-      this.btnHistory = new System.Windows.Forms.Button();
+      this.btnHidden = new System.Windows.Forms.CheckBox();
+      this.btnInstalled = new System.Windows.Forms.CheckBox();
+      this.btnWinUpd = new System.Windows.Forms.CheckBox();
+      this.btnHistory = new System.Windows.Forms.CheckBox();
       this.logBox = new System.Windows.Forms.RichTextBox();
       this.panStatus = new System.Windows.Forms.Panel();
       this.lblStatus = new System.Windows.Forms.Label();
@@ -384,47 +384,51 @@ namespace winUpdateMiniTool {
       // 
       // btnHidden
       // 
+      this.btnHidden.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnHidden.Dock = System.Windows.Forms.DockStyle.Left;
       this.btnHidden.Location = new System.Drawing.Point(357, 0);
       this.btnHidden.Name = "btnHidden";
       this.btnHidden.Size = new System.Drawing.Size(119, 30);
       this.btnHidden.TabIndex = 7;
       this.btnHidden.Text = "Hidden Updates";
-      this.btnHidden.UseVisualStyleBackColor = true;
-      this.btnHidden.Click += new System.EventHandler(this.btnHidden_CheckedChanged);
+      this.btnHidden.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      this.btnHidden.CheckedChanged += new System.EventHandler(this.btnHidden_CheckedChanged);
       // 
       // btnInstalled
       // 
+      this.btnInstalled.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnInstalled.Dock = System.Windows.Forms.DockStyle.Left;
       this.btnInstalled.Location = new System.Drawing.Point(238, 0);
       this.btnInstalled.Name = "btnInstalled";
       this.btnInstalled.Size = new System.Drawing.Size(119, 30);
       this.btnInstalled.TabIndex = 8;
       this.btnInstalled.Text = "Installed Updates";
-      this.btnInstalled.UseVisualStyleBackColor = true;
-      this.btnInstalled.Click += new System.EventHandler(this.btnInstalled_CheckedChanged);
+      this.btnInstalled.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      this.btnInstalled.CheckedChanged += new System.EventHandler(this.btnInstalled_CheckedChanged);
       // 
       // btnWinUpd
       // 
+      this.btnWinUpd.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnWinUpd.Dock = System.Windows.Forms.DockStyle.Left;
       this.btnWinUpd.Location = new System.Drawing.Point(119, 0);
       this.btnWinUpd.Name = "btnWinUpd";
       this.btnWinUpd.Size = new System.Drawing.Size(119, 30);
       this.btnWinUpd.TabIndex = 0;
       this.btnWinUpd.Text = "Windows Updates";
-      this.btnWinUpd.UseVisualStyleBackColor = true;
-      this.btnWinUpd.Click += new System.EventHandler(this.btnWinUpd_CheckedChanged);
+      this.btnWinUpd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      this.btnWinUpd.CheckedChanged += new System.EventHandler(this.btnWinUpd_CheckedChanged);
       // 
       // btnHistory
       // 
+      this.btnHistory.Appearance = System.Windows.Forms.Appearance.Button;
       this.btnHistory.Dock = System.Windows.Forms.DockStyle.Left;
       this.btnHistory.Location = new System.Drawing.Point(0, 0);
       this.btnHistory.Name = "btnHistory";
       this.btnHistory.Size = new System.Drawing.Size(119, 30);
       this.btnHistory.TabIndex = 6;
       this.btnHistory.Text = "Update History";
-      this.btnHistory.UseVisualStyleBackColor = true;
-      this.btnHistory.Click += new System.EventHandler(this.btnHistory_CheckedChanged);
+      this.btnHistory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      this.btnHistory.CheckedChanged += new System.EventHandler(this.btnHistory_CheckedChanged);
       // 
       // logBox
       // 
@@ -969,10 +973,10 @@ namespace winUpdateMiniTool {
     private System.Windows.Forms.Button btnGetLink;
     private System.Windows.Forms.Button btnCancel;
     private System.Windows.Forms.ProgressBar progTotal;
-    private System.Windows.Forms.Button btnHistory;
-    private System.Windows.Forms.Button btnHidden;
-    private System.Windows.Forms.Button btnInstalled;
-    private System.Windows.Forms.Button btnWinUpd;
+    private System.Windows.Forms.CheckBox btnHistory;
+    private System.Windows.Forms.CheckBox btnHidden;
+    private System.Windows.Forms.CheckBox btnInstalled;
+    private System.Windows.Forms.CheckBox btnWinUpd;
     private System.Windows.Forms.Label lblStatus;
     private System.Windows.Forms.CheckBox chkBlockMS;
     private System.Windows.Forms.CheckBox chkDrivers;
