@@ -75,7 +75,7 @@ internal static class Program {
       return;
     }
 
-    if (!MiscFunc.IsAdministrator() && !MiscFunc.IsDebugging()) {
+    if (!OperatingSystemHelper.IsAdministrator() && !OperatingSystemHelper.IsDebugging()) {
       Console.WriteLine(@"Trying to get admin privileges...");
 
       if (SkipUacRun()) {
@@ -83,7 +83,7 @@ internal static class Program {
         return;
       }
 
-      if (!MiscFunc.IsRunningAsUwp()) {
+      if (!OperatingSystemHelper.IsRunningAsUwp()) {
         Console.WriteLine(@"Trying to start with 'runas'...");
         // Restart program and run as admin
         var exeName = Process.GetCurrentProcess().MainModule?.FileName;
@@ -376,7 +376,7 @@ internal static class Program {
           return false;
 
         // Note: if we run as UWP we need to adjust the file permissions for this workaround to work
-        if (MiscFunc.IsRunningAsUwp()) {
+        if (OperatingSystemHelper.IsRunningAsUwp()) {
           if (!FileOps.TakeOwn(exePath))
             return false;
 

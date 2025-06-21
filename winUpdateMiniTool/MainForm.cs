@@ -49,7 +49,7 @@ public partial class MainForm : Form {
       notifyIcon.Visible = true;
     }
 
-    if (!MiscFunc.IsRunningAsUwp())
+    if (!OperatingSystemHelper.IsRunningAsUwp())
       Text = $"{Updater.ApplicationTitle} v{Updater.CurrentVersion}";
 
     btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
@@ -143,19 +143,19 @@ public partial class MainForm : Form {
 
     if (Program.IsAutoStart())
       chkAutoRun_CheckedChanged(null, EventArgs.Empty);
-    if (MiscFunc.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
+    if (OperatingSystemHelper.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
       chkAutoRun.Enabled = false;
     idleDelay = MiscFunc.ParseInt(GetConfig("IdleDelay", "20"));
     if (Program.IsSkipUacRun())
       chkNoUAC_CheckedChanged(null, EventArgs.Empty);
-    chkNoUAC.Enabled = MiscFunc.IsAdministrator();
-    chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !MiscFunc.IsRunningAsUwp();
+    chkNoUAC.Enabled = OperatingSystemHelper.IsAdministrator();
+    chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !OperatingSystemHelper.IsRunningAsUwp();
 
     chkOffline.Checked = MiscFunc.ParseInt(GetConfig("Offline", "0")) != 0;
     chkDownload.Checked = MiscFunc.ParseInt(GetConfig("Download", "1")) != 0;
     chkManual.Checked = MiscFunc.ParseInt(GetConfig("Manual", "0")) != 0;
-    if (!MiscFunc.IsAdministrator()) {
-      if (MiscFunc.IsRunningAsUwp()) {
+    if (!OperatingSystemHelper.IsAdministrator()) {
+      if (OperatingSystemHelper.IsRunningAsUwp()) {
         chkOffline.Enabled = false;
         chkOffline.Checked = false;
 
@@ -169,7 +169,7 @@ public partial class MainForm : Form {
     chkMsUpd.Checked = agent.IsActive() && agent.TestService(WuAgent.MsUpdGuid);
 
     // Note: when running in the UWP sandbox we cant write the real registry even as admins
-    if (!MiscFunc.IsAdministrator() || MiscFunc.IsRunningAsUwp())
+    if (!OperatingSystemHelper.IsAdministrator() || OperatingSystemHelper.IsRunningAsUwp())
       foreach (Control ctl in gbxAutoUpdate.Controls)
         ctl.Enabled = false;
 
@@ -339,6 +339,7 @@ public partial class MainForm : Form {
   }
 
   private void LineLogger(object sender, AppLog.LogEventArgs args) {
+    Console.WriteLine(@"LOG: " + args.Message);
     logBox.AppendText(args.Message + Environment.NewLine);
     logBox.ScrollToCaret();
   }
@@ -363,7 +364,7 @@ public partial class MainForm : Form {
       var daysDue = GetAutoUpdateDue();
       if (daysDue != 0 && !agent.IsBusy()) {
         // ensure we only start a check when user is not doing anything
-        var idleTime = MiscFunc.GetIdleTime();
+        var idleTime = OperatingSystemHelper.GetIdleTime();
         if (idleDelay * 60 < idleTime) {
           AppLog.Line("Starting automatic search for updates.");
           updateNow = true;
@@ -658,7 +659,7 @@ public partial class MainForm : Form {
     var isValid = agent.IsValid();
     var isValid2 = isValid || chkManual.Checked;
 
-    var admin = MiscFunc.IsAdministrator() || !MiscFunc.IsRunningAsUwp();
+    var admin = OperatingSystemHelper.IsAdministrator() || !OperatingSystemHelper.IsRunningAsUwp();
 
     var enable = agent.IsActive() && !busy;
     btnSearch.Enabled = enable;
@@ -783,7 +784,7 @@ public partial class MainForm : Form {
   }
 
   private void btnDownload_Click(object sender, EventArgs e) {
-    if (!chkManual.Checked && !MiscFunc.IsAdministrator()) {
+    if (!chkManual.Checked && !OperatingSystemHelper.IsAdministrator()) {
       MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -797,7 +798,7 @@ public partial class MainForm : Form {
   }
 
   private void btnInstall_Click(object sender, EventArgs e) {
-    if (!MiscFunc.IsAdministrator()) {
+    if (!OperatingSystemHelper.IsAdministrator()) {
       MessageBox.Show("Administrator privileges are required in order to install updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -811,7 +812,7 @@ public partial class MainForm : Form {
   }
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
-    if (!MiscFunc.IsAdministrator()) {
+    if (!OperatingSystemHelper.IsAdministrator()) {
       MessageBox.Show("Administrator privileges are required in order to remove updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -1133,7 +1134,7 @@ public partial class MainForm : Form {
       return;
     if (chkAutoRun.CheckState == CheckState.Indeterminate)
       return;
-    if (MiscFunc.IsRunningAsUwp()) {
+    if (OperatingSystemHelper.IsRunningAsUwp()) {
       if (chkAutoRun.CheckState == CheckState.Checked) {
         mSuspendUpdate = true;
         chkAutoRun.CheckState = CheckState.Indeterminate;
