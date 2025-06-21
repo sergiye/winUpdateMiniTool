@@ -265,6 +265,13 @@ public partial class MainForm : Form {
     btnHide.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_hide_32, new Size(25, 25));
     btnGetLink.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_link_32, new Size(25, 25));
     btnCancel.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_cancel_32, new Size(25, 25));
+
+    updateView.SelectedItemBackColor = Theme.Current.SelectedBackgroundColor;
+    updateView.SelectedItemForeColor = Theme.Current.SelectedForegroundColor;
+    updateView.GroupHeadingBackColor = Theme.Current.BackgroundColor;
+    updateView.GroupHeadingForeColor = Theme.Current.HyperlinkColor;
+    updateView.SeparatorColor = Theme.Current.HyperlinkColor;
+    //updateView.GroupHeadingFont = this.Font;
   }
 
   private void InitializeTheme() {

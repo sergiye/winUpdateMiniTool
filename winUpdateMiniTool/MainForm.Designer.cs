@@ -20,7 +20,7 @@ namespace winUpdateMiniTool {
       this.toolTip = new System.Windows.Forms.ToolTip(this.components);
       this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
       this.panelList = new System.Windows.Forms.Panel();
-      this.updateView = new winUpdateMiniTool.Common.ListViewExtended();
+      this.updateView = new sergiye.Common.ListViewExtended();
       this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -153,7 +153,7 @@ namespace winUpdateMiniTool {
       // columnHeader1
       // 
       this.columnHeader1.Text = "Title";
-      this.columnHeader1.Width = 300;
+      this.columnHeader1.Width = 250;
       // 
       // columnHeader2
       // 
@@ -163,7 +163,7 @@ namespace winUpdateMiniTool {
       // columnHeader3
       // 
       this.columnHeader3.Text = "KB Article";
-      this.columnHeader3.Width = 70;
+      this.columnHeader3.Width = 120;
       // 
       // columnHeader4
       // 
@@ -992,7 +992,7 @@ namespace winUpdateMiniTool {
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
     private System.Windows.Forms.LinkLabel lblSupport;
     private System.Windows.Forms.CheckBox chkHideWU;
-    private ListViewExtended updateView;
+    private sergiye.Common.ListViewExtended updateView;
     private System.Windows.Forms.ColumnHeader columnHeader1;
     private System.Windows.Forms.ColumnHeader columnHeader2;
     private System.Windows.Forms.ColumnHeader columnHeader3;

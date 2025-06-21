@@ -47,6 +47,7 @@
     <Compile Include="..\..\common\sergiye.Common.UI\Themes\CustomTheme.cs" Link="Common\Themes\CustomTheme.cs" />
     <Compile Include="..\..\common\sergiye.Common.UI\Themes\ThemedToolStripRenderer.cs" Link="Common\Themes\ThemedToolStripRenderer.cs" />
     <Compile Include="..\..\common\sergiye.Common.UI\ToolStripRadioButtonMenuItem.cs" Link="Common\ToolStripRadioButtonMenuItem.cs" />
+    <Compile Include="..\..\common\sergiye.Common.UI\ListViewExtended.cs" Link="Common\ListViewExtended.cs" />
     <EmbeddedResource Include="..\themes\*.json" Link="themes\%(Filename)%(Extension)" />
     <Compile Update="Common\ListViewExtended.cs" SubType="Component" />
     <Compile Update="*Form.cs" SubType="Form" />
