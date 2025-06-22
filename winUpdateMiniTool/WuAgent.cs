@@ -861,14 +861,14 @@ internal class WuAgent {
     try {
       if (enable) {
         if (svc.Status != ServiceControllerStatus.Running) {
-          ServiceHelper.ChangeStartMode(svc, ServiceStartMode.Manual);
+          WinServiceHelper.ChangeStartMode(svc, ServiceStartMode.Manual);
           svc.Start();
         }
       }
       else {
         if (svc.Status == ServiceControllerStatus.Running)
           svc.Stop();
-        ServiceHelper.ChangeStartMode(svc, ServiceStartMode.Disabled);
+        WinServiceHelper.ChangeStartMode(svc, ServiceStartMode.Disabled);
       }
     }
     catch (Exception err) {
