@@ -256,7 +256,7 @@ public partial class MainForm : Form {
 
   #region themes
 
-  private void OnThemeCurrentChecnged() {
+  private void OnThemeCurrentChanged() {
 
     btnSearch.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_available_updates_32, new Size(25, 25));
     btnInstall.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_software_installer_32, new Size(25, 25));
@@ -270,63 +270,29 @@ public partial class MainForm : Form {
     updateView.GroupHeadingForeColor = Theme.Current.HyperlinkColor;
     updateView.SeparatorColor = Theme.Current.HyperlinkColor;
     //updateView.GroupHeadingFont = this.Font;
+
+    Program.IniWriteValue("Root", "Theme", Theme.IsAutoThemeEnabled ? "auto" : Theme.Current.Id);
   }
 
   private void InitializeTheme() {
 
     mainMenu.Renderer = new ThemedToolStripRenderer();
     notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
-    Theme.OnCurrentChanged -= OnThemeCurrentChecnged;
-    OnThemeCurrentChecnged(); //apply current theme colors
-    Theme.OnCurrentChanged += OnThemeCurrentChecnged;
 
     themeMenuItem.DropDownItems.Clear();
-
-    if (Theme.SupportsAutoThemeSwitching()) {
-      themeMenuItem.DropDownItems.Add(new ToolStripRadioButtonMenuItem("Auto", null, (o, e) => {
-        (o as ToolStripRadioButtonMenuItem).Checked = true;
-        Theme.SetAutoTheme();
-        Program.IniWriteValue("Root", "Theme", "auto");
-      }));
-    }
-
-    var settingsTheme = Program.IniReadValue("Root", "Theme", "");
-    var allThemes = CustomTheme.GetAllThemes("themes", "winUpdateMiniTool.themes").OrderBy(x => x.DisplayName).ToList();
-    var setTheme = allThemes.FirstOrDefault(theme => settingsTheme == theme.Id);
-    if (setTheme != null) {
-      Theme.Current = setTheme;
-    }
-
-    AddThemeMenuItems(allThemes.Where(t => t is not CustomTheme));
-    var customThemes = allThemes.Where(t => t is CustomTheme).ToList();
-    if (customThemes.Count > 0) {
-      themeMenuItem.DropDownItems.Add("-");
-      AddThemeMenuItems(customThemes);
-    }
-
-    if (setTheme == null && themeMenuItem.DropDownItems.Count > 0)
-      themeMenuItem.DropDownItems[0].PerformClick();
-
-    Theme.Current.Apply(this);
-  }
-
-  private void AddThemeMenuItems(IEnumerable<Theme> themes) {
-    foreach (var theme in themes) {
-      var item = new ToolStripRadioButtonMenuItem(theme.DisplayName, null, OnThemeMenuItemClick);
-      item.Tag = theme;
-      themeMenuItem.DropDownItems.Add(item);
-      if (Theme.Current != null && Theme.Current.Id == theme.Id) {
-        item.Checked = true;
+    var currentItem = CustomTheme.FillThemesMenu((title, theme, onClick) => {
+      if (theme == null && onClick == null) {
+        themeMenuItem.DropDownItems.Add(title);
+        return null;
       }
-    }
-  }
-
-  private void OnThemeMenuItemClick(object sender, EventArgs e) {
-    if (sender is not ToolStripRadioButtonMenuItem item || item.Tag is not Theme theme)
-      return;
-    item.Checked = true;
-    Theme.Current = theme;
-    Program.IniWriteValue("Root", "Theme", theme.Id);
+      var item = new ToolStripRadioButtonMenuItem(title, null, onClick);
+      themeMenuItem.DropDownItems.Add(item);
+      return item;
+    }, 
+    OnThemeCurrentChanged, 
+    Program.IniReadValue("Root", "Theme", ""), "winUpdateMiniTool.themes");
+    currentItem?.PerformClick();
+    Theme.Current.Apply(this);
   }
 
   #endregion
