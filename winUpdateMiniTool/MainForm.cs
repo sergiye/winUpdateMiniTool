@@ -266,11 +266,6 @@ public partial class MainForm : Form {
     btnGetLink.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_link_32, new Size(25, 25));
     btnCancel.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_cancel_32, new Size(25, 25));
 
-    updateView.GroupHeadingBackColor = Theme.Current.BackgroundColor;
-    updateView.GroupHeadingForeColor = Theme.Current.HyperlinkColor;
-    updateView.SeparatorColor = Theme.Current.HyperlinkColor;
-    //updateView.GroupHeadingFont = this.Font;
-
     Program.IniWriteValue("Root", "Theme", Theme.IsAutoThemeEnabled ? "auto" : Theme.Current.Id);
   }
 
