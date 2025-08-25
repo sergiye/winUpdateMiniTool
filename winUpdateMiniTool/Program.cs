@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using sergiye.Common;
 using TaskScheduler;
 using winUpdateMiniTool.Common;
+using IExecAction = TaskScheduler.IExecAction;
 
 namespace winUpdateMiniTool;
 
