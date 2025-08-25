@@ -63,7 +63,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="sergiye.Common.UI" Version="1.*" />
+    <PackageReference Include="SergiyE.Common" Version="1.*" />
+    <PackageReference Include="SergiyE.Common.UI" Version="1.*" />
     <PackageReference Include="Costura.Fody" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
