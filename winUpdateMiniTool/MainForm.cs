@@ -241,15 +241,12 @@ public partial class MainForm : Form {
     Updater.Subscribe(
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
       (message) => { return MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK; },
-      Application.Exit
+      () => { menuExit_Click(null, EventArgs.Empty); }
     );
-    var timer = new Timer();
-    timer.Tick += async (_, _) => {
-      timer.Enabled = false;
-      timer.Enabled = !await Updater.CheckForUpdatesAsync(true);
-    };
-    timer.Interval = 3000;
-    timer.Enabled = true;
+
+    var timer = new System.Threading.Timer((_) => {
+      Updater.CheckForUpdates(Updater.CheckUpdatesMode.AutoUpdate);
+    }, null, 10 * 1000, 1000 * 60 * 60 * 24);
 
     InitializeTheme();
   }
@@ -297,7 +294,7 @@ public partial class MainForm : Form {
   }
 
   private void checkForNewVersionToolStripMenuItem_Click(object sender, EventArgs e) {
-    Updater.CheckForUpdates(false);
+    Updater.CheckForUpdates(Updater.CheckUpdatesMode.AllMessages);
   }
 
   private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -695,6 +692,10 @@ public partial class MainForm : Form {
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
+    if (InvokeRequired) {
+      Invoke(new EventHandler(menuExit_Click), sender, e);
+      return;
+    }
     FormClosing -= MainFormClosing;
     Visible = false;
     notifyIcon.Visible = false;
