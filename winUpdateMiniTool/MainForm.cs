@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using sergiye.Common;
 using winUpdateMiniTool.Common;
@@ -302,6 +303,11 @@ public partial class MainForm : Form {
   }
 
   private void LineLogger(object sender, AppLog.LogEventArgs args) {
+    if (InvokeRequired) {
+      BeginInvoke(new EventHandler<AppLog.LogEventArgs>(LineLogger), sender, args);
+      return;
+    }
+
     Console.WriteLine(@"LOG: " + args.Message);
     logBox.AppendText(args.Message + Environment.NewLine);
     logBox.ScrollToCaret();
@@ -452,7 +458,7 @@ public partial class MainForm : Form {
       case UpdateLists.PendingUpdates:
         LoadList(agent.MPendingUpdates);
         break;
-      case UpdateLists.InstaledUpdates:
+      case UpdateLists.InstalledUpdates:
         LoadList(agent.MInstalledUpdates);
         break;
       case UpdateLists.HiddenUpdates:
@@ -552,7 +558,7 @@ public partial class MainForm : Form {
         else if (MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "Select", "0", iniPath)) != 0)
           item.Checked = true;
       }
-      else if (currentList == UpdateLists.InstaledUpdates) {
+      else if (currentList == UpdateLists.InstalledUpdates) {
         if (MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "Remove", "0", iniPath)) != 0)
           item.Checked = true;
       }
@@ -594,7 +600,7 @@ public partial class MainForm : Form {
     currentList = list;
 
     btnWinUpd.Checked = currentList == UpdateLists.PendingUpdates;
-    btnInstalled.Checked = currentList == UpdateLists.InstaledUpdates;
+    btnInstalled.Checked = currentList == UpdateLists.InstalledUpdates;
     btnHidden.Checked = currentList == UpdateLists.HiddenUpdates;
     btnHistory.Checked = currentList == UpdateLists.UpdateHistory;
 
@@ -617,7 +623,7 @@ public partial class MainForm : Form {
     var isChecked = updateView.CheckedItems.Count > 0;
 
     var busy = agent.IsBusy();
-    panStatus.Visible = busy;
+    SetControlsState(!busy);
 
     var isValid = agent.IsValid();
     var isValid2 = isValid || chkManual.Checked;
@@ -628,7 +634,7 @@ public partial class MainForm : Form {
     btnSearch.Enabled = enable;
     btnDownload.Enabled = isChecked && enable && isValid2 && currentList == UpdateLists.PendingUpdates;
     btnInstall.Enabled = isChecked && admin && enable && isValid2 && currentList == UpdateLists.PendingUpdates;
-    btnUnInstall.Enabled = isChecked && admin && enable && currentList == UpdateLists.InstaledUpdates;
+    btnUnInstall.Enabled = isChecked && admin && enable && currentList == UpdateLists.InstalledUpdates;
     btnHide.Enabled = isChecked && enable && isValid &&
                       (currentList == UpdateLists.PendingUpdates || currentList == UpdateLists.HiddenUpdates);
     btnGetLink.Enabled = isChecked && currentList != UpdateLists.UpdateHistory;
@@ -705,6 +711,76 @@ public partial class MainForm : Form {
     Application.Exit();
   }
 
+  private void menuClean_Click(object sender, EventArgs e) {
+    SetControlsState(false, "Cleaning Windows Update cache...");
+    Task.Run(CleanCache);
+  }
+
+  private Task CleanCache() {
+    const string CachePath = "c:\\Windows\\SoftwareDistribution\\Download";
+    long freedBytes = 0;
+    if (Directory.Exists(CachePath)) {
+      try {
+        foreach (string file in Directory.GetFiles(CachePath, "*", SearchOption.AllDirectories)) {
+          long fileSize = new FileInfo(file).Length;
+          if (FileOps.DeleteFile(file))
+            freedBytes += fileSize;
+        }
+        foreach (string dir in Directory.GetDirectories(CachePath, "*", SearchOption.TopDirectoryOnly)) {
+          FileOps.SafeDeleteFolder(dir);
+        }
+        FileOps.SafeDeleteFolder(CachePath);
+      }
+      catch (Exception ex) {
+        LineLogger(null, new AppLog.LogEventArgs($"Error cleaning updates cache: {ex.Message}"));
+      }
+    }
+    SetControlsState(true);
+    LineLogger(null, new AppLog.LogEventArgs($"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"));
+    return Task.CompletedTask;
+  }
+
+  private void menuOptimize_Click(object sender, EventArgs e) {
+    SetControlsState(false, "Windows kernel optimization...");
+    Task.Run(OptimizeKernel);
+  }
+
+  private async Task OptimizeKernel() {
+    try {
+      var script = @"@echo off
+DISM.exe /Online /Set-ReservedStorageState /State:Disabled
+Dism.exe /online /cleanup-image /StartComponentCleanup
+compact.exe /CompactOS:always";
+      var result = await ProcessManager.ExecuteScript(script, Environment.SystemDirectory, onOutput: message => {
+        LineLogger(null, new AppLog.LogEventArgs(message));
+      });
+    }
+    catch (Exception ex) {
+      LineLogger(null, new AppLog.LogEventArgs($"Error optimizing kernel: {ex.Message}"));
+    }
+    LineLogger(null, new AppLog.LogEventArgs($"Windows kernel optimization finished."));
+    SetControlsState(true);
+  }
+
+  private void SetControlsState(bool enabled, string status = null) {
+    if (InvokeRequired) {
+      BeginInvoke(new Action(() => { SetControlsState(enabled, status); }));
+      return;
+    }
+
+    if (!enabled) {
+      progTotal.Style = ProgressBarStyle.Marquee;
+      progTotal.MarqueeAnimationSpeed = 30;
+    }
+    if (!string.IsNullOrEmpty(status))
+      lblStatus.Text = status;
+    panStatus.Visible = !enabled;
+    panControls.Enabled = enabled;
+    panOperations.Enabled = enabled;
+    cleanToolStripMenuItem.Enabled = enabled;
+    optimizeToolStripMenuItem.Enabled = enabled;
+  }
+
   private void menuWuAu_Click(object sender, EventArgs e) {
     wuauMenu.Checked = !wuauMenu.Checked;
     if (wuauMenu.Checked) {
@@ -728,7 +804,7 @@ public partial class MainForm : Form {
   }
 
   private void btnInstalled_CheckedChanged(object sender, EventArgs e) {
-    SwitchList(UpdateLists.InstaledUpdates);
+    SwitchList(UpdateLists.InstalledUpdates);
   }
 
   private void btnHidden_CheckedChanged(object sender, EventArgs e) {
@@ -1178,9 +1254,6 @@ public partial class MainForm : Form {
     Program.IniWriteValue("Options", name, value);
   }
 
-  [DllImport("User32.dll")]
-  private static extern int SetForegroundWindow(int hWnd);
-
   private void notifyIcon_BalloonTipClicked(object sender, EventArgs e) {
     if (!allowShowDisplay) {
       allowShowDisplay = true;
@@ -1189,7 +1262,7 @@ public partial class MainForm : Form {
 
     if (WindowState == FormWindowState.Minimized)
       WindowState = FormWindowState.Normal;
-    SetForegroundWindow(Handle.ToInt32());
+    WinApiHelper.SetForegroundWindow(Handle);
   }
 
   private void updateView_ColumnClick(object sender, ColumnClickEventArgs e) {
@@ -1282,7 +1355,7 @@ public partial class MainForm : Form {
 
   private enum UpdateLists {
     PendingUpdates,
-    InstaledUpdates,
+    InstalledUpdates,
     HiddenUpdates,
     UpdateHistory
   }

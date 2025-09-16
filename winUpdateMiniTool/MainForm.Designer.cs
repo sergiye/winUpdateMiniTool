@@ -79,12 +79,15 @@ namespace winUpdateMiniTool {
       this.mainMenu = new System.Windows.Forms.MenuStrip();
       this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.optimizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
       this.chkAutoRun = new System.Windows.Forms.ToolStripMenuItem();
       this.chkNoUAC = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+      this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
       this.themeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.siteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -828,10 +831,27 @@ namespace winUpdateMiniTool {
       // fileToolStripMenuItem
       // 
       this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cleanToolStripMenuItem,
+            this.optimizeToolStripMenuItem,
+            this.toolStripMenuItem3,
             this.exitToolStripMenuItem});
       this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
       this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
       this.fileToolStripMenuItem.Text = "File";
+      // 
+      // cleanToolStripMenuItem
+      // 
+      this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
+      this.cleanToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+      this.cleanToolStripMenuItem.Text = "Clean cache";
+      this.cleanToolStripMenuItem.Click += new System.EventHandler(this.menuClean_Click);
+      // 
+      // optimizeToolStripMenuItem
+      // 
+      this.optimizeToolStripMenuItem.Name = "optimizeToolStripMenuItem";
+      this.optimizeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+      this.optimizeToolStripMenuItem.Text = "Optimize kernel size";
+      this.optimizeToolStripMenuItem.Click += new System.EventHandler(this.menuOptimize_Click);
       // 
       // exitToolStripMenuItem
       // 
@@ -883,6 +903,11 @@ namespace winUpdateMiniTool {
       // 
       this.toolStripMenuItem2.Name = "toolStripMenuItem2";
       this.toolStripMenuItem2.Size = new System.Drawing.Size(219, 6);
+      // 
+      // toolStripMenuItem3
+      // 
+      this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+      this.toolStripMenuItem3.Size = new System.Drawing.Size(219, 6);
       // 
       // themeMenuItem
       // 
@@ -1033,6 +1058,9 @@ namespace winUpdateMiniTool {
     private ToolStripMenuItem chkAutoRun;
     private ToolStripMenuItem chkNoUAC;
     private ToolStripSeparator toolStripMenuItem2;
+    private ToolStripMenuItem cleanToolStripMenuItem;
+    private ToolStripMenuItem optimizeToolStripMenuItem;
+    private ToolStripSeparator toolStripMenuItem3;
   }
 }
 
