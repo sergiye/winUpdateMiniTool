@@ -1,7 +1,9 @@
 # Windows Update Mini Tool
-[![Release](https://img.shields.io/github/v/release/sergiye/winUpdateMiniTool?style=for-the-badge)](https://github.com/sergiye/winUpdateMiniTool/releases/latest)
-![Downloads](https://img.shields.io/github/downloads/sergiye/winUpdateMiniTool/total?style=for-the-badge&color=ff4f42)
-![Last commit](https://img.shields.io/github/last-commit/sergiye/winUpdateMiniTool?style=for-the-badge&color=00AD00)
+[![Release](https://img.shields.io/github/v/release/sergiye/winUpdateMiniTool)](https://github.com/sergiye/winUpdateMiniTool/releases/latest)
+![Downloads](https://img.shields.io/github/downloads/sergiye/winUpdateMiniTool/total?color=ff4f42)
+![Last commit](https://img.shields.io/github/last-commit/sergiye/winUpdateMiniTool?color=00AD00)
+[![](https://img.shields.io/badge/WINDOWS-7%20%E2%80%93%2011-blue)](https://endoflife.date/windows) 
+[![](https://img.shields.io/badge/SERVER-2012%20%E2%80%93%202025-blue)](https://endoflife.date/windows-server) 
 
 ----
 
