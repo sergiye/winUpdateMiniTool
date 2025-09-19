@@ -630,7 +630,7 @@ namespace winUpdateMiniTool {
       // 
       this.chkDisableAU.Location = new System.Drawing.Point(19, 51);
       this.chkDisableAU.Name = "chkDisableAU";
-      this.chkDisableAU.Size = new System.Drawing.Size(155, 21);
+      this.chkDisableAU.Size = new System.Drawing.Size(155, 17);
       this.chkDisableAU.TabIndex = 20;
       this.chkDisableAU.Text = "Disable Update Facilitators";
       this.chkDisableAU.UseVisualStyleBackColor = true;
