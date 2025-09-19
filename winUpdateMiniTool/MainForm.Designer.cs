@@ -20,13 +20,6 @@ namespace winUpdateMiniTool {
       this.toolTip = new System.Windows.Forms.ToolTip(this.components);
       this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
       this.panelList = new System.Windows.Forms.Panel();
-      this.updateView = new sergiye.Common.ListViewExtended();
-      this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
       this.lblSupport = new System.Windows.Forms.LinkLabel();
       this.chkGrupe = new System.Windows.Forms.CheckBox();
@@ -47,6 +40,7 @@ namespace winUpdateMiniTool {
       this.btnInstalled = new System.Windows.Forms.CheckBox();
       this.btnWinUpd = new System.Windows.Forms.CheckBox();
       this.btnHistory = new System.Windows.Forms.CheckBox();
+      this.logSplitter = new System.Windows.Forms.Splitter();
       this.logBox = new System.Windows.Forms.RichTextBox();
       this.panStatus = new System.Windows.Forms.Panel();
       this.lblStatus = new System.Windows.Forms.Label();
@@ -78,21 +72,30 @@ namespace winUpdateMiniTool {
       this.chkOld = new System.Windows.Forms.CheckBox();
       this.mainMenu = new System.Windows.Forms.MenuStrip();
       this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optimizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+      this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
       this.chkAutoRun = new System.Windows.Forms.ToolStripMenuItem();
       this.chkNoUAC = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-      this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
       this.themeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.siteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.checkForNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.updateView = new sergiye.Common.ListViewExtended();
+      this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.panUpdates = new System.Windows.Forms.Panel();
+      this.selectUIFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.panelList.SuspendLayout();
       this.tableLayoutPanel7.SuspendLayout();
       this.tableLayoutPanel3.SuspendLayout();
@@ -104,6 +107,7 @@ namespace winUpdateMiniTool {
       this.gbxAutoUpdate.SuspendLayout();
       this.gbxOptions.SuspendLayout();
       this.mainMenu.SuspendLayout();
+      this.panUpdates.SuspendLayout();
       this.SuspendLayout();
       // 
       // notifyIcon
@@ -114,10 +118,8 @@ namespace winUpdateMiniTool {
       // 
       // panelList
       // 
-      this.panelList.Controls.Add(this.updateView);
-      this.panelList.Controls.Add(this.tableLayoutPanel7);
-      this.panelList.Controls.Add(this.tableLayoutPanel3);
-      this.panelList.Controls.Add(this.panOperations);
+      this.panelList.Controls.Add(this.panUpdates);
+      this.panelList.Controls.Add(this.logSplitter);
       this.panelList.Controls.Add(this.logBox);
       this.panelList.Controls.Add(this.panStatus);
       this.panelList.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -126,61 +128,6 @@ namespace winUpdateMiniTool {
       this.panelList.Name = "panelList";
       this.panelList.Size = new System.Drawing.Size(717, 419);
       this.panelList.TabIndex = 1;
-      // 
-      // updateView
-      // 
-      this.updateView.CheckBoxes = true;
-      this.updateView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
-      this.updateView.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.updateView.FullRowSelect = true;
-      this.updateView.HideSelection = false;
-      this.updateView.Location = new System.Drawing.Point(0, 51);
-      this.updateView.Name = "updateView";
-      this.updateView.ShowItemToolTips = true;
-      this.updateView.Size = new System.Drawing.Size(717, 228);
-      this.updateView.TabIndex = 2;
-      this.updateView.UseCompatibleStateImageBehavior = false;
-      this.updateView.View = System.Windows.Forms.View.Details;
-      this.updateView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.updateView_ColumnClick);
-      this.updateView.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.UpdateView_ColumnWidthChanged);
-      this.updateView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.updateView_ItemChecked);
-      this.updateView.SelectedIndexChanged += new System.EventHandler(this.updateView_SelectedIndexChanged);
-      this.updateView.SizeChanged += new System.EventHandler(this.updateView_SizeChanged);
-      // 
-      // columnHeader1
-      // 
-      this.columnHeader1.Text = "Title";
-      this.columnHeader1.Width = 250;
-      // 
-      // columnHeader2
-      // 
-      this.columnHeader2.Text = "Category";
-      this.columnHeader2.Width = 100;
-      // 
-      // columnHeader3
-      // 
-      this.columnHeader3.Text = "KB Article";
-      this.columnHeader3.Width = 120;
-      // 
-      // columnHeader4
-      // 
-      this.columnHeader4.Text = "Date";
-      // 
-      // columnHeader5
-      // 
-      this.columnHeader5.Text = "Size";
-      this.columnHeader5.Width = 70;
-      // 
-      // columnHeader6
-      // 
-      this.columnHeader6.Text = "State";
-      this.columnHeader6.Width = 110;
       // 
       // tableLayoutPanel7
       // 
@@ -257,7 +204,7 @@ namespace winUpdateMiniTool {
       this.tableLayoutPanel3.Controls.Add(this.txtFilter, 1, 0);
       this.tableLayoutPanel3.Controls.Add(this.lblSearch, 0, 0);
       this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 279);
+      this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 276);
       this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
       this.tableLayoutPanel3.Name = "tableLayoutPanel3";
       this.tableLayoutPanel3.RowCount = 1;
@@ -433,6 +380,15 @@ namespace winUpdateMiniTool {
       this.btnHistory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       this.btnHistory.CheckedChanged += new System.EventHandler(this.btnHistory_CheckedChanged);
       // 
+      // splitter1
+      // 
+      this.logSplitter.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.logSplitter.Location = new System.Drawing.Point(0, 301);
+      this.logSplitter.Name = "splitter1";
+      this.logSplitter.Size = new System.Drawing.Size(717, 3);
+      this.logSplitter.TabIndex = 9;
+      this.logSplitter.TabStop = false;
+      // 
       // logBox
       // 
       this.logBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -501,9 +457,9 @@ namespace winUpdateMiniTool {
       // 
       this.gbStartup.Controls.Add(this.dlAutoCheck);
       this.gbStartup.Dock = System.Windows.Forms.DockStyle.Top;
-      this.gbStartup.Location = new System.Drawing.Point(0, 366);
+      this.gbStartup.Location = new System.Drawing.Point(0, 349);
       this.gbStartup.Name = "gbStartup";
-      this.gbStartup.Size = new System.Drawing.Size(183, 53);
+      this.gbStartup.Size = new System.Drawing.Size(183, 48);
       this.gbStartup.TabIndex = 8;
       this.gbStartup.TabStop = false;
       this.gbStartup.Text = "Backgroud tasks";
@@ -540,11 +496,11 @@ namespace winUpdateMiniTool {
       this.gbxAutoUpdate.Controls.Add(this.radDownload);
       this.gbxAutoUpdate.Controls.Add(this.radSchedule);
       this.gbxAutoUpdate.Dock = System.Windows.Forms.DockStyle.Top;
-      this.gbxAutoUpdate.Location = new System.Drawing.Point(0, 136);
+      this.gbxAutoUpdate.Location = new System.Drawing.Point(0, 127);
       this.gbxAutoUpdate.Margin = new System.Windows.Forms.Padding(2);
       this.gbxAutoUpdate.Name = "gbxAutoUpdate";
       this.gbxAutoUpdate.Padding = new System.Windows.Forms.Padding(2);
-      this.gbxAutoUpdate.Size = new System.Drawing.Size(183, 230);
+      this.gbxAutoUpdate.Size = new System.Drawing.Size(183, 222);
       this.gbxAutoUpdate.TabIndex = 11;
       this.gbxAutoUpdate.TabStop = false;
       this.gbxAutoUpdate.Text = "Auto Update";
@@ -741,7 +697,7 @@ namespace winUpdateMiniTool {
       this.gbxOptions.Margin = new System.Windows.Forms.Padding(2);
       this.gbxOptions.Name = "gbxOptions";
       this.gbxOptions.Padding = new System.Windows.Forms.Padding(2);
-      this.gbxOptions.Size = new System.Drawing.Size(183, 136);
+      this.gbxOptions.Size = new System.Drawing.Size(183, 127);
       this.gbxOptions.TabIndex = 10;
       this.gbxOptions.TabStop = false;
       this.gbxOptions.Text = "Options";
@@ -842,22 +798,27 @@ namespace winUpdateMiniTool {
       // cleanToolStripMenuItem
       // 
       this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
-      this.cleanToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+      this.cleanToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
       this.cleanToolStripMenuItem.Text = "Clean cache";
       this.cleanToolStripMenuItem.Click += new System.EventHandler(this.menuClean_Click);
       // 
       // optimizeToolStripMenuItem
       // 
       this.optimizeToolStripMenuItem.Name = "optimizeToolStripMenuItem";
-      this.optimizeToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+      this.optimizeToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
       this.optimizeToolStripMenuItem.Text = "Optimize kernel size";
       this.optimizeToolStripMenuItem.Click += new System.EventHandler(this.menuOptimize_Click);
+      // 
+      // toolStripMenuItem3
+      // 
+      this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+      this.toolStripMenuItem3.Size = new System.Drawing.Size(176, 6);
       // 
       // exitToolStripMenuItem
       // 
       this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
       this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-      this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+      this.exitToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
       this.exitToolStripMenuItem.Text = "Exit";
       this.exitToolStripMenuItem.Click += new System.EventHandler(this.menuExit_Click);
       // 
@@ -869,7 +830,8 @@ namespace winUpdateMiniTool {
             this.chkAutoRun,
             this.chkNoUAC,
             this.toolStripMenuItem2,
-            this.themeMenuItem});
+            this.themeMenuItem,
+            this.selectUIFontToolStripMenuItem});
       this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
       this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
       this.optionsToolStripMenuItem.Text = "Options";
@@ -903,11 +865,6 @@ namespace winUpdateMiniTool {
       // 
       this.toolStripMenuItem2.Name = "toolStripMenuItem2";
       this.toolStripMenuItem2.Size = new System.Drawing.Size(219, 6);
-      // 
-      // toolStripMenuItem3
-      // 
-      this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-      this.toolStripMenuItem3.Size = new System.Drawing.Size(219, 6);
       // 
       // themeMenuItem
       // 
@@ -949,6 +906,84 @@ namespace winUpdateMiniTool {
       this.aboutToolStripMenuItem.Text = "About";
       this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
       // 
+      // updateView
+      // 
+      this.updateView.CheckBoxes = true;
+      this.updateView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
+      this.updateView.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.updateView.FullRowSelect = true;
+      this.updateView.GroupHeadingBackColor = System.Drawing.Color.Gray;
+      this.updateView.GroupHeadingFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.updateView.GroupHeadingForeColor = System.Drawing.Color.Black;
+      this.updateView.HideSelection = false;
+      this.updateView.Location = new System.Drawing.Point(0, 51);
+      this.updateView.Name = "updateView";
+      this.updateView.SeparatorColor = System.Drawing.Color.Black;
+      this.updateView.ShowItemToolTips = true;
+      this.updateView.Size = new System.Drawing.Size(717, 250);
+      this.updateView.TabIndex = 2;
+      this.updateView.UseCompatibleStateImageBehavior = false;
+      this.updateView.View = System.Windows.Forms.View.Details;
+      this.updateView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.updateView_ColumnClick);
+      this.updateView.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.UpdateView_ColumnWidthChanged);
+      this.updateView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.updateView_ItemChecked);
+      this.updateView.SelectedIndexChanged += new System.EventHandler(this.updateView_SelectedIndexChanged);
+      this.updateView.SizeChanged += new System.EventHandler(this.updateView_SizeChanged);
+      // 
+      // columnHeader1
+      // 
+      this.columnHeader1.Text = "Title";
+      this.columnHeader1.Width = 250;
+      // 
+      // columnHeader2
+      // 
+      this.columnHeader2.Text = "Category";
+      this.columnHeader2.Width = 100;
+      // 
+      // columnHeader3
+      // 
+      this.columnHeader3.Text = "KB Article";
+      this.columnHeader3.Width = 120;
+      // 
+      // columnHeader4
+      // 
+      this.columnHeader4.Text = "Date";
+      // 
+      // columnHeader5
+      // 
+      this.columnHeader5.Text = "Size";
+      this.columnHeader5.Width = 70;
+      // 
+      // columnHeader6
+      // 
+      this.columnHeader6.Text = "State";
+      this.columnHeader6.Width = 110;
+      // 
+      // panUpdates
+      // 
+      this.panUpdates.Controls.Add(this.tableLayoutPanel3);
+      this.panUpdates.Controls.Add(this.updateView);
+      this.panUpdates.Controls.Add(this.tableLayoutPanel7);
+      this.panUpdates.Controls.Add(this.panOperations);
+      this.panUpdates.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.panUpdates.Location = new System.Drawing.Point(0, 0);
+      this.panUpdates.Name = "panUpdates";
+      this.panUpdates.Size = new System.Drawing.Size(717, 301);
+      this.panUpdates.TabIndex = 10;
+      // 
+      // selectUIFontToolStripMenuItem
+      // 
+      this.selectUIFontToolStripMenuItem.Name = "selectUIFontToolStripMenuItem";
+      this.selectUIFontToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+      this.selectUIFontToolStripMenuItem.Text = "Select UI font";
+      this.selectUIFontToolStripMenuItem.Click += new System.EventHandler(this.selectUIFontToolStripMenuItem_Click);
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -979,6 +1014,7 @@ namespace winUpdateMiniTool {
       this.gbxOptions.PerformLayout();
       this.mainMenu.ResumeLayout(false);
       this.mainMenu.PerformLayout();
+      this.panUpdates.ResumeLayout(false);
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -1061,6 +1097,9 @@ namespace winUpdateMiniTool {
     private ToolStripMenuItem cleanToolStripMenuItem;
     private ToolStripMenuItem optimizeToolStripMenuItem;
     private ToolStripSeparator toolStripMenuItem3;
+    private Splitter logSplitter;
+    private Panel panUpdates;
+    private ToolStripMenuItem selectUIFontToolStripMenuItem;
   }
 }
 

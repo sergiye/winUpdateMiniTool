@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using sergiye.Common;
@@ -44,6 +43,8 @@ public partial class MainForm : Form {
     Icon = Icon.ExtractAssociatedIcon(typeof(MainForm).Assembly.Location);
     notifyIcon.Icon = Icon;
     notifyIcon.Text = Updater.ApplicationTitle;
+
+    TryApplyUIFont();
 
     if (Program.TestArg("-tray")) {
       allowShowDisplay = false;
@@ -1392,5 +1393,34 @@ compact.exe /CompactOS:always";
     if (e.ColumnIndex == 0)
       return;
     updateView_SizeChanged(sender, EventArgs.Empty);
+  }
+
+  private void selectUIFontToolStripMenuItem_Click(object sender, EventArgs e) {
+    using (var fontDialog = new FontDialog()) {
+      fontDialog.ShowColor = false;
+      fontDialog.Font = Font;
+      if (fontDialog.ShowDialog() != DialogResult.OK)
+        return;
+      if (fontDialog.Font == Font)
+        return;
+      Font = fontDialog.Font;
+      SetConfig("UIFont", $"{Font.Name};{Font.Size};{(int)Font.Style}");
+    }
+  }
+
+  private void TryApplyUIFont() {
+    try {
+      var serialized = GetConfig("UIFont", null);
+      if (string.IsNullOrWhiteSpace(serialized))
+        return;
+      string[] parts = serialized.Split(';');
+      string name = parts[0];
+      float size = float.Parse(parts[1], CultureInfo.InvariantCulture);
+      FontStyle style = (FontStyle)int.Parse(parts[2]);
+      Font = new Font(name, size, style);
+    }
+    catch (Exception ex) {
+      AppLog.Line($"Error restoring saved UI font: {ex.Message}");
+    }
   }
 }
