@@ -19,7 +19,7 @@ This tool is inspired by the [Windows Update Mini Tool (WUMT)](https://www.major
 
 ## Preview of the application UI
 
-[<img src="https://github.com/sergiye/winUpdateMiniTool/raw/master/preview.png" alt="Themes" width="300"/>](https://raw.githubusercontent.com/sergiye/winUpdateMiniTool/master/preview.png)
+[<img src="https://github.com/sergiye/winUpdateMiniTool/raw/master/preview.png" alt="preview"/>](https://raw.githubusercontent.com/sergiye/winUpdateMiniTool/master/preview.png)
 
 Now supports `Light`/`Dark` themes with `Auto` switching mode and custom `themes` from external files - You can find examples [here](https://github.com/sergiye/winUpdateMiniTool/tree/master/themes)
 
