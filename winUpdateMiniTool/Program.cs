@@ -21,7 +21,6 @@ internal static class Program {
   private static string appPath;
   public static string WrkPath;
   private static WuAgent agent;
-  public static PipeIpc Ipc;
 
   private static string GetIniPath() {
     return Path.Combine(WrkPath, Path.ChangeExtension(Path.GetFileName(typeof(Program).Assembly.Location), ".ini"));
@@ -64,15 +63,10 @@ internal static class Program {
       Environment.Exit(0);
     }
 
-    Ipc = new PipeIpc("wumt_pipe");
-
-    var client = Ipc.Connect(100);
-    if (client != null) {
-      AppLog.Line("Application is already running.");
-      client.Send("show");
-      var ret = client.Read(1000);
-      if (!ret.Equals("ok", StringComparison.CurrentCultureIgnoreCase))
-        MessageBox.Show("Application is already running.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+    if (WinApiHelper.CheckRunningInstances(true, true)) {
+      // fallback
+      MessageBox.Show($"{Updater.ApplicationName} is already running.", Updater.ApplicationName,
+        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
       return;
     }
 

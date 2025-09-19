@@ -52,7 +52,7 @@ public partial class MainForm : Form {
     }
 
     if (!OperatingSystemHelper.IsRunningAsUwp())
-      Text = $"{Updater.ApplicationTitle} v{Updater.CurrentVersion}";
+      Text = Updater.ApplicationTitle;
 
     btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
     btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
@@ -237,9 +237,6 @@ public partial class MainForm : Form {
     mTimer.Tick += OnTimedEvent;
     mTimer.Enabled = true;
 
-    Program.Ipc.PipeMessage += PipesMessageHandler;
-    Program.Ipc.Listen();
-    
     Updater.Subscribe(
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
       (message) => { return MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK; },
@@ -291,6 +288,20 @@ public partial class MainForm : Form {
 
   #endregion
 
+  protected override void WndProc(ref Message m) {
+    if (m.Msg == WinApiHelper.WM_SHOWME) {
+      notifyIcon_BalloonTipClicked(null, null);
+      Visible = true;
+      WindowState = FormWindowState.Normal;
+      Activate();
+      BringToFront();
+      WinApiHelper.SetForegroundWindow(this.Handle);
+    }
+    else {
+      base.WndProc(ref m);
+    }
+  }
+  
   private void siteToolStripMenuItem_Click(object sender, EventArgs e) {
     Updater.VisitAppSite();
   }
@@ -316,16 +327,6 @@ public partial class MainForm : Form {
 
   protected override void SetVisibleCore(bool value) {
     base.SetVisibleCore(allowShowDisplay ? value : allowShowDisplay);
-  }
-
-  private void PipesMessageHandler(PipeIpc.PipeServer pipe, string data) {
-    if (data.Equals("show", StringComparison.CurrentCultureIgnoreCase)) {
-      notifyIcon_BalloonTipClicked(null, null);
-      pipe.Send("ok");
-    }
-    else {
-      pipe.Send("unknown");
-    }
   }
 
   private void OnTimedEvent(object source, EventArgs e) {
