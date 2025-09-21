@@ -74,6 +74,8 @@ namespace winUpdateMiniTool {
       this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optimizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.restoreDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
       this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
       this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -791,6 +793,8 @@ namespace winUpdateMiniTool {
             this.cleanToolStripMenuItem,
             this.optimizeToolStripMenuItem,
             this.toolStripMenuItem3,
+            this.restoreDefaultsToolStripMenuItem,
+            this.toolStripMenuItem4,
             this.exitToolStripMenuItem});
       this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
       this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -814,6 +818,18 @@ namespace winUpdateMiniTool {
       // 
       this.toolStripMenuItem3.Name = "toolStripMenuItem3";
       this.toolStripMenuItem3.Size = new System.Drawing.Size(176, 6);
+      // 
+      // restoreDefaultsToolStripMenuItem
+      // 
+      this.restoreDefaultsToolStripMenuItem.Name = "restoreDefaultsToolStripMenuItem";
+      this.restoreDefaultsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+      this.restoreDefaultsToolStripMenuItem.Text = "Restore default settings";
+      this.restoreDefaultsToolStripMenuItem.Click += new System.EventHandler(this.restoreDefaults_Click);
+      // 
+      // toolStripMenuItem4
+      // 
+      this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+      this.toolStripMenuItem4.Size = new System.Drawing.Size(176, 6);
       // 
       // exitToolStripMenuItem
       // 
@@ -1107,6 +1123,8 @@ namespace winUpdateMiniTool {
     private ToolStripMenuItem cleanToolStripMenuItem;
     private ToolStripMenuItem optimizeToolStripMenuItem;
     private ToolStripSeparator toolStripMenuItem3;
+    private ToolStripMenuItem restoreDefaultsToolStripMenuItem;
+    private ToolStripSeparator toolStripMenuItem4;
     private Splitter logSplitter;
     private Panel panUpdates;
     private ToolStripMenuItem selectUIFontToolStripMenuItem;

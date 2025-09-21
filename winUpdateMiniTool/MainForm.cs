@@ -761,6 +761,27 @@ compact.exe /CompactOS:always";
     SetControlsState(true);
   }
 
+  private void restoreDefaults_Click(object sender, EventArgs e) {
+
+    chkOffline.Checked = false;
+    chkDownload.Checked = true;
+    chkManual.Checked = false;
+    chkOld.Checked = false;
+    chkMsUpd.Checked = false;
+    chkBlockMS.Checked = false;
+    
+    chkDisableAU.Checked = false;
+    radDefault.Checked = true;
+    
+    chkHideWU.Checked = false;
+    chkStore.Checked = false;
+    chkDrivers.Checked = true;
+    
+    dlAutoCheck.SelectedIndex = 0;
+
+    MessageBox.Show("Default settings restored.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+  }
+
   private void SetControlsState(bool enabled, string status = null) {
     if (InvokeRequired) {
       BeginInvoke(new Action(() => { SetControlsState(enabled, status); }));
@@ -778,6 +799,7 @@ compact.exe /CompactOS:always";
     panOperations.Enabled = enabled;
     cleanToolStripMenuItem.Enabled = enabled;
     optimizeToolStripMenuItem.Enabled = enabled;
+    restoreDefaultsToolStripMenuItem.Enabled = enabled;
   }
 
   private void menuWuAu_Click(object sender, EventArgs e) {
