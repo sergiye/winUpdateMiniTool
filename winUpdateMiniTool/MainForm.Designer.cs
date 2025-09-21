@@ -80,6 +80,7 @@ namespace winUpdateMiniTool {
       this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
       this.chkAutoRun = new System.Windows.Forms.ToolStripMenuItem();
+      this.chkAutoUpdateApp = new System.Windows.Forms.ToolStripMenuItem();
       this.chkNoUAC = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
       this.themeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -828,6 +829,7 @@ namespace winUpdateMiniTool {
             this.toolsToolStripMenuItem,
             this.toolStripMenuItem1,
             this.chkAutoRun,
+            this.chkAutoUpdateApp,
             this.chkNoUAC,
             this.toolStripMenuItem2,
             this.themeMenuItem,
@@ -853,6 +855,13 @@ namespace winUpdateMiniTool {
       this.chkAutoRun.Size = new System.Drawing.Size(222, 22);
       this.chkAutoRun.Text = "Run in background";
       this.chkAutoRun.Click += new System.EventHandler(this.chkAutoRun_CheckedChanged);
+      // 
+      // chkAutoUpdateApp
+      // 
+      this.chkAutoUpdateApp.Name = "chkAutoUpdateApp";
+      this.chkAutoUpdateApp.Size = new System.Drawing.Size(222, 22);
+      this.chkAutoUpdateApp.Text = "Auto-update application";
+      this.chkAutoUpdateApp.Click += new System.EventHandler(this.chkAutoUpdateApp_Click);
       // 
       // chkNoUAC
       // 
@@ -1092,6 +1101,7 @@ namespace winUpdateMiniTool {
     private ToolStripMenuItem aboutToolStripMenuItem;
     private ToolStripMenuItem themeMenuItem;
     private ToolStripMenuItem chkAutoRun;
+    private ToolStripMenuItem chkAutoUpdateApp;
     private ToolStripMenuItem chkNoUAC;
     private ToolStripSeparator toolStripMenuItem2;
     private ToolStripMenuItem cleanToolStripMenuItem;

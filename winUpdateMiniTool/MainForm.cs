@@ -240,13 +240,10 @@ public partial class MainForm : Form {
     Updater.Subscribe(
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
       (message) => { return MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK; },
-      () => { menuExit_Click(null, EventArgs.Empty); }
+      () => { menuExit_Click(null, EventArgs.Empty); },
+      MiscFunc.ParseInt(GetConfig("AutoUpdate", "0")) != 0
     );
-
-    var timer = new System.Threading.Timer((_) => {
-      Updater.CheckForUpdates(Updater.CheckUpdatesMode.AutoUpdate);
-    }, null, 10 * 1000, 1000 * 60 * 60 * 24);
-
+    chkAutoUpdateApp.Checked = Updater.AutoUpdate;
     InitializeTheme();
   }
 
@@ -1190,6 +1187,12 @@ compact.exe /CompactOS:always";
     }
 
     Program.AutoStart(chkAutoRun.Checked);
+  }
+
+  private void chkAutoUpdateApp_Click(object sender, EventArgs e) {
+    Updater.AutoUpdate = !Updater.AutoUpdate;
+    chkAutoUpdateApp.Checked = Updater.AutoUpdate;
+    SetConfig("AutoUpdate", Updater.AutoUpdate ? "1" : "0");
   }
 
   private void dlAutoCheck_SelectedIndexChanged(object sender, EventArgs e) {
