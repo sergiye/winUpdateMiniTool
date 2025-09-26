@@ -33,7 +33,7 @@ You can check if it works properly on your PC. If you notice any inaccuracies, p
 
 Also, don't forget to ★ star ★ the repository to help other people find it.
 
-<!-- [![Star History Chart](https://api.star-history.com/svg?repos=sergiye/winUpdateMiniTool&type=Date)](https://star-history.com/#sergiye/winUpdateMiniTool&Date) -->
+[![Star History Chart](https://api.star-history.com/svg?repos=sergiye/winUpdateMiniTool&type=Date)](https://star-history.com/#sergiye/winUpdateMiniTool&Date)
 
 [![Stargazers](https://reporoster.com/stars/sergiye/winUpdateMiniTool)](https://star-history.com/#sergiye/winUpdateMiniTool&Date)
 
