@@ -418,7 +418,6 @@ namespace winUpdateMiniTool {
       // lblStatus
       // 
       this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.lblStatus.Location = new System.Drawing.Point(0, 0);
       this.lblStatus.Name = "lblStatus";
       this.lblStatus.Size = new System.Drawing.Size(537, 23);
@@ -944,7 +943,6 @@ namespace winUpdateMiniTool {
       this.updateView.Dock = System.Windows.Forms.DockStyle.Fill;
       this.updateView.FullRowSelect = true;
       this.updateView.GroupHeadingBackColor = System.Drawing.Color.Gray;
-      this.updateView.GroupHeadingFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.updateView.GroupHeadingForeColor = System.Drawing.Color.Black;
       this.updateView.HideSelection = false;
       this.updateView.Location = new System.Drawing.Point(0, 51);
