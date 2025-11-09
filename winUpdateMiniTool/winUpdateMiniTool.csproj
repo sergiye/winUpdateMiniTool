@@ -30,7 +30,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\themes\*.json" Link="themes\%(Filename)%(Extension)" />
     <Compile Update="Common\ListViewExtended.cs" SubType="Component" />
     <Compile Update="*Form.cs" SubType="Form" />
     <Compile Update="MainForm.Designer.cs" DependentUpon="MainForm.cs" />
