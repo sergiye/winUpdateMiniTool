@@ -1,11 +1,11 @@
 {
-  "DisplayName": "Kelly Green",
+  "DisplayName": "Jazzberry Jam",
   "DarkMode": true,
   "BackgroundColor": "#1E1E1E",
   "ForegroundColor": "#E9E9E9",
-  "HyperlinkColor": "#00D980",
-  "SelectedBackgroundColor": "#4CBB17",
-  "SelectedForegroundColor": "#000000",
+  "HyperlinkColor": "#A05D80",
+  "SelectedBackgroundColor": "#A50B5E",
+  "SelectedForegroundColor": "#E9E9E9",
   "LineColor": "#262626",
   "StrongLineColor": "#454545",
   "WarnColor": "#FF4500"

@@ -1,11 +1,11 @@
 {
-  "DisplayName": "Rich Carmine",
+  "DisplayName": "Persian Green",
   "DarkMode": true,
   "BackgroundColor": "#000000",
   "ForegroundColor": "#E9E9E9",
-  "HyperlinkColor": "#F36271",
-  "SelectedBackgroundColor": "#D70040",
-  "SelectedForegroundColor": "#E9E9E9",
+  "HyperlinkColor": "#90DCE8",
+  "SelectedBackgroundColor": "#009687",
+  "SelectedForegroundColor": "#FFFFFF",
   "LineColor": "#101010",
   "StrongLineColor": "#454545",
   "WarnColor": "#FF4500"
