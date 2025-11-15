@@ -264,6 +264,7 @@ public partial class MainForm : Form {
 
   private void InitializeTheme() {
 
+    ToolStripRadioButtonMenuItem.DisplayAsCheckboxes = true;
     mainMenu.Renderer = new ThemedToolStripRenderer();
     notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
 
