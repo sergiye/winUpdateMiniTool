@@ -464,7 +464,7 @@ namespace winUpdateMiniTool {
       this.gbStartup.Size = new System.Drawing.Size(183, 48);
       this.gbStartup.TabIndex = 8;
       this.gbStartup.TabStop = false;
-      this.gbStartup.Text = "Backgroud tasks";
+      this.gbStartup.Text = "Background tasks";
       // 
       // dlAutoCheck
       // 
