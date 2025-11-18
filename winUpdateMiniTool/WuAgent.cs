@@ -814,7 +814,7 @@ internal class WuAgent {
     }
 
     if (installationResults!.ResultCode == OperationResultCode.orcSucceeded) {
-      AppLog.Line("Updates (Un)Installed succesfully");
+      AppLog.Line("Updates (Un)Installed successfully");
 
       foreach (var update in updates)
         if (mCurOperation == AgentOperation.InstallingUpdates) {

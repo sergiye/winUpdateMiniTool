@@ -912,7 +912,7 @@ compact.exe /CompactOS:always";
 
     if (links.Length != 0) {
       Clipboard.SetText(links);
-      AppLog.Line("Update Download Links copyed to clipboard");
+      AppLog.Line("Update Download Links copied to clipboard");
     }
     else {
       AppLog.Line("No updates selected");
