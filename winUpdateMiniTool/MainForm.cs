@@ -68,6 +68,11 @@ public partial class MainForm : Form {
     toolTip.SetToolTip(btnCancel, "Cancel");
 
     AppLog.Logger += LineLogger;
+    var cm = new ContextMenuStrip();
+    cm.Items.Add(new ToolStripMenuItem("Copy", null, (s, ev) => {
+      logBox.Copy();
+    }));
+    logBox.ContextMenuStrip = cm;
 
     foreach (var line in AppLog.GetLog())
       logBox.AppendText(line + Environment.NewLine);
