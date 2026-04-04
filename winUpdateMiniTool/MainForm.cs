@@ -45,6 +45,7 @@ public partial class MainForm : Form {
     notifyIcon.Text = Updater.ApplicationTitle;
 
     TryApplyUIFont();
+    RestorePosition();
 
     if (Program.TestArg("-tray")) {
       allowShowDisplay = false;
@@ -418,6 +419,8 @@ public partial class MainForm : Form {
       Hide();
       return;
     }
+
+    SavePosition();
 
     agent.Progress -= OnProgress;
     agent.UpdatesChanged -= OnUpdates;
@@ -1453,6 +1456,46 @@ compact.exe /CompactOS:always";
     }
     catch (Exception ex) {
       AppLog.Line($"Error restoring saved UI font: {ex.Message}");
+    }
+  }
+
+  private void SavePosition() {
+    var bounds = WindowState == FormWindowState.Normal
+        ? Bounds
+        : RestoreBounds;
+    SetConfig("Window_X", bounds.X.ToString());
+    SetConfig("Window_Y", bounds.Y.ToString());
+    SetConfig("Window_Width", bounds.Width.ToString());
+    SetConfig("Window_Height", bounds.Height.ToString());
+
+    var state = WindowState == FormWindowState.Minimized
+        ? FormWindowState.Normal
+        : WindowState;
+    SetConfig("Window_State", ((int)state).ToString());
+  }
+
+  private void RestorePosition() {
+    bool hasX = int.TryParse(GetConfig("Window_X"), out var x);
+    bool hasY = int.TryParse(GetConfig("Window_Y"), out var y);
+    bool hasW = int.TryParse(GetConfig("Window_Width"), out var w);
+    bool hasH = int.TryParse(GetConfig("Window_Height"), out var h);
+    bool hasAll = hasX && hasY && hasW && hasH;
+    
+    Rectangle bounds = new(x, y, w, h);
+    bool isVisible = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(bounds));
+    
+    if (hasAll && isVisible) {
+      StartPosition = FormStartPosition.Manual;
+      Bounds = bounds;
+      if (int.TryParse(GetConfig("Window_State"), out var stateValue)) {
+        var state = (FormWindowState)stateValue;
+        if (state != FormWindowState.Minimized) {
+          WindowState = state;
+        }
+      }
+    }
+    else {
+      StartPosition = FormStartPosition.CenterScreen;
     }
   }
 }
