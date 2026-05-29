@@ -10,7 +10,7 @@ using winUpdateMiniTool.Common;
 using WUApiLib;
 using StringCollection = System.Collections.Specialized.StringCollection;
 
-//this is required to use the Interfaces given by microsoft. 
+//this is required to use the Interfaces given by microsoft.
 namespace winUpdateMiniTool;
 
 internal class WuAgent {
@@ -329,12 +329,12 @@ internal class WuAgent {
     mCallback = new UpdateCallback(this);
 
     AppLog.Line("Searching for updates");
-    //for the above search criteria refer to 
+    //for the above search criteria refer to
     // http://msdn.microsoft.com/en-us/library/windows/desktop/aa386526(v=VS.85).aspx
     try {
       //string query = "(IsInstalled = 0 and IsHidden = 0) or (IsInstalled = 1 and IsHidden = 0) or (IsHidden = 1)";
       //string query = "(IsInstalled = 0 and IsHidden = 0) or (IsInstalled = 1 and IsHidden = 0) or (IsHidden = 1) or (IsInstalled = 0 and IsHidden = 0 and DeploymentAction='OptionalInstallation') or (IsInstalled = 1 and IsHidden = 0 and DeploymentAction='OptionalInstallation') or (IsHidden = 1 and DeploymentAction='OptionalInstallation')";
-      var query = OperatingSystemHelper.IsWindows7OrLower
+      var query = OSHelper.IsWindows7OrLower
           ? "(IsInstalled = 0 and IsHidden = 0) or (IsInstalled = 1 and IsHidden = 0) or (IsHidden = 1)"
           : "(IsInstalled = 0 and IsHidden = 0 and DeploymentAction=*) or (IsInstalled = 1 and IsHidden = 0 and DeploymentAction=*) or (IsHidden = 1 and DeploymentAction=*)";
       mSearchJob = mUpdateSearcher.BeginSearch(query, mCallback, null);
@@ -1008,13 +1008,13 @@ internal class WuAgent {
       IDownloadCompletedCallback, IInstallationProgressChangedCallback, IInstallationCompletedCallback {
     // Implementation of IDownloadCompletedCallback interface...
     public void Invoke(IDownloadJob downloadJob, IDownloadCompletedCallbackArgs callbackArgs) {
-      // !!! warning this function is invoked from a different thread !!!            
+      // !!! warning this function is invoked from a different thread !!!
       agent.mDispatcher.Invoke(() => { agent.OnUpdatesDownloaded(downloadJob, downloadJob.AsyncState); });
     }
 
     // Implementation of IDownloadProgressChangedCallback interface...
     public void Invoke(IDownloadJob downloadJob, IDownloadProgressChangedCallbackArgs callbackArgs) {
-      // !!! warning this function is invoced from a different thread !!!            
+      // !!! warning this function is invoced from a different thread !!!
       agent.mDispatcher.Invoke(() => {
         agent.OnProgress(downloadJob.Updates.Count, callbackArgs.Progress.PercentComplete,
             callbackArgs.Progress.CurrentUpdateIndex + 1,
@@ -1025,7 +1025,7 @@ internal class WuAgent {
 
     // Implementation of IInstallationCompletedCallback interface...
     public void Invoke(IInstallationJob installationJob, IInstallationCompletedCallbackArgs callbackArgs) {
-      // !!! warning this function is invoced from a different thread !!!            
+      // !!! warning this function is invoced from a different thread !!!
       agent.mDispatcher.Invoke(() => {
         agent.OnInstalationCompleted(installationJob, installationJob.AsyncState);
       });
@@ -1033,7 +1033,7 @@ internal class WuAgent {
 
     // Implementation of IInstallationProgressChangedCallback interface...
     public void Invoke(IInstallationJob installationJob, IInstallationProgressChangedCallbackArgs callbackArgs) {
-      // !!! warning this function is invoced from a different thread !!!            
+      // !!! warning this function is invoced from a different thread !!!
       agent.mDispatcher.Invoke(() => {
         agent.OnProgress(installationJob.Updates.Count, callbackArgs.Progress.PercentComplete,
             callbackArgs.Progress.CurrentUpdateIndex + 1,
@@ -1044,7 +1044,7 @@ internal class WuAgent {
 
     // Implementation of ISearchCompletedCallback interface...
     public void Invoke(ISearchJob searchJob, ISearchCompletedCallbackArgs e) {
-      // !!! warning this function is invoced from a different thread !!!            
+      // !!! warning this function is invoced from a different thread !!!
       agent.mDispatcher.Invoke(() => { agent.OnUpdatesFound(searchJob); });
     }
   }

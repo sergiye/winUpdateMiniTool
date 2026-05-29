@@ -27,9 +27,9 @@ jobs:
       - name: Build
         run: msbuild winUpdateMiniTool.sln -p:Configuration=Release -m
 
-      - name: Publish build
-        uses: actions/upload-artifact@v4
-        with:
-          name: winUpdateMiniTool
-          path: |
-            winUpdateMiniTool/bin
+      # - name: Publish build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: winUpdateMiniTool
+      #     path: |
+      #       winUpdateMiniTool/bin

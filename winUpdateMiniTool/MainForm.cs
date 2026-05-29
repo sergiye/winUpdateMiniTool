@@ -15,12 +15,12 @@ using WUApiLib;
 
 namespace winUpdateMiniTool;
 
-public partial class MainForm : Form {
-  
+internal partial class MainForm : Form {
+
   private static Timer mTimer;
   private readonly WuAgent agent;
   private readonly int idleDelay;
-  private readonly Gpo.Respect mGpoRespect = Gpo.Respect.Unknown;
+  private readonly Gpo.Respect mGpoRespect;
   private readonly float mWinVersion;
   private bool allowShowDisplay = true;
   private AutoUpdateOptions autoUpdate = AutoUpdateOptions.No;
@@ -52,7 +52,7 @@ public partial class MainForm : Form {
       notifyIcon.Visible = true;
     }
 
-    if (!OperatingSystemHelper.IsRunningAsUwp())
+    if (!OSHelper.IsRunningAsUwp())
       Text = Updater.ApplicationTitle;
 
     btnWinUpd.Text = string.Format("Windows Update ({0})", 0);
@@ -151,19 +151,19 @@ public partial class MainForm : Form {
 
     if (Program.IsAutoStart())
       chkAutoRun_CheckedChanged(null, EventArgs.Empty);
-    if (OperatingSystemHelper.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
+    if (OSHelper.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
       chkAutoRun.Enabled = false;
     idleDelay = MiscFunc.ParseInt(GetConfig("IdleDelay", "20"));
     if (Program.IsSkipUacRun())
       chkNoUAC_CheckedChanged(null, EventArgs.Empty);
-    chkNoUAC.Enabled = OperatingSystemHelper.IsAdministrator();
-    chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !OperatingSystemHelper.IsRunningAsUwp();
+    chkNoUAC.Enabled = OSHelper.IsAdministrator();
+    chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !OSHelper.IsRunningAsUwp();
 
     chkOffline.Checked = MiscFunc.ParseInt(GetConfig("Offline", "0")) != 0;
     chkDownload.Checked = MiscFunc.ParseInt(GetConfig("Download", "1")) != 0;
     chkManual.Checked = MiscFunc.ParseInt(GetConfig("Manual", "0")) != 0;
-    if (!OperatingSystemHelper.IsAdministrator()) {
-      if (OperatingSystemHelper.IsRunningAsUwp()) {
+    if (!OSHelper.IsAdministrator()) {
+      if (OSHelper.IsRunningAsUwp()) {
         chkOffline.Enabled = false;
         chkOffline.Checked = false;
 
@@ -177,7 +177,7 @@ public partial class MainForm : Form {
     chkMsUpd.Checked = agent.IsActive() && agent.TestService(WuAgent.MsUpdGuid);
 
     // Note: when running in the UWP sandbox we cant write the real registry even as admins
-    if (!OperatingSystemHelper.IsAdministrator() || OperatingSystemHelper.IsRunningAsUwp())
+    if (!OSHelper.IsAdministrator() || OSHelper.IsRunningAsUwp())
       foreach (Control ctl in gbxAutoUpdate.Controls)
         ctl.Enabled = false;
 
@@ -283,9 +283,9 @@ public partial class MainForm : Form {
       var item = new ToolStripRadioButtonMenuItem(title, null, onClick);
       themeMenuItem.DropDownItems.Add(item);
       return item;
-    }, 
-    OnThemeCurrentChanged, 
-    Program.IniReadValue("Root", "Theme", ""), "winUpdateMiniTool.themes");
+    },
+    OnThemeCurrentChanged,
+    Program.IniReadValue("Root", "Theme"), "winUpdateMiniTool.themes");
     currentItem?.PerformClick();
     Theme.Current.Apply(this);
   }
@@ -299,13 +299,13 @@ public partial class MainForm : Form {
       WindowState = FormWindowState.Normal;
       Activate();
       BringToFront();
-      WinApiHelper.SetForegroundWindow(this.Handle);
+      WinApiHelper.SetForegroundWindow(Handle);
     }
     else {
       base.WndProc(ref m);
     }
   }
-  
+
   private void siteToolStripMenuItem_Click(object sender, EventArgs e) {
     Updater.VisitAppSite();
   }
@@ -339,7 +339,7 @@ public partial class MainForm : Form {
       var daysDue = GetAutoUpdateDue();
       if (daysDue != 0 && !agent.IsBusy()) {
         // ensure we only start a check when user is not doing anything
-        var idleTime = OperatingSystemHelper.GetIdleTime();
+        var idleTime = OSHelper.GetIdleTime();
         if (idleDelay * 60 < idleTime) {
           AppLog.Line("Starting automatic search for updates.");
           updateNow = true;
@@ -636,7 +636,7 @@ public partial class MainForm : Form {
     var isValid = agent.IsValid();
     var isValid2 = isValid || chkManual.Checked;
 
-    var admin = OperatingSystemHelper.IsAdministrator() || !OperatingSystemHelper.IsRunningAsUwp();
+    var admin = OSHelper.IsAdministrator() || !OSHelper.IsRunningAsUwp();
 
     var enable = agent.IsActive() && !busy;
     btnSearch.Enabled = enable;
@@ -778,14 +778,14 @@ compact.exe /CompactOS:always";
     chkOld.Checked = false;
     chkMsUpd.Checked = false;
     chkBlockMS.Checked = false;
-    
+
     chkDisableAU.Checked = false;
     radDefault.Checked = true;
-    
+
     chkHideWU.Checked = false;
     chkStore.Checked = false;
     chkDrivers.Checked = true;
-    
+
     dlAutoCheck.SelectedIndex = 0;
 
     MessageBox.Show("Default settings restored.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -850,42 +850,42 @@ compact.exe /CompactOS:always";
   private void btnSearch_Click(object sender, EventArgs e) {
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = chkOffline.Checked 
-      ? agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked) 
+    var ret = chkOffline.Checked
+      ? agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked)
       : agent.SearchForUpdates(dlSource.Text, chkOld.Checked);
     ShowResult(WuAgent.AgentOperation.CheckingUpdates, ret);
   }
 
   private void btnDownload_Click(object sender, EventArgs e) {
-    if (!chkManual.Checked && !OperatingSystemHelper.IsAdministrator()) {
+    if (!chkManual.Checked && !OSHelper.IsAdministrator()) {
       MessageBox.Show("Administrator privileges are required in order to download updates using windows update services. Use 'Manual' download instead.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = chkManual.Checked 
-      ? agent.DownloadUpdatesManually(GetUpdates()) 
+    var ret = chkManual.Checked
+      ? agent.DownloadUpdatesManually(GetUpdates())
       : agent.DownloadUpdates(GetUpdates());
     ShowResult(WuAgent.AgentOperation.DownloadingUpdates, ret);
   }
 
   private void btnInstall_Click(object sender, EventArgs e) {
-    if (!OperatingSystemHelper.IsAdministrator()) {
+    if (!OSHelper.IsAdministrator()) {
       MessageBox.Show("Administrator privileges are required in order to install updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
     if (!agent.IsActive() || agent.IsBusy())
       return;
-    var ret = chkManual.Checked 
-      ? agent.DownloadUpdatesManually(GetUpdates(), true) 
+    var ret = chkManual.Checked
+      ? agent.DownloadUpdatesManually(GetUpdates(), true)
       : agent.DownloadUpdates(GetUpdates(), true);
     ShowResult(WuAgent.AgentOperation.InstallingUpdates, ret);
   }
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
-    if (!OperatingSystemHelper.IsAdministrator()) {
+    if (!OSHelper.IsAdministrator()) {
       MessageBox.Show("Administrator privileges are required in order to remove updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
@@ -978,7 +978,7 @@ compact.exe /CompactOS:always";
     if (args.Found) // if (agent.CurOperation() == WuAgent.AgentOperation.CheckingUpdates)
     {
       lastCheck = DateTime.Now;
-      SetConfig("LastCheck", lastCheck.ToString());
+      SetConfig("LastCheck", lastCheck.ToString(CultureInfo.InvariantCulture));
       SwitchList(UpdateLists.PendingUpdates);
     }
     else {
@@ -1207,7 +1207,7 @@ compact.exe /CompactOS:always";
       return;
     if (chkAutoRun.CheckState == CheckState.Indeterminate)
       return;
-    if (OperatingSystemHelper.IsRunningAsUwp()) {
+    if (OSHelper.IsRunningAsUwp()) {
       if (chkAutoRun.CheckState == CheckState.Checked) {
         mSuspendUpdate = true;
         chkAutoRun.CheckState = CheckState.Indeterminate;
@@ -1398,7 +1398,7 @@ compact.exe /CompactOS:always";
 
   // Implements the manual sorting of items by columns.
   private class ListViewItemComparer : IComparer {
-    private int col = 0;
+    private int col;
     private int inv = 1;
 
     public int Compare(object x, object y) {
@@ -1436,7 +1436,7 @@ compact.exe /CompactOS:always";
       fontDialog.Font = Font;
       if (fontDialog.ShowDialog() != DialogResult.OK)
         return;
-      if (fontDialog.Font == Font)
+      if (Equals(fontDialog.Font, Font))
         return;
       Font = fontDialog.Font;
       SetConfig("UIFont", $"{Font.Name};{Font.Size};{(int)Font.Style}");
@@ -1480,10 +1480,10 @@ compact.exe /CompactOS:always";
     bool hasW = int.TryParse(GetConfig("Window_Width"), out var w);
     bool hasH = int.TryParse(GetConfig("Window_Height"), out var h);
     bool hasAll = hasX && hasY && hasW && hasH;
-    
+
     Rectangle bounds = new(x, y, w, h);
     bool isVisible = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(bounds));
-    
+
     if (hasAll && isVisible) {
       StartPosition = FormStartPosition.Manual;
       Bounds = bounds;

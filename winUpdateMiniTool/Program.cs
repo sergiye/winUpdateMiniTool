@@ -51,7 +51,7 @@ internal static class Program {
     AppLog.Line("{0}, Version v{1}", Updater.ApplicationTitle, Updater.CurrentVersion);
     AppLog.Line("This Tool is Open Source under the GNU General Public License, Version 3\r\n");
 
-    if (!OperatingSystemHelper.IsCompatible(false, out var errorMessage, out var fixAction)) {
+    if (!OSHelper.IsCompatible(false, out var errorMessage, out var fixAction)) {
       if (fixAction != null) {
         if (MessageBox.Show(errorMessage, Updater.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
           fixAction?.Invoke();
@@ -70,7 +70,7 @@ internal static class Program {
       return;
     }
 
-    if (!OperatingSystemHelper.IsAdministrator() && !OperatingSystemHelper.IsDebugging()) {
+    if (!OSHelper.IsAdministrator() && !OSHelper.IsDebugging()) {
       Console.WriteLine(@"Trying to get admin privileges...");
 
       if (SkipUacRun()) {
@@ -78,7 +78,7 @@ internal static class Program {
         return;
       }
 
-      if (!OperatingSystemHelper.IsRunningAsUwp()) {
+      if (!OSHelper.IsRunningAsUwp()) {
         Console.WriteLine(@"Trying to start with 'runas'...");
         // Restart program and run as admin
         var exeName = Process.GetCurrentProcess().MainModule?.FileName;
@@ -371,7 +371,7 @@ internal static class Program {
           return false;
 
         // Note: if we run as UWP we need to adjust the file permissions for this workaround to work
-        if (OperatingSystemHelper.IsRunningAsUwp()) {
+        if (OSHelper.IsRunningAsUwp()) {
           if (!FileOps.TakeOwn(exePath))
             return false;
 

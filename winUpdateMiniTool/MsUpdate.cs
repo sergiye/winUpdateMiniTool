@@ -7,7 +7,7 @@ namespace winUpdateMiniTool;
 /// <summary>
 ///     Represents a Microsoft Update with various attributes and states.
 /// </summary>
-public class MsUpdate {
+internal class MsUpdate {
   /// <summary>
   ///     Enumeration for update attributes.
   /// </summary>
