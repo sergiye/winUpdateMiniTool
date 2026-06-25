@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using winUpdateMiniTool.Common;
 
 namespace winUpdateMiniTool;
 

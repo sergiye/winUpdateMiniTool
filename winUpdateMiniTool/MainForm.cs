@@ -109,7 +109,7 @@ internal partial class MainForm : Form {
       chkBlockMS.Enabled = false;
     chkBlockMS.CheckState = (CheckState)Gpo.GetBlockMs();
 
-    switch (Gpo.GetAu(out int day, out int time)) {
+    switch (Gpo.GetAu(out var day, out var time)) {
       case Gpo.AuOptions.Default:
         radDefault.Checked = true;
         break;
@@ -245,7 +245,7 @@ internal partial class MainForm : Form {
 
     Updater.Subscribe(
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
-      (message) => { return MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK; },
+      (message) => MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK,
       () => { menuExit_Click(null, EventArgs.Empty); },
       MiscFunc.ParseInt(GetConfig("AutoUpdate", "0")) != 0
     );
@@ -382,18 +382,12 @@ internal partial class MainForm : Form {
 
   private int GetAutoUpdateDue() {
     try {
-      var nextUpdate = DateTime.MaxValue;
-      switch (autoUpdate) {
-        case AutoUpdateOptions.EveryDay:
-          nextUpdate = lastCheck.AddDays(1);
-          break;
-        case AutoUpdateOptions.EveryWeek:
-          nextUpdate = lastCheck.AddDays(7);
-          break;
-        case AutoUpdateOptions.EveryMonth:
-          nextUpdate = lastCheck.AddMonths(1);
-          break;
-      }
+      var nextUpdate = autoUpdate switch {
+        AutoUpdateOptions.EveryDay => lastCheck.AddDays(1),
+        AutoUpdateOptions.EveryWeek => lastCheck.AddDays(7),
+        AutoUpdateOptions.EveryMonth => lastCheck.AddMonths(1),
+        _ => DateTime.MaxValue
+      };
 
       if (nextUpdate >= DateTime.Now)
         return 0;
@@ -544,13 +538,7 @@ internal partial class MainForm : Form {
       ];
 
       if (mSearchFilter != null) {
-        var match = false;
-        foreach (var str in strings)
-          if (str.IndexOf(mSearchFilter, StringComparison.CurrentCultureIgnoreCase) != -1) {
-            match = true;
-            break;
-          }
-
+        var match = strings.Any(str => str.IndexOf(mSearchFilter, StringComparison.CurrentCultureIgnoreCase) != -1);
         if (!match)
           continue;
       }
@@ -729,12 +717,12 @@ internal partial class MainForm : Form {
     long freedBytes = 0;
     if (Directory.Exists(CachePath)) {
       try {
-        foreach (string file in Directory.GetFiles(CachePath, "*", SearchOption.AllDirectories)) {
-          long fileSize = new FileInfo(file).Length;
+        foreach (var file in Directory.GetFiles(CachePath, "*", SearchOption.AllDirectories)) {
+          var fileSize = new FileInfo(file).Length;
           if (FileOps.DeleteFile(file))
             freedBytes += fileSize;
         }
-        foreach (string dir in Directory.GetDirectories(CachePath, "*", SearchOption.TopDirectoryOnly)) {
+        foreach (var dir in Directory.GetDirectories(CachePath, "*", SearchOption.TopDirectoryOnly)) {
           FileOps.SafeDeleteFolder(dir);
         }
         FileOps.SafeDeleteFolder(CachePath);
@@ -931,18 +919,16 @@ compact.exe /CompactOS:always";
     agent.CancelOperations();
   }
 
-  private string GetOpStr(WuAgent.AgentOperation op) {
-    switch (op) {
-      case WuAgent.AgentOperation.CheckingUpdates: return "Checking for Updates";
-      case WuAgent.AgentOperation.PreparingCheck: return "Preparing Check";
-      case WuAgent.AgentOperation.PreparingUpdates:
-      case WuAgent.AgentOperation.DownloadingUpdates: return "Downloading Updates";
-      case WuAgent.AgentOperation.InstallingUpdates: return "Installing Updates";
-      case WuAgent.AgentOperation.RemovingUpdates: return "Removing Updates";
-      case WuAgent.AgentOperation.CancelingOperation: return "Cancelling Operation";
-    }
-
-    return "Unknown Operation";
+  private static string GetOpStr(WuAgent.AgentOperation op) {
+    return op switch {
+      WuAgent.AgentOperation.CheckingUpdates => "Checking for Updates",
+      WuAgent.AgentOperation.PreparingCheck => "Preparing Check",
+      WuAgent.AgentOperation.PreparingUpdates or WuAgent.AgentOperation.DownloadingUpdates => "Downloading Updates",
+      WuAgent.AgentOperation.InstallingUpdates => "Installing Updates",
+      WuAgent.AgentOperation.RemovingUpdates => "Removing Updates",
+      WuAgent.AgentOperation.CancelingOperation => "Cancelling Operation",
+      _ => "Unknown Operation"
+    };
   }
 
   private void OnProgress(object sender, WuAgent.ProgressArgs args) {
@@ -1448,10 +1434,10 @@ compact.exe /CompactOS:always";
       var serialized = GetConfig("UIFont", null);
       if (string.IsNullOrWhiteSpace(serialized))
         return;
-      string[] parts = serialized.Split(';');
-      string name = parts[0];
-      float size = float.Parse(parts[1], CultureInfo.InvariantCulture);
-      FontStyle style = (FontStyle)int.Parse(parts[2]);
+      var parts = serialized.Split(';');
+      var name = parts[0];
+      var size = float.Parse(parts[1], CultureInfo.InvariantCulture);
+      var style = (FontStyle)int.Parse(parts[2]);
       Font = new Font(name, size, style);
     }
     catch (Exception ex) {
@@ -1475,14 +1461,14 @@ compact.exe /CompactOS:always";
   }
 
   private void RestorePosition() {
-    bool hasX = int.TryParse(GetConfig("Window_X"), out var x);
-    bool hasY = int.TryParse(GetConfig("Window_Y"), out var y);
-    bool hasW = int.TryParse(GetConfig("Window_Width"), out var w);
-    bool hasH = int.TryParse(GetConfig("Window_Height"), out var h);
-    bool hasAll = hasX && hasY && hasW && hasH;
+    var hasX = int.TryParse(GetConfig("Window_X"), out var x);
+    var hasY = int.TryParse(GetConfig("Window_Y"), out var y);
+    var hasW = int.TryParse(GetConfig("Window_Width"), out var w);
+    var hasH = int.TryParse(GetConfig("Window_Height"), out var h);
+    var hasAll = hasX && hasY && hasW && hasH;
 
     Rectangle bounds = new(x, y, w, h);
-    bool isVisible = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(bounds));
+    var isVisible = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(bounds));
 
     if (hasAll && isVisible) {
       StartPosition = FormStartPosition.Manual;

@@ -7,7 +7,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
-using winUpdateMiniTool.Common;
 
 namespace winUpdateMiniTool;
 
@@ -279,7 +278,7 @@ internal class UpdateInstaller {
   /// </summary>
   /// <param name="fileName">The name of the CAB file.</param>
   /// <returns>True if the CAB file is applicable, otherwise false.</returns>
-  private bool CheckCab(string fileName) {
+  private static bool CheckCab(string fileName) {
     try {
       Process proc = new();
       proc.StartInfo.FileName = Environment.ExpandEnvironmentVariables(
@@ -345,7 +344,7 @@ internal class UpdateInstaller {
   /// <param name="startInfo">The start information for the process.</param>
   /// <param name="silent">Indicates if the process should run silently.</param>
   /// <returns>The exit code of the process.</returns>
-  private int ExecTask(ProcessStartInfo startInfo, bool silent = true) {
+  private static int ExecTask(ProcessStartInfo startInfo, bool silent = true) {
     startInfo.FileName = Environment.ExpandEnvironmentVariables(startInfo.FileName);
 
     if (silent) {

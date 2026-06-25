@@ -8,9 +8,7 @@ using System.Windows.Threading;
 using sergiye.Common;
 using winUpdateMiniTool.Common;
 using WUApiLib;
-using StringCollection = System.Collections.Specialized.StringCollection;
 
-//this is required to use the Interfaces given by microsoft.
 namespace winUpdateMiniTool;
 
 internal class WuAgent {
@@ -125,7 +123,6 @@ internal class WuAgent {
     return mCurOperation != AgentOperation.None;
   }
 
-
   private bool LoadServices(bool cleanUp = false) {
     try {
       Console.WriteLine(@"Update Services:");
@@ -158,8 +155,7 @@ internal class WuAgent {
     }
   }
 
-
-  private void LogError(Exception error) {
+  private static void LogError(Exception error) {
     var errCode = (uint)error.HResult;
     AppLog.Line("Error 0x{0}: {1}", errCode.ToString("X").PadLeft(8, '0'), UpdateErrors.GetErrorStr(errCode));
   }
@@ -262,19 +258,20 @@ internal class WuAgent {
   }
 
   private void SetOnline(string serviceName) {
-    foreach (IUpdateService service in mUpdateServiceManager.Services)
-      if (service.Name.Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
-        mUpdateSearcher.ServerSelection = ServerSelection.ssDefault;
-        mUpdateSearcher.ServiceID = service.ServiceID;
-        //mUpdateSearcher.Online = true;
-      }
+    foreach (var service in mUpdateServiceManager.Services
+               .Cast<IUpdateService>()
+               .Where(service => service.Name.Equals(serviceName, StringComparison.CurrentCultureIgnoreCase))) {
+      mUpdateSearcher.ServerSelection = ServerSelection.ssDefault;
+      mUpdateSearcher.ServiceID = service.ServiceID;
+      //mUpdateSearcher.Online = true;
+    }
   }
 
   public AgentOperation CurOperation() {
     return mCurOperation;
   }
 
-  public RetCodes SearchForUpdates(string source = "", bool includePotentiallySupersededUpdates = false) {
+  public RetCodes SearchForUpdates(string source, bool includePotentiallySupersededUpdates = false) {
     if (mCallback != null)
       return RetCodes.Busy;
 
@@ -298,7 +295,7 @@ internal class WuAgent {
       AppLog.Line("downloading wsusscn2.cab");
 
       List<UpdateDownloader.Task> downloads = [];
-      downloads.Add(new  UpdateDownloader.Task() {
+      downloads.Add(new  UpdateDownloader.Task {
         Url = Program.IniReadValue("Options", "OfflineCab", "https://go.microsoft.com/fwlink/p/?LinkID=74689"),
         Path = DlPath,
         FileName = "wsusscn2.cab"
@@ -368,14 +365,9 @@ internal class WuAgent {
 
     // Note: at any given time only one (or none) of the 3 conditions can be true
     if (mCallback != null) {
-      if (mSearchJob != null)
-        mSearchJob.RequestAbort();
-
-      if (mDownloadJob != null)
-        mDownloadJob.RequestAbort();
-
-      if (mInstalationJob != null)
-        mInstalationJob.RequestAbort();
+      mSearchJob?.RequestAbort();
+      mDownloadJob?.RequestAbort();
+      mInstalationJob?.RequestAbort();
     }
     else if (mUpdateDownloader.IsBusy()) {
       mUpdateDownloader.CancelOperations();
@@ -479,9 +471,7 @@ internal class WuAgent {
     }
     else {
       MultiValueDictionary<string, string> allFiles = new();
-      foreach (var task in args.Downloads) {
-        if (task is { Failed: true, FileName: not null })
-          continue;
+      foreach (var task in args.Downloads.Where(task => task is not { Failed: true, FileName: not null })) {
         allFiles.Add(task.Kb, task.Path + @"\" + task.FileName);
       }
 
@@ -673,7 +663,7 @@ internal class WuAgent {
       return RetCodes.InProgress;
   }*/
 
-  private bool RemoveFrom(List<MsUpdate> updates, MsUpdate update) {
+  private static bool RemoveFrom(List<MsUpdate> updates, MsUpdate update) {
     for (var i = 0; i < updates.Count; i++)
       if (updates[i] == update) {
         updates.RemoveAt(i);
@@ -839,19 +829,12 @@ internal class WuAgent {
 
     OnUpdatesChanged();
 
-    var ret = RetCodes.Undefined;
-    switch (installationResults.ResultCode) {
-      case OperationResultCode.orcSucceeded:
-      case OperationResultCode.orcSucceededWithErrors:
-        ret = RetCodes.Success;
-        break;
-      case OperationResultCode.orcAborted:
-        ret = RetCodes.Aborted;
-        break;
-      case OperationResultCode.orcFailed:
-        ret = RetCodes.InternalError;
-        break;
-    }
+    var ret = installationResults.ResultCode switch {
+      OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors => RetCodes.Success,
+      OperationResultCode.orcAborted => RetCodes.Aborted,
+      OperationResultCode.orcFailed => RetCodes.InternalError,
+      _ => RetCodes.Undefined
+    };
 
     OnFinished(ret, installationResults.RebootRequired);
   }
