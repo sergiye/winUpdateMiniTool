@@ -206,7 +206,7 @@ internal partial class MainForm : Form {
     try {
       lastCheck = DateTime.Parse(GetConfig("LastCheck"));
       AppLog.Line("Last Checked for updates: {0}",
-          lastCheck.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern));
+          lastCheck.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern));
     }
     catch {
       lastCheck = DateTime.Now;
@@ -532,7 +532,7 @@ internal partial class MainForm : Form {
         update.Title,
         update.Category,
         currentList == UpdateLists.UpdateHistory ? update.ApplicationId : update.Kb,
-        update.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern),
+        update.Date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern),
         FileOps.FormatSize(update.Size),
         state
       ];

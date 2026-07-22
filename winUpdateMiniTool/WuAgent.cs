@@ -909,7 +909,7 @@ internal class WuAgent {
       Program.IniWriteValue(update.Kb, "Info", update.Description, iniPath);
       Program.IniWriteValue(update.Kb, "Category", update.Category, iniPath);
       Program.IniWriteValue(update.Kb, "Date",
-          update.Date.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern), iniPath);
+          update.Date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern), iniPath);
       Program.IniWriteValue(update.Kb, "Size", update.Size.ToString(CultureInfo.InvariantCulture), iniPath);
       Program.IniWriteValue(update.Kb, "SupportUrl", update.SupportUrl, iniPath);
       Program.IniWriteValue(update.Kb, "Downloads", string.Join("|", update.Downloads.Cast<string>().ToArray()),
