@@ -78,6 +78,8 @@ namespace winUpdateMiniTool {
       this.chkManual = new System.Windows.Forms.CheckBox();
       this.chkMsUpd = new System.Windows.Forms.CheckBox();
       this.chkOld = new System.Windows.Forms.CheckBox();
+      this.chkAutoRestart = new System.Windows.Forms.CheckBox();
+      this.cbRestartDelay = new System.Windows.Forms.ComboBox();
       this.mainMenu = new System.Windows.Forms.MenuStrip();
       this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -763,14 +765,16 @@ namespace winUpdateMiniTool {
       this.gbxOptions.Controls.Add(this.chkDownload);
       this.gbxOptions.Controls.Add(this.chkOffline);
       this.gbxOptions.Controls.Add(this.chkManual);
-      this.gbxOptions.Controls.Add(this.chkMsUpd);
       this.gbxOptions.Controls.Add(this.chkOld);
+      this.gbxOptions.Controls.Add(this.chkMsUpd);
+      this.gbxOptions.Controls.Add(this.chkAutoRestart);
+      this.gbxOptions.Controls.Add(this.cbRestartDelay);
       this.gbxOptions.Dock = System.Windows.Forms.DockStyle.Top;
       this.gbxOptions.Location = new System.Drawing.Point(0, 0);
       this.gbxOptions.Margin = new System.Windows.Forms.Padding(2);
       this.gbxOptions.Name = "gbxOptions";
       this.gbxOptions.Padding = new System.Windows.Forms.Padding(2);
-      this.gbxOptions.Size = new System.Drawing.Size(183, 127);
+      this.gbxOptions.Size = new System.Drawing.Size(183, 164);
       this.gbxOptions.TabIndex = 10;
       this.gbxOptions.TabStop = false;
       this.gbxOptions.Text = "Options";
@@ -845,6 +849,37 @@ namespace winUpdateMiniTool {
       this.chkOld.UseVisualStyleBackColor = true;
       this.chkOld.CheckedChanged += new System.EventHandler(this.chkOld_CheckedChanged);
       // 
+      // chkAutoRestart
+      //
+      this.chkAutoRestart.AutoSize = true;
+      this.chkAutoRestart.Location = new System.Drawing.Point(7, 121);
+      this.chkAutoRestart.Name = "chkAutoRestart";
+      this.chkAutoRestart.Size = new System.Drawing.Size(160, 17);
+      this.chkAutoRestart.TabIndex = 4;
+      this.chkAutoRestart.Text = "Restart automatically after install";
+      this.chkAutoRestart.UseVisualStyleBackColor = true;
+      this.chkAutoRestart.CheckedChanged += new System.EventHandler(this.chkAutoRestart_CheckedChanged);
+      //
+      // cbRestartDelay
+      //
+      this.cbRestartDelay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cbRestartDelay.Enabled = false;
+      this.cbRestartDelay.FormattingEnabled = true;
+      this.cbRestartDelay.Items.AddRange(new object[] {
+            "Immediately",
+            "After 1 minute",
+            "After 2 minutes",
+            "After 5 minutes",
+            "After 10 minutes",
+            "After 15 minutes",
+            "After 30 minutes",
+            "After 60 minutes"});
+      this.cbRestartDelay.Location = new System.Drawing.Point(25, 138);
+      this.cbRestartDelay.Name = "cbRestartDelay";
+      this.cbRestartDelay.Size = new System.Drawing.Size(140, 21);
+      this.cbRestartDelay.TabIndex = 5;
+      this.cbRestartDelay.SelectedIndexChanged += new System.EventHandler(this.cbRestartDelay_SelectedIndexChanged);
+      //
       // mainMenu
       // 
       this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1017,7 +1052,7 @@ namespace winUpdateMiniTool {
       this.Controls.Add(this.panelLeft);
       this.Controls.Add(this.mainMenu);
       this.MainMenuStrip = this.mainMenu;
-      this.MinimumSize = new System.Drawing.Size(916, 482);
+      this.MinimumSize = new System.Drawing.Size(916, 510);
       this.Name = "MainForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Windows Update Mini Tool";
@@ -1069,6 +1104,8 @@ namespace winUpdateMiniTool {
     private System.Windows.Forms.ComboBox dlShDay;
     private System.Windows.Forms.CheckBox chkMsUpd;
     private System.Windows.Forms.CheckBox chkOld;
+    private System.Windows.Forms.CheckBox chkAutoRestart;
+    private System.Windows.Forms.ComboBox cbRestartDelay;
     private System.Windows.Forms.ComboBox dlSource;
     private System.Windows.Forms.CheckBox chkOffline;
     private System.Windows.Forms.CheckBox chkDownload;

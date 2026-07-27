@@ -162,6 +162,9 @@ internal partial class MainForm : Form {
     chkOffline.Checked = MiscFunc.ParseInt(GetConfig("Offline", "0")) != 0;
     chkDownload.Checked = MiscFunc.ParseInt(GetConfig("Download", "1")) != 0;
     chkManual.Checked = MiscFunc.ParseInt(GetConfig("Manual", "0")) != 0;
+    chkAutoRestart.Checked = MiscFunc.ParseInt(GetConfig("AutoRestartAfterInstall", "0")) != 0;
+    cbRestartDelay.SelectedIndex = GetRestartDelayIndex(MiscFunc.ParseInt(GetConfig("AutoRestartDelay", "0")));
+    UpdateAutoRestartControls();
     if (!OSHelper.IsAdministrator()) {
       if (OSHelper.IsRunningAsUwp()) {
         chkOffline.Enabled = false;
@@ -1002,6 +1005,13 @@ compact.exe /CompactOS:always";
 
     if (op == WuAgent.AgentOperation.InstallingUpdates && reboot) {
       if (ret == WuAgent.RetCodes.Success) {
+        int autoRestartDelayMinutes = GetSelectedRestartDelayMinutes();
+        if (chkAutoRestart.Checked && ScheduleAutoRestart(autoRestartDelayMinutes)) {
+          if (autoRestartDelayMinutes > 0) {
+            MessageBox.Show($"Updates successfully installed. The computer will restart in {autoRestartDelayMinutes} minute(s).", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+          }
+          return;
+        }
         MessageBox.Show("Updates successfully installed, however, a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
@@ -1239,6 +1249,15 @@ compact.exe /CompactOS:always";
     SetConfig("Manual", chkManual.Checked ? "1" : "0");
   }
 
+  private void chkAutoRestart_CheckedChanged(object sender, EventArgs e) {
+    SetConfig("AutoRestartAfterInstall", chkAutoRestart.Checked ? "1" : "0");
+    UpdateAutoRestartControls();
+  }
+
+  private void cbRestartDelay_SelectedIndexChanged(object sender, EventArgs e) {
+    SetConfig("AutoRestartDelay", GetSelectedRestartDelayMinutes().ToString());
+  }
+
   private void chkHideWU_CheckedChanged(object sender, EventArgs e) {
     if (mSuspendUpdate)
       return;
@@ -1264,6 +1283,59 @@ compact.exe /CompactOS:always";
 
   private void lblSupport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
     if (e.Link.LinkData is string target) Process.Start(target);
+  }
+
+  private void UpdateAutoRestartControls() {
+    cbRestartDelay.Enabled = chkAutoRestart.Checked;
+  }
+
+  private int GetRestartDelayIndex(int minutes) {
+    return minutes switch {
+      1 => 1,
+      2 => 2,
+      5 => 3,
+      10 => 4,
+      15 => 5,
+      30 => 6,
+      60 => 7,
+      _ => 0
+    };
+  }
+
+  private int GetSelectedRestartDelayMinutes() {
+    return cbRestartDelay.SelectedIndex switch {
+      1 => 1,
+      2 => 2,
+      3 => 5,
+      4 => 10,
+      5 => 15,
+      6 => 30,
+      7 => 60,
+      _ => 0
+    };
+  }
+
+  private bool ScheduleAutoRestart(int delayMinutes) {
+    var delaySeconds = delayMinutes * 60;
+    var arguments = $"/r /t {delaySeconds} /f";
+    try {
+      var p = Process.Start(new ProcessStartInfo {
+        FileName = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\System32\shutdown.exe"),
+        Arguments = arguments,
+        UseShellExecute = false,
+        CreateNoWindow = true
+      });
+      p?.WaitForExit(1000);
+      if (p != null && p.ExitCode == 0) {
+        AppLog.Line("Automatic restart scheduled in {0} minute(s).", delayMinutes);
+        return true;
+      }
+    }
+    catch (Exception ex) {
+      AppLog.Line("Failed to schedule automatic restart: {0}", ex.Message);
+      MessageBox.Show($"Automatic restart could not be scheduled: {ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
+    return false;
   }
 
   private string GetConfig(string name, string def = "") {
