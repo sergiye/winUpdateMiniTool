@@ -1008,7 +1008,12 @@ compact.exe /CompactOS:always";
         int autoRestartDelayMinutes = GetSelectedRestartDelayMinutes();
         if (chkAutoRestart.Checked && ScheduleAutoRestart(autoRestartDelayMinutes)) {
           if (autoRestartDelayMinutes > 0) {
-            MessageBox.Show($"Updates successfully installed. The computer will restart in {autoRestartDelayMinutes} minute(s).", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var restartTime = DateTime.Now.AddMinutes(autoRestartDelayMinutes);
+            if (MessageBox.Show($"Updates successfully installed. The computer will restart at {restartTime:T}.",
+                  Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Information) ==
+                DialogResult.Cancel) {
+              ScheduleAutoRestart(0, true);
+            };
           }
           return;
         }
@@ -1315,9 +1320,9 @@ compact.exe /CompactOS:always";
     };
   }
 
-  private bool ScheduleAutoRestart(int delayMinutes) {
+  private static bool ScheduleAutoRestart(int delayMinutes, bool cancel = false) {
     var delaySeconds = delayMinutes * 60;
-    var arguments = $"/r /t {delaySeconds} /f";
+    var arguments = cancel ? "/a" : $"/r /t {delaySeconds} /f";
     try {
       var p = Process.Start(new ProcessStartInfo {
         FileName = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\System32\shutdown.exe"),
@@ -1327,13 +1332,16 @@ compact.exe /CompactOS:always";
       });
       p?.WaitForExit(1000);
       if (p != null && p.ExitCode == 0) {
-        AppLog.Line("Automatic restart scheduled in {0} minute(s).", delayMinutes);
+        AppLog.Line(cancel
+          ? "Automatic restart cancellation requested."
+          : "Automatic restart scheduled in {0} minute(s).",
+          delayMinutes);
         return true;
       }
     }
     catch (Exception ex) {
-      AppLog.Line("Failed to schedule automatic restart: {0}", ex.Message);
-      MessageBox.Show($"Automatic restart could not be scheduled: {ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      AppLog.Line($"Failed to {(cancel ? "cancel" : "schedule")} automatic restart: {0}", ex.Message);
+      MessageBox.Show($"Automatic restart could not be {(cancel ? "cancelled" : "scheduled")}: {ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
     return false;
   }
