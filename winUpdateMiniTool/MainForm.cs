@@ -154,8 +154,7 @@ internal partial class MainForm : Form {
     if (OSHelper.IsRunningAsUwp() && chkAutoRun.CheckState == CheckState.Checked)
       chkAutoRun.Enabled = false;
     idleDelay = MiscFunc.ParseInt(GetConfig("IdleDelay", "20"));
-    if (Program.IsSkipUacRun())
-      chkNoUAC_CheckedChanged(null, EventArgs.Empty);
+    chkNoUAC.Checked = Program.IsSkipUacRun();
     chkNoUAC.Enabled = OSHelper.IsAdministrator();
     chkNoUAC.Visible = chkNoUAC.Enabled || chkNoUAC.Checked || !OSHelper.IsRunningAsUwp();
 
