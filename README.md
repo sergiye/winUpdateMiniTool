@@ -51,9 +51,9 @@ Also, don't forget to ★ star ★ the repository to help other people find it.
 
 <!-- [![Star History Chart](https://api.star-history.com/svg?repos=sergiye/winUpdateMiniTool&type=Date)](https://star-history.com/#sergiye/winUpdateMiniTool&Date) -->
 
-[![Stargazers](https://reporoster.com/stars/sergiye/winUpdateMiniTool)](https://star-history.com/#sergiye/winUpdateMiniTool&Date)
+<!-- [![Stargazers](https://reporoster.com/stars/sergiye/winUpdateMiniTool)](https://star-history.com/#sergiye/winUpdateMiniTool&Date) -->
 
-[![Forkers](https://reporoster.com/forks/sergiye/winUpdateMiniTool)](https://github.com/sergiye/winUpdateMiniTool/network/members)
+<!-- [![Forkers](https://reporoster.com/forks/sergiye/winUpdateMiniTool)](https://github.com/sergiye/winUpdateMiniTool/network/members) -->
 
 ## Donate!
 Every [cup of coffee](https://patreon.com/SergiyE) you donate will help this app become better and let me know that this project is in demand.
