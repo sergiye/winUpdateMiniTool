@@ -8,6 +8,9 @@ ECHO %msbuild%
 @%msbuild% winUpdateMiniTool.sln /t:restore /p:RestorePackagesConfig=true
 @%msbuild% winUpdateMiniTool.sln /t:Rebuild /p:DebugType=None /p:Configuration=Release
 
+rem @%msbuild% winUpdateMiniTool.sln /t:restore /p:RestorePackagesConfig=true /p:TargetFramework=net8.0-windows /p:RuntimeIdentifier=win-x64
+rem @%msbuild% winUpdateMiniTool.sln /t:Rebuild /p:DebugType=None /p:Configuration=Release /p:TargetFramework=net8.0-windows /p:RuntimeIdentifier=win-x64
+
 if errorlevel 1 goto error
 
 goto exit

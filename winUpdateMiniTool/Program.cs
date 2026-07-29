@@ -375,10 +375,11 @@ internal static class Program {
           if (!FileOps.TakeOwn(exePath))
             return false;
 
-          var ac = File.GetAccessControl(exePath);
+          FileInfo fi = new(exePath);
+          var ac = fi.GetAccessControl();
           ac.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(FileOps.MF_SID_WORLS),
               FileSystemRights.ReadAndExecute, AccessControlType.Allow));
-          File.SetAccessControl(exePath, ac);
+          fi.SetAccessControl(ac);
         }
       }
       else {

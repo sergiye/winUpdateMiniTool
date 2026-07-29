@@ -840,32 +840,27 @@ internal class WuAgent {
   }
 
   public void EnableWuAuServ(bool enable = true) {
-    ServiceController svc = new("wuauserv"); // Windows Update Service
     try {
       if (enable) {
-        if (svc.Status != ServiceControllerStatus.Running) {
-          WinServiceHelper.ChangeStartMode(svc, ServiceStartMode.Manual);
-          svc.Start();
+        if (!WinServiceHelper.IsServiceRunning("wuauserv")) {
+          WinServiceHelper.ChangeStartMode("wuauserv", ServiceStartMode.Manual);
+          WinServiceHelper.StartService("wuauserv");
         }
       }
       else {
-        if (svc.Status == ServiceControllerStatus.Running)
-          svc.Stop();
-        WinServiceHelper.ChangeStartMode(svc, ServiceStartMode.Disabled);
+        if (WinServiceHelper.IsServiceRunning("wuauserv"))
+          WinServiceHelper.StopService("wuauserv");
+        WinServiceHelper.ChangeStartMode("wuauserv", ServiceStartMode.Disabled);
       }
     }
     catch (Exception err) {
       AppLog.Line("Error: " + err.Message);
     }
-
-    svc.Close();
   }
 
   public bool TestWuAuServ() {
-    ServiceController svc = new("wuauserv");
-    var ret = svc.Status == ServiceControllerStatus.Running;
-    svc.Close();
-    return ret;
+
+    return WinServiceHelper.IsServiceRunning("wuauserv");
   }
 
   public event EventHandler<ProgressArgs> Progress;
