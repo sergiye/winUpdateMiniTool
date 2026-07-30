@@ -1286,7 +1286,12 @@ compact.exe /CompactOS:always";
   }
 
   private void lblSupport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-    if (e.Link.LinkData is string target) Process.Start(target);
+    if (e.Link.LinkData is string target) {
+      Process.Start(new ProcessStartInfo {
+        FileName = target,
+        UseShellExecute = true,
+      });
+    }
   }
 
   private void UpdateAutoRestartControls() {
