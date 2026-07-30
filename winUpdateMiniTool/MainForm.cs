@@ -249,18 +249,9 @@ internal partial class MainForm : Form {
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
       (message) => MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK,
       () => { menuExit_Click(null, EventArgs.Empty); },
-#if NET
-      false
-#else
       MiscFunc.ParseInt(GetConfig("AutoUpdate", "0")) != 0
-#endif
     );
-#if !NET
     chkAutoUpdateApp.Checked = Updater.AutoUpdate;
-#else
-    chkAutoUpdateApp.Enabled = false;
-    checkForNewVersionToolStripMenuItem.Enabled = false;
-#endif
     InitializeTheme();
   }
 
