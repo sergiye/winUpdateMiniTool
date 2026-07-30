@@ -14,13 +14,25 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <Deterministic>false</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <PublishTrimmed>false</PublishTrimmed>
+    <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0-windows' ">
     <UseWPF>true</UseWPF>
+    <AssemblyName>winUpdateMiniTool.core</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'ARM64' ">
     <PlatformTarget>ARM64</PlatformTarget>
+    <AssemblyName>winUpdateMiniTool.arm64</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM64' ">
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
