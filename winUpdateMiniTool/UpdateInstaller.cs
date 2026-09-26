@@ -298,27 +298,18 @@ internal class UpdateInstaller {
       proc.StartInfo.Arguments =
           "/Online /Get-PackageInfo /PackagePath:\"" + fileName + "\" /English";
       proc.StartInfo.RedirectStandardOutput = true;
-      proc.StartInfo.RedirectStandardError = true;
       proc.StartInfo.UseShellExecute = false;
       proc.StartInfo.CreateNoWindow = true;
-      proc.EnableRaisingEvents = true;
       proc.Start();
+      // Read the whole output before waiting, otherwise DISM blocks on a full pipe.
+      var output = proc.StandardOutput.ReadToEnd();
       proc.WaitForExit();
-      while (!proc.StandardOutput.EndOfStream) {
-        var line = proc.StandardOutput.ReadLine()?.Split(':');
-        if (line != null && line.Length != 2)
+      foreach (var rawLine in output.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)) {
+        var line = rawLine.Split(':');
+        if (line.Length != 2 || !line[0].Trim().Equals("Applicable", StringComparison.OrdinalIgnoreCase))
           continue;
 
-        if (
-            line != null
-            && !line[0]
-                .Trim()
-                .Equals("Applicable", StringComparison.CurrentCultureIgnoreCase)
-        )
-          continue;
-
-        return line != null
-               && line[1].Trim().Equals("Yes", StringComparison.CurrentCultureIgnoreCase);
+        return line[1].Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
       }
     }
     catch (Exception e) {
@@ -353,17 +344,11 @@ internal class UpdateInstaller {
   ///     Executes a process with the given start information.
   /// </summary>
   /// <param name="startInfo">The start information for the process.</param>
-  /// <param name="silent">Indicates if the process should run silently.</param>
   /// <returns>The exit code of the process.</returns>
-  private int ExecTask(ProcessStartInfo startInfo, bool silent = true) {
+  private int ExecTask(ProcessStartInfo startInfo) {
     startInfo.FileName = Environment.ExpandEnvironmentVariables(startInfo.FileName);
-
-    if (silent) {
-      startInfo.RedirectStandardOutput = true;
-      startInfo.RedirectStandardError = true;
-      startInfo.UseShellExecute = false;
-      startInfo.CreateNoWindow = true;
-    }
+    startInfo.UseShellExecute = false;
+    startInfo.CreateNoWindow = true;
 
     Process proc = new();
     proc.StartInfo = startInfo;

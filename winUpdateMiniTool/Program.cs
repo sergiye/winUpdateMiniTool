@@ -253,6 +253,11 @@ internal static class Program {
       proc.StartInfo = startInfo;
       proc.EnableRaisingEvents = true;
       proc.Start();
+      // Redirected pipes must be drained, otherwise a chatty child blocks once the pipe buffer fills up.
+      if (startInfo.RedirectStandardOutput)
+        proc.BeginOutputReadLine();
+      if (startInfo.RedirectStandardError)
+        proc.BeginErrorReadLine();
       if (wait)
         proc.WaitForExit();
     }
