@@ -598,8 +598,15 @@ internal class WuAgent {
     mInstaller ??= mUpdateSession.CreateUpdateInstaller();
     mInstaller.Updates = new UpdateCollection();
 
-    foreach (var update in updates.Select(u => u.GetUpdate()).Where(u => u != null))
-      mInstaller.Updates.Add(update);
+    // Keeps the same order as mInstaller.Updates, so per-update results can be matched by index.
+    List<MsUpdate> added = [];
+    foreach (var update in updates) {
+      var entry = update.GetUpdate();
+      if (entry == null)
+        continue;
+      mInstaller.Updates.Add(entry);
+      added.Add(update);
+    }
 
     if (mInstaller.Updates.Count == 0) {
       AppLog.Line("No updates selected for installation");
@@ -614,7 +621,7 @@ internal class WuAgent {
 
     AppLog.Line("Installing Updates... This may take several minutes.");
     try {
-      mInstalationJob = mInstaller.BeginInstall(mCallback, mCallback, updates);
+      mInstalationJob = mInstaller.BeginInstall(mCallback, mCallback, added);
     }
     catch (Exception err) {
       return OnWuError(err);
@@ -814,10 +821,18 @@ internal class WuAgent {
       return;
     }
 
-    if (installationResults.ResultCode == OperationResultCode.orcSucceeded) {
-      AppLog.Line("Updates (Un)Installed successfully");
+    if (installationResults.ResultCode is OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors) {
+      AppLog.Line(installationResults.ResultCode == OperationResultCode.orcSucceeded
+          ? "Updates (Un)Installed successfully"
+          : "Updates (Un)Installed with errors");
 
-      foreach (var update in updates)
+      for (var i = 0; i < updates.Count; i++) {
+        var update = updates[i];
+        if (GetUpdateResultCode(installationResults, i) is not (OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors)) {
+          AppLog.Line("Failed to (un)install: {0}", update.Title);
+          continue;
+        }
+
         if (!wasUninstall) {
           if (RemoveFrom(MPendingUpdates, update)) {
             update.Attributes |= (int)MsUpdate.UpdateAttr.Installed;
@@ -830,6 +845,7 @@ internal class WuAgent {
             MPendingUpdates.Add(update);
           }
         }
+      }
 
       if (installationResults.RebootRequired)
         AppLog.Line("Reboot is required for one or more updates");
@@ -848,6 +864,16 @@ internal class WuAgent {
     };
 
     OnFinished(ret, installationResults.RebootRequired);
+  }
+
+  private static OperationResultCode GetUpdateResultCode(IInstallationResult results, int index) {
+    try {
+      return results.GetUpdateResult(index).ResultCode;
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to read the installation result of update #{0}: {1}", index + 1, err.Message);
+      return OperationResultCode.orcFailed;
+    }
   }
 
   public void EnableWuAuServ(bool enable = true) {
