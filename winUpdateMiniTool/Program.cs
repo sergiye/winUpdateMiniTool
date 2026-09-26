@@ -18,6 +18,9 @@ namespace winUpdateMiniTool;
 
 internal static class Program {
   private const string MF_APP_TASK_NAME = "wumtNoUAC";
+  private const string MF_AUTO_START_TASK_NAME = "wumtAutoStart";
+  private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+  private const string RunValueName = "winUpdateMiniTool";
   private static string[] args;
   private static bool mConsole;
   private static string appPath;
@@ -356,16 +359,25 @@ internal static class Program {
   /// <summary>
   ///     Enables or disables auto-start for the application.
   /// </summary>
+  /// <remarks>
+  ///     When running elevated, a logon task with the highest run level is used, so the tool starts with
+  ///     administrator rights without a UAC prompt. Otherwise the per-user Run registry value is used.
+  /// </remarks>
   /// <param name="enable">True to enable auto-start, false to disable.</param>
   public static void AutoStart(bool enable) {
-    var subKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
     if (enable) {
-      var value = $"\"{Updater.CurrentFileLocation}\" -tray";
-      subKey.SetValue("winUpdateMiniTool", value);
+      if (OSHelper.IsAdministrator() && SetAutoStartTask(true)) {
+        SetAutoStartRunValue(false);
+        return;
+      }
+
+      SetAutoStartRunValue(true);
+      return;
     }
-    else {
-      subKey.DeleteValue("winUpdateMiniTool", false);
-    }
+
+    if (GetTaskExecPath(MF_AUTO_START_TASK_NAME) != null && !SetAutoStartTask(false))
+      AppLog.Line("Administrator rights are required to remove the auto-start task.");
+    SetAutoStartRunValue(false);
   }
 
   /// <summary>
@@ -373,22 +385,93 @@ internal static class Program {
   /// </summary>
   /// <returns>True if auto-start is enabled, false otherwise.</returns>
   public static bool IsAutoStart() {
-    var subKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false);
-    return subKey?.GetValue("winUpdateMiniTool") != null;
+    return GetAutoStartRunCommand() != null || GetTaskExecPath(MF_AUTO_START_TASK_NAME) != null;
+  }
+
+  private static string GetAutoStartRunCommand() {
+    using var subKey = Registry.CurrentUser.OpenSubKey(RunKeyPath, false);
+    return subKey?.GetValue(RunValueName) as string;
+  }
+
+  private static void SetAutoStartRunValue(bool enable) {
+    using var subKey = Registry.CurrentUser.CreateSubKey(RunKeyPath, true);
+    if (enable)
+      subKey.SetValue(RunValueName, $"\"{Updater.CurrentFileLocation}\" -tray");
+    else
+      subKey.DeleteValue(RunValueName, false);
+  }
+
+  private static bool SetAutoStartTask(bool enable) {
+    try {
+      TaskScheduler.TaskScheduler service = new();
+      service.Connect();
+      var folder = service.GetFolder(@"\"); // root
+      if (!enable) {
+        folder.DeleteTask(MF_AUTO_START_TASK_NAME, 0);
+        return true;
+      }
+
+      var userId = WindowsIdentity.GetCurrent().Name;
+      var task = service.NewTask(0);
+      task.RegistrationInfo.Author = "winUpdateMiniTool";
+      task.RegistrationInfo.Description = "Starts Windows Update Mini Tool in the notification area at logon.";
+      task.Principal.UserId = userId;
+      task.Principal.LogonType = _TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN;
+      task.Principal.RunLevel = _TASK_RUNLEVEL.TASK_RUNLEVEL_HIGHEST;
+      task.Settings.DisallowStartIfOnBatteries = false;
+      task.Settings.StopIfGoingOnBatteries = false;
+      task.Settings.ExecutionTimeLimit = "PT0S";
+      task.Settings.MultipleInstances = _TASK_INSTANCES_POLICY.TASK_INSTANCES_IGNORE_NEW;
+      var trigger = (ILogonTrigger)task.Triggers.Create(_TASK_TRIGGER_TYPE2.TASK_TRIGGER_LOGON);
+      trigger.UserId = userId;
+      trigger.Delay = "PT15S"; // give the shell time to create the notification area
+      var action = (IExecAction)task.Actions.Create(_TASK_ACTION_TYPE.TASK_ACTION_EXEC);
+      action.Path = Updater.CurrentFileLocation;
+      action.WorkingDirectory = appPath;
+      action.Arguments = "-tray";
+
+      folder.RegisterTaskDefinition(MF_AUTO_START_TASK_NAME, task,
+          (int)_TASK_CREATION.TASK_CREATE_OR_UPDATE, userId, null,
+          _TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN);
+      return true;
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to {0} the auto-start task: {1}", enable ? "register" : "remove", err.Message);
+      return false;
+    }
+  }
+
+  private static string GetTaskExecPath(string taskName) {
+    try {
+      TaskScheduler.TaskScheduler service = new();
+      service.Connect();
+      var task = service.GetFolder(@"\").GetTask(taskName);
+      return ((IExecAction)task.Definition.Actions[1]).Path;
+    }
+    catch (Exception err) {
+      Console.WriteLine(err.Message); // the task is not registered or cannot be read
+      return null;
+    }
   }
 
   /// <summary>
-  ///     Re-registers auto-start and the UAC skip task when they point to an executable that no longer exists,
-  ///     such as the temporary extraction path written by older single-file builds or a moved executable.
+  ///     Moves a Run registry auto-start entry to the elevated logon task, and re-registers auto-start and the
+  ///     UAC skip task when they point to an executable that no longer exists, such as the temporary extraction
+  ///     path written by older single-file builds or a moved executable.
   ///     Entries pointing to another existing copy of the tool are left untouched.
   /// </summary>
   private static void RepairRegistrations() {
+    var admin = OSHelper.IsAdministrator();
     if (!OSHelper.IsRunningAsUwp()) {
       try {
-        using var subKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false);
-        if (subKey?.GetValue("winUpdateMiniTool") is string command && IsStaleExecutable(GetCommandPath(command))) {
-          AppLog.Line("Updating the outdated auto-start entry: {0}", command);
-          AutoStart(true);
+        var command = GetAutoStartRunCommand();
+        if (command != null) {
+          var path = GetCommandPath(command);
+          var isCurrent = string.Equals(path, Updater.CurrentFileLocation, StringComparison.OrdinalIgnoreCase);
+          if (IsStaleExecutable(path) || admin && isCurrent) {
+            AppLog.Line("Updating the auto-start entry: {0}", command);
+            AutoStart(true);
+          }
         }
       }
       catch (Exception err) {
@@ -396,24 +479,20 @@ internal static class Program {
       }
     }
 
-    if (!OSHelper.IsAdministrator())
+    if (!admin)
       return;
-    string taskPath;
-    try {
-      TaskScheduler.TaskScheduler service = new();
-      service.Connect();
-      var task = service.GetFolder(@"\").GetTask(MF_APP_TASK_NAME);
-      taskPath = ((IExecAction)task.Definition.Actions[1]).Path;
-    }
-    catch (Exception err) {
-      Console.WriteLine(err.Message); // the task is not registered
-      return;
+
+    var autoStartPath = GetTaskExecPath(MF_AUTO_START_TASK_NAME);
+    if (autoStartPath != null && IsStaleExecutable(autoStartPath)) {
+      AppLog.Line("Updating the outdated auto-start task: {0}", autoStartPath);
+      SetAutoStartTask(true);
     }
 
-    if (!IsStaleExecutable(taskPath))
-      return;
-    AppLog.Line("Updating the outdated UAC skip task: {0}", taskPath);
-    SkipUacEnable(true);
+    var skipUacPath = GetTaskExecPath(MF_APP_TASK_NAME);
+    if (skipUacPath != null && IsStaleExecutable(skipUacPath)) {
+      AppLog.Line("Updating the outdated UAC skip task: {0}", skipUacPath);
+      SkipUacEnable(true);
+    }
   }
 
   private static bool IsStaleExecutable(string path) {
