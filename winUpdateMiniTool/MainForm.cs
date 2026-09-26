@@ -1344,23 +1344,23 @@ compact.exe /CompactOS:always";
     var delaySeconds = delayMinutes * 60;
     var arguments = cancel ? "/a" : $"/r /t {delaySeconds} /f";
     try {
-      var p = Process.Start(new ProcessStartInfo {
+      using var p = Process.Start(new ProcessStartInfo {
         FileName = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\System32\shutdown.exe"),
         Arguments = arguments,
         UseShellExecute = false,
         CreateNoWindow = true
       });
-      p?.WaitForExit(1000);
-      if (p != null && p.ExitCode == 0) {
+      if (p != null && p.WaitForExit(5000) && p.ExitCode == 0) {
         AppLog.Line(cancel
           ? "Automatic restart cancellation requested."
           : "Automatic restart scheduled in {0} minute(s).",
           delayMinutes);
         return true;
       }
+      AppLog.Line("Failed to {0} automatic restart.", cancel ? "cancel" : "schedule");
     }
     catch (Exception ex) {
-      AppLog.Line($"Failed to {(cancel ? "cancel" : "schedule")} automatic restart: {0}", ex.Message);
+      AppLog.Line("Failed to {0} automatic restart: {1}", cancel ? "cancel" : "schedule", ex.Message);
       MessageBox.Show($"Automatic restart could not be {(cancel ? "cancelled" : "scheduled")}: {ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
     return false;
