@@ -249,8 +249,8 @@ internal partial class MainForm : Form {
     mTimer.Enabled = true;
 
     Updater.Subscribe(
-      (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
-      (message) => MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK,
+      (message, isError) => ShowOnUiThread(() => MessageBox.Show(Visible ? this : null, message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information)),
+      (message) => ShowOnUiThread(() => MessageBox.Show(Visible ? this : null, message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question)) == DialogResult.OK,
       ExitApplication,
       MiscFunc.ParseInt(GetConfig("AppAutoUpdate", "0")) != 0
     );
@@ -712,6 +712,13 @@ internal partial class MainForm : Form {
   private void menuExit_Click(object sender, EventArgs e) {
     if (ConfirmExitWhileBusy())
       ExitApplication();
+  }
+
+  // Updater raises its callbacks from a timer thread.
+  private DialogResult ShowOnUiThread(Func<DialogResult> show) {
+    if (IsDisposed || !IsHandleCreated)
+      return DialogResult.Cancel;
+    return InvokeRequired ? (DialogResult)Invoke(show) : show();
   }
 
   private bool ConfirmExitWhileBusy() {
