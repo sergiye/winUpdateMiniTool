@@ -33,6 +33,7 @@ internal partial class MainForm : Form {
   private DateTime lastOverdueBalloon = DateTime.MinValue;
   private DateTime lastNewUpdatesBalloon = DateTime.MinValue;
   private DateTime lastCheck = DateTime.MaxValue;
+  private DateTime nextAutoCheckAttempt = DateTime.MinValue;
   private string mSearchFilter;
   private bool mSuspendUpdate;
   private bool resultShown;
@@ -345,8 +346,12 @@ internal partial class MainForm : Form {
         // ensure we only start a check when user is not doing anything
         var idleTime = OSHelper.GetIdleTime();
         if (idleDelay * 60 < idleTime) {
-          AppLog.Line("Starting automatic search for updates.");
-          updateNow = true;
+          // lastCheck only moves on success, so a failing check must not be retried on every tick.
+          if (DateTime.Now >= nextAutoCheckAttempt && !resultShown) {
+            nextAutoCheckAttempt = DateTime.Now.AddHours(1);
+            AppLog.Line("Starting automatic search for updates.");
+            updateNow = true;
+          }
         }
         else if (daysDue > GetGraceDays()) {
           if (lastOverdueBalloon < DateTime.Now.AddHours(-4)) {
@@ -368,7 +373,7 @@ internal partial class MainForm : Form {
         }
     }
 
-    if ((doUpdate || updateNow && !resultShown) && agent.IsActive()) {
+    if ((doUpdate || updateNow) && agent.IsActive()) {
       doUpdate = false;
       if (chkOffline.Checked)
         agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked);
