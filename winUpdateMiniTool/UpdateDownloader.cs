@@ -150,6 +150,28 @@ internal class UpdateDownloader {
   }
 
   /// <summary>
+  ///     Switches Windows Update download links to HTTPS where Microsoft serves the same files over HTTPS.
+  ///     download.windowsupdate.com does not accept TLS, but catalog.s.download.windowsupdate.com serves the same
+  ///     paths; delivery.mp.microsoft.com hosts only support HTTP and are left unchanged.
+  /// </summary>
+  /// <param name="url">The download URL returned by Windows Update.</param>
+  /// <returns>The HTTPS URL, or the original URL if no HTTPS equivalent is known.</returns>
+  public static string ToHttps(string url) {
+    if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttp)
+      return url;
+
+    var host = uri.Host.ToLowerInvariant() switch {
+      "download.windowsupdate.com" => "catalog.s.download.windowsupdate.com",
+      "download.microsoft.com" => "download.microsoft.com",
+      _ => null
+    };
+    if (host == null)
+      return url;
+
+    return new UriBuilder(uri) { Scheme = Uri.UriSchemeHttps, Host = host, Port = -1 }.Uri.AbsoluteUri;
+  }
+
+  /// <summary>
   ///     Derives a local file name from the download URL, so the server-supplied Content-Disposition
   ///     name, which may contain path segments, is never used.
   /// </summary>

@@ -39,7 +39,7 @@ After installation, the tool can restart Windows automatically: enable **Restart
 - **Register Microsoft Update**: adds the Microsoft Update service, so updates for other Microsoft products (Office and others) are offered too.
 - **Include superseded**: also lists updates that were replaced by newer ones.
 - **Offline Mode**: searches against the offline scan catalog `wsusscn2.cab` instead of an online service. With **Download wsusscn2.cab** the latest catalog is downloaded before each search.
-- **'Manual' Download/Install**: downloads update files directly into the `Updates` folder next to the application, bypassing the Windows Update service, and installs them with `wusa`, `msiexec`, `DISM` or the update's own installer. Every file must carry a valid Microsoft digital signature, otherwise it is not installed.
+- **'Manual' Download/Install**: downloads update files directly into the `Updates` folder next to the application, bypassing the Windows Update service, and installs them with `wusa`, `msiexec`, `DISM` or the update's own installer. Files are downloaded over HTTPS where Microsoft offers it; some content delivery hosts only support HTTP. Every file must carry a valid Microsoft digital signature, otherwise it is not installed.
 
 ## Windows Update policies
 

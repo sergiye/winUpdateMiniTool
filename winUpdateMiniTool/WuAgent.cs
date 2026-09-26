@@ -389,7 +389,7 @@ internal class WuAgent {
 
       foreach (var url in update.Downloads) {
         UpdateDownloader.Task download = new() {
-          Url = url,
+          Url = UpdateDownloader.ToHttps(url),
           Path = DlPath + @"\" + update.DownloadFolder,
           FileName = UpdateDownloader.GetSafeFileName(url, "Download_" + downloads.Count),
           UpdateKey = update.Key
