@@ -117,6 +117,7 @@ internal static class Program {
     }
 
     AppLog.Line("Working Directory: {0}", WrkPath);
+    RepairRegistrations();
     agent = new WuAgent();
     ExecOnStart();
     agent.Init();
@@ -374,6 +375,62 @@ internal static class Program {
   public static bool IsAutoStart() {
     var subKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false);
     return subKey?.GetValue("winUpdateMiniTool") != null;
+  }
+
+  /// <summary>
+  ///     Re-registers auto-start and the UAC skip task when they point to an executable that no longer exists,
+  ///     such as the temporary extraction path written by older single-file builds or a moved executable.
+  ///     Entries pointing to another existing copy of the tool are left untouched.
+  /// </summary>
+  private static void RepairRegistrations() {
+    if (!OSHelper.IsRunningAsUwp()) {
+      try {
+        using var subKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false);
+        if (subKey?.GetValue("winUpdateMiniTool") is string command && IsStaleExecutable(GetCommandPath(command))) {
+          AppLog.Line("Updating the outdated auto-start entry: {0}", command);
+          AutoStart(true);
+        }
+      }
+      catch (Exception err) {
+        AppLog.Line("Failed to check the auto-start entry: {0}", err.Message);
+      }
+    }
+
+    if (!OSHelper.IsAdministrator())
+      return;
+    string taskPath;
+    try {
+      TaskScheduler.TaskScheduler service = new();
+      service.Connect();
+      var task = service.GetFolder(@"\").GetTask(MF_APP_TASK_NAME);
+      taskPath = ((IExecAction)task.Definition.Actions[1]).Path;
+    }
+    catch (Exception err) {
+      Console.WriteLine(err.Message); // the task is not registered
+      return;
+    }
+
+    if (!IsStaleExecutable(taskPath))
+      return;
+    AppLog.Line("Updating the outdated UAC skip task: {0}", taskPath);
+    SkipUacEnable(true);
+  }
+
+  private static bool IsStaleExecutable(string path) {
+    return string.IsNullOrEmpty(path) ||
+           !Path.GetExtension(path).Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
+           !File.Exists(path);
+  }
+
+  private static string GetCommandPath(string command) {
+    command = command.Trim();
+    if (command.StartsWith("\"")) {
+      var end = command.IndexOf('"', 1);
+      return end > 0 ? command.Substring(1, end - 1) : command.Substring(1);
+    }
+
+    var space = command.IndexOf(' ');
+    return space > 0 ? command.Substring(0, space) : command;
   }
 
   /// <summary>
