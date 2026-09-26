@@ -404,7 +404,11 @@ internal static class Program {
   /// <returns>True if auto-start is enabled, false otherwise.</returns>
   public static bool IsAutoStart() {
     try {
-      return new StartupManager(AutoStartArguments).Startup;
+      if (new StartupManager(AutoStartArguments).Startup)
+        return true;
+      // Without admin rights StartupManager only looks at the Run value and misses an existing logon task.
+      return !OSHelper.IsAdministrator() &&
+             string.Equals(GetTaskExecPath(GetStartupTaskPath()), Updater.CurrentFileLocation, StringComparison.OrdinalIgnoreCase);
     }
     catch (Exception err) {
       AppLog.Line("Failed to read the auto-start state: {0}", err.Message);
@@ -415,6 +419,11 @@ internal static class Program {
   private static string GetAutoStartRunCommand() {
     using var subKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false);
     return subKey?.GetValue(Updater.ApplicationName) as string;
+  }
+
+  // Mirrors the task location used by StartupManager.
+  private static string GetStartupTaskPath() {
+    return $@"{Updater.ApplicationTitle}\Startup for {WindowsIdentity.GetCurrent().Name.Replace("\\", "_")}";
   }
 
   private static void RestoreAutoStartRunValue(string command) {
@@ -432,11 +441,11 @@ internal static class Program {
     subKey?.DeleteValue(Updater.ApplicationName, false);
   }
 
-  private static string GetTaskExecPath(string taskName) {
+  private static string GetTaskExecPath(string taskPath) {
     try {
       TaskScheduler.TaskScheduler service = new();
       service.Connect();
-      var task = service.GetFolder(@"\").GetTask(taskName);
+      var task = service.GetFolder(@"\").GetTask(taskPath);
       return ((IExecAction)task.Definition.Actions[1]).Path;
     }
     catch (Exception err) {
