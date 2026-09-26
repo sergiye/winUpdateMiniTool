@@ -15,6 +15,9 @@ namespace winUpdateMiniTool;
 /// </summary>
 internal class UpdateInstaller {
   private const int CanceledExitCode = -1;
+  private const int WuSAlreadyInstalled = 0x00240006;
+  private const int WuSNotInstalled = 0x00240007;
+  private const int WuENotApplicable = unchecked((int)0x80240017);
   private readonly Dispatcher mDispatcher = Dispatcher.CurrentDispatcher;
   private readonly object mProcessLock = new();
   private bool canceled;
@@ -235,6 +238,13 @@ internal class UpdateInstaller {
           reboot = true; // reboot initiated
           ok = false;
         }
+        else if (exitCode == WuSAlreadyInstalled) {
+          AppLog.Line("Already installed: {0}", file);
+        }
+        else if (exitCode == WuENotApplicable) {
+          AppLog.Line("Update is not applicable to this system: {0}", file);
+          ok = false;
+        }
         else if (exitCode != 1 && exitCode != 0) {
           ok = false; // some error
         }
@@ -425,8 +435,11 @@ internal class UpdateInstaller {
         if (exitCode == 3010 || exitCode == 1641) {
           reboot = true;
         }
+        else if (exitCode == WuSNotInstalled) {
+          AppLog.Line("Update is not installed: {0}", kb);
+        }
         else if (exitCode != 1 && exitCode != 0) {
-          AppLog.Line("Error, exit coded: {0}", exitCode);
+          AppLog.Line("Error, exit code: 0x{0:X8}", exitCode);
           ok = false; // some error
         }
       }
