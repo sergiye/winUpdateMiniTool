@@ -90,11 +90,15 @@ internal partial class MainForm : Form {
     agent.UpdatesChanged += OnUpdates;
     agent.Finished += OnFinished;
 
-    if (!agent.IsActive())
-      if (MessageBox.Show("The Windows Update Service is not available. Do you want to start it?", Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+    if (!agent.IsActive()) {
+      // Started in the tray, typically at logon: do not pop up a dialog before the user opens the window.
+      if (Program.TestArg("-tray"))
+        AppLog.Line("The Windows Update Service is not available. It can be started from Options > Tools > Windows Update Service.");
+      else if (MessageBox.Show("The Windows Update Service is not available. Do you want to start it?", Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
         agent.EnableWuAuServ();
         agent.Init();
       }
+    }
 
     mSuspendUpdate = true;
     chkDrivers.CheckState = (CheckState)Gpo.GetDriverAu();
