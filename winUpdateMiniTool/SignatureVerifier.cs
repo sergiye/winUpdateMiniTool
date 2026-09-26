@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -61,9 +62,12 @@ internal static class SignatureVerifier {
     }
 
     try {
-      var subject = X509Certificate.CreateFromSignedFile(fileName).Subject;
-      if (subject.IndexOf(MicrosoftOrganization, StringComparison.OrdinalIgnoreCase) < 0) {
-        error = $"file is not signed by Microsoft ({subject})";
+      var subject = new X509Certificate2(X509Certificate.CreateFromSignedFile(fileName)).SubjectName;
+      // Compare whole RDNs, so a value like CN="O=Microsoft Corporation" does not match.
+      var rdns = subject.Decode(X500DistinguishedNameFlags.UseNewLines)
+          .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
+      if (!rdns.Any(rdn => rdn.Trim().Equals(MicrosoftOrganization, StringComparison.Ordinal))) {
+        error = $"file is not signed by Microsoft ({subject.Name})";
         return false;
       }
     }
