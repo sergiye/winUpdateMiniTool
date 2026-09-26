@@ -251,7 +251,7 @@ internal partial class MainForm : Form {
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
       (message) => MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK,
       () => { menuExit_Click(null, EventArgs.Empty); },
-      MiscFunc.ParseInt(GetConfig("AutoUpdate", "0")) != 0
+      MiscFunc.ParseInt(GetConfig("AppAutoUpdate", "0")) != 0
     );
     chkAutoUpdateApp.Checked = Updater.AutoUpdate;
     InitializeTheme();
@@ -1227,7 +1227,7 @@ compact.exe /CompactOS:always";
   private void chkAutoUpdateApp_Click(object sender, EventArgs e) {
     Updater.AutoUpdate = !Updater.AutoUpdate;
     chkAutoUpdateApp.Checked = Updater.AutoUpdate;
-    SetConfig("AutoUpdate", Updater.AutoUpdate ? "1" : "0");
+    SetConfig("AppAutoUpdate", Updater.AutoUpdate ? "1" : "0");
   }
 
   private void dlAutoCheck_SelectedIndexChanged(object sender, EventArgs e) {
