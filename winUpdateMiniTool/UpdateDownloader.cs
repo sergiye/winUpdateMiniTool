@@ -48,8 +48,8 @@ internal class UpdateDownloader {
   ///     Cancels the current download operations.
   /// </summary>
   public void CancelOperations() {
-    if (mCurTask != null)
-      mCurTask.Cancel();
+    canceled = true;
+    mCurTask?.Cancel();
   }
 
   /// <summary>
