@@ -974,7 +974,7 @@ namespace winUpdateMiniTool {
       // 
       this.chkAutoRun.Name = "chkAutoRun";
       this.chkAutoRun.Size = new System.Drawing.Size(222, 22);
-      this.chkAutoRun.Text = "Run in background";
+      this.chkAutoRun.Text = "Run at Windows startup (in tray)";
       this.chkAutoRun.Click += new System.EventHandler(this.chkAutoRun_CheckedChanged);
       // 
       // chkAutoUpdateApp

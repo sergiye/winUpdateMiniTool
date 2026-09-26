@@ -56,8 +56,8 @@ Windows Home editions ignore most of these policies and Pro editions honor only 
 
 ## Background mode
 
-- **Run in background** (Options menu): starts the tool at logon and keeps it in the notification area. When enabled while the tool runs as administrator, a scheduled task starts it with administrator rights and without a UAC prompt; otherwise a registry entry starts it with normal rights.
-- The drop-down in the **Background tasks** group sets how often updates are searched for automatically: daily, weekly or monthly. The search only starts when the computer has been idle for a while.
+- **Run at Windows startup (in tray)** (Options menu): starts the tool at logon and keeps it in the notification area. When enabled while the tool runs as administrator, a scheduled task starts it with administrator rights and without a UAC prompt; otherwise a registry entry starts it with normal rights.
+- The drop-down in the **Background tasks** group sets how often updates are searched for automatically: daily, weekly or monthly. It is available only while **Run at Windows startup (in tray)** is enabled. The search only starts when the computer has been idle for a while.
 - A notification appears when new updates are found, or when no successful search has been possible for a long time.
 
 ## Other features
