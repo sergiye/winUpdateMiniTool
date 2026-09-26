@@ -800,6 +800,9 @@ compact.exe /CompactOS:always";
   }
 
   private void restoreDefaults_Click(object sender, EventArgs e) {
+    if (MessageBox.Show("This will reset all options and Windows Update policy settings changed by this tool to their defaults. Continue?",
+          Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+      return;
 
     chkOffline.Checked = false;
     chkDownload.Checked = true;
