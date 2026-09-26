@@ -449,6 +449,36 @@ internal static class Program {
   }
 
   /// <summary>
+  ///     Checks whether non-elevated processes can modify the application directory, which would let them
+  ///     replace the executable or Tools\Tools.ini and get code run elevated through the UAC skip task.
+  /// </summary>
+  /// <returns>True if the directory grants write access to the current user or to broad user groups.</returns>
+  public static bool IsAppDirWritableByUsers() {
+    try {
+      string[] userSids = [
+        "S-1-1-0", // Everyone
+        "S-1-5-4", // Interactive
+        "S-1-5-11", // Authenticated Users
+        "S-1-5-32-545", // Users
+        WindowsIdentity.GetCurrent().User?.Value
+      ];
+      const FileSystemRights writeRights = FileSystemRights.WriteData | FileSystemRights.AppendData |
+                                           FileSystemRights.Delete | FileSystemRights.ChangePermissions |
+                                           FileSystemRights.TakeOwnership;
+      var rules = new DirectoryInfo(appPath).GetAccessControl()
+          .GetAccessRules(true, true, typeof(SecurityIdentifier));
+      return rules.Cast<FileSystemAccessRule>().Any(rule =>
+          rule.AccessControlType == AccessControlType.Allow &&
+          (rule.FileSystemRights & writeRights) != 0 &&
+          userSids.Contains(rule.IdentityReference.Value));
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to check application directory permissions: {0}", err.Message);
+      return true;
+    }
+  }
+
+  /// <summary>
   ///     Runs the UAC skip task.
   /// </summary>
   /// <returns>True if the task was started successfully, false otherwise.</returns>

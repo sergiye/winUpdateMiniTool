@@ -1241,6 +1241,10 @@ compact.exe /CompactOS:always";
     if (mSuspendUpdate)
       return;
     var newChecked = !chkNoUAC.Checked;
+    if (newChecked && Program.IsAppDirWritableByUsers() &&
+        MessageBox.Show("The application folder can be modified without administrator rights. With the UAC skip task enabled, any program running under your account could replace this tool or its Tools settings and run code with administrator rights without a UAC prompt.\r\n\r\nMove the tool to a protected folder such as Program Files to avoid this. Enable the UAC skip task anyway?",
+          Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+      return;
     if (Program.SkipUacEnable(newChecked))
       chkNoUAC.Checked = newChecked;
     else
