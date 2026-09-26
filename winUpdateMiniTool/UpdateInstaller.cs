@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Threading;
 
@@ -256,6 +257,7 @@ internal class UpdateInstaller {
   /// <param name="file">The downloaded file.</param>
   /// <returns>The files to install.</returns>
   private static List<string> ExpandUpdateFile(string file) {
+    file = AddExtensionFromContent(file);
     if (!Path.GetExtension(file).Equals(".zip", StringComparison.OrdinalIgnoreCase))
       return [file];
 
@@ -272,6 +274,67 @@ internal class UpdateInstaller {
     if (foundFiles.Count == 0)
       throw new FileNotFoundException("No supported update file found in the zip archive");
     return foundFiles;
+  }
+
+  /// <summary>
+  ///     Files from content delivery URLs are named after a GUID without an extension, so the installer
+  ///     cannot tell their type. Detects the type from the content and renames the file accordingly.
+  /// </summary>
+  /// <param name="file">The downloaded file.</param>
+  /// <returns>The path of the file with an extension, or the original path if the type is unknown.</returns>
+  private static string AddExtensionFromContent(string file) {
+    if (Path.GetExtension(file).Length > 0)
+      return file;
+
+    var ext = DetectFileType(file);
+    if (ext == null) {
+      AppLog.Line("Cannot determine the type of update file {0}", file);
+      return file;
+    }
+
+    var target = file + ext;
+    if (File.Exists(target))
+      File.Delete(target);
+    File.Move(file, target);
+    return target;
+  }
+
+  private static string DetectFileType(string file) {
+    using var reader = new BinaryReader(File.OpenRead(file));
+    var header = reader.ReadBytes(4);
+    if (header.Length >= 2 && header[0] == 'M' && header[1] == 'Z')
+      return ".exe";
+    if (header.Length == 4 && header[0] == 'P' && header[1] == 'K' && header[2] == 3 && header[3] == 4)
+      return ".zip";
+    if (header.Length == 4 && header[0] == 'M' && header[1] == 'S' && header[2] == 'C' && header[3] == 'F')
+      return DetectCabinetKind(reader);
+    return null;
+  }
+
+  // An .msu is a cabinet holding the package .cab and an .xml description, while a package .cab holds
+  // update.mum; installing an .msu with DISM would report it as not applicable.
+  private static string DetectCabinetKind(BinaryReader reader) {
+    reader.BaseStream.Position = 16;
+    var firstFileOffset = reader.ReadUInt32();
+    reader.BaseStream.Position = 28;
+    var fileCount = reader.ReadUInt16();
+
+    reader.BaseStream.Position = firstFileOffset;
+    bool hasCab = false, hasXml = false;
+    for (var i = 0; i < fileCount && reader.BaseStream.Position < reader.BaseStream.Length; i++) {
+      reader.BaseStream.Position += 16; // size, folder offset, folder index, date, time, attributes
+      var name = new StringBuilder();
+      for (int c; (c = reader.ReadByte()) != 0 && name.Length < 260;)
+        name.Append((char)c);
+
+      var fileName = name.ToString();
+      if (fileName.EndsWith(".mum", StringComparison.OrdinalIgnoreCase))
+        return ".cab";
+      hasCab |= fileName.EndsWith(".cab", StringComparison.OrdinalIgnoreCase);
+      hasXml |= fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase);
+    }
+
+    return hasCab && hasXml ? ".msu" : null;
   }
 
   /// <summary>
