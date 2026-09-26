@@ -178,41 +178,27 @@ internal class UpdateInstaller {
       ok = false;
     }
 
-    foreach (var curFile in files) {
+    List<string> installFiles = [];
+    foreach (var file in files) {
+      try {
+        installFiles.AddRange(ExpandUpdateFile(file));
+      }
+      catch (Exception e) {
+        ok = false;
+        AppLog.Line("Error unpacking update {0}: {1}", file, e.Message);
+      }
+    }
+
+    foreach (var file in installFiles) {
       if (canceled) {
         ok = false;
         break;
       }
 
-      var file = curFile;
-
       AppLog.Line("Installing: {0}", file);
 
       try {
         var ext = Path.GetExtension(file);
-
-        if (ext.Equals(".zip", StringComparison.CurrentCultureIgnoreCase)) {
-          var path = Path.Combine(Path.GetDirectoryName(file)!, "files", Path.GetFileNameWithoutExtension(file));
-
-          if (!Directory.Exists(path)) // is it already unpacked?
-            ZipFile.ExtractToDirectory(file, path);
-
-          string[] supportedExtensions = [".msu", ".msi", ".cab", ".exe"];
-          var foundFiles = Directory
-              .GetFiles(path, "*.*", SearchOption.AllDirectories)
-              .Where(s => supportedExtensions.Contains(Path.GetExtension(s), StringComparer.OrdinalIgnoreCase));
-          IEnumerable<string> enumerable = foundFiles as string[] ?? foundFiles.ToArray();
-          if (!enumerable.Any())
-            throw new FileNotFoundException("No supported update file found in the zip archive");
-
-          file = enumerable.First();
-          ext = Path.GetExtension(file);
-        }
-
-        if (canceled) {
-          ok = false;
-          break;
-        }
 
         if (!SignatureVerifier.IsMicrosoftSigned(file, out var signatureError))
           throw new InvalidDataException($"Refusing to install {Path.GetFileName(file)}: {signatureError}");
@@ -260,6 +246,30 @@ internal class UpdateInstaller {
           OnFinished(ok, reboot);
         })
     );
+  }
+
+  /// <summary>
+  ///     Returns the installable files for a downloaded file, unpacking it first if it is a zip archive.
+  /// </summary>
+  /// <param name="file">The downloaded file.</param>
+  /// <returns>The files to install.</returns>
+  private static List<string> ExpandUpdateFile(string file) {
+    if (!Path.GetExtension(file).Equals(".zip", StringComparison.OrdinalIgnoreCase))
+      return [file];
+
+    var path = Path.Combine(Path.GetDirectoryName(file)!, "files", Path.GetFileNameWithoutExtension(file));
+    if (!Directory.Exists(path)) // is it already unpacked?
+      ZipFile.ExtractToDirectory(file, path);
+
+    string[] supportedExtensions = [".msu", ".msi", ".cab", ".exe"];
+    var foundFiles = Directory
+        .GetFiles(path, "*.*", SearchOption.AllDirectories)
+        .Where(s => supportedExtensions.Contains(Path.GetExtension(s), StringComparer.OrdinalIgnoreCase))
+        .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
+        .ToList();
+    if (foundFiles.Count == 0)
+      throw new FileNotFoundException("No supported update file found in the zip archive");
+    return foundFiles;
   }
 
   /// <summary>
