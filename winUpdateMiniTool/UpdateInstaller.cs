@@ -407,9 +407,9 @@ internal class UpdateInstaller {
         if (canceled)
           return false;
         mCurProcess = proc;
+        proc.Start();
       }
 
-      proc.Start();
       // Read the whole output before waiting, otherwise DISM blocks on a full pipe.
       var output = proc.StandardOutput.ReadToEnd();
       proc.WaitForExit();
@@ -472,13 +472,14 @@ internal class UpdateInstaller {
     proc.StartInfo = startInfo;
     proc.EnableRaisingEvents = true;
 
-    lock (mProcessLock) {
-      if (canceled) return CanceledExitCode; // canceled before this step even started
-      mCurProcess = proc;
-    }
-
     try {
-      proc.Start();
+      // Starting under the lock ensures CancelOperations sees either no process or a started one.
+      lock (mProcessLock) {
+        if (canceled) return CanceledExitCode; // canceled before this step even started
+        mCurProcess = proc;
+        proc.Start();
+      }
+
       proc.WaitForExit();
       return proc.ExitCode;
     }
