@@ -423,7 +423,8 @@ internal partial class MainForm : Form {
   }
 
   private void MainFormClosing(object sender, FormClosingEventArgs e) {
-    if (!exiting && notifyIcon.Visible && allowShowDisplay) {
+    // Only a user close goes to the tray; cancelling a shutdown or logoff would block Windows.
+    if (!exiting && e.CloseReason == CloseReason.UserClosing && notifyIcon.Visible && allowShowDisplay) {
       e.Cancel = true;
       allowShowDisplay = false;
       Hide();
