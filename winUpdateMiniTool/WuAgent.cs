@@ -100,6 +100,8 @@ internal class WuAgent {
     restoreLists = MiscFunc.ParseInt(Program.IniReadValue("Options", "LoadLists", "0")) != 0;
     if (restoreLists)
       LoadUpdates();
+    else // older versions wrote the file regardless of the option
+      FileOps.DeleteFile(DlPath + @"\updates.ini");
   }
 
   /// <summary>
