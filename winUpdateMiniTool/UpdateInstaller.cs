@@ -196,6 +196,9 @@ internal class UpdateInstaller {
         if (canceled)
           break;
 
+        if (!SignatureVerifier.IsMicrosoftSigned(file, out var signatureError))
+          throw new InvalidDataException($"Refusing to install {Path.GetFileName(file)}: {signatureError}");
+
         int exitCode;
 
         if (ext.Equals(".exe", StringComparison.CurrentCultureIgnoreCase))
