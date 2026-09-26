@@ -327,15 +327,25 @@ internal abstract class Gpo {
     subKey.SetValue("Start", (int)mode);
 
     try {
+      var system = new SecurityIdentifier(FileOps.MF_SID_SYSTEM);
       var ac = subKey.GetAccessControl();
-      var
-          rules = ac.GetAccessRules(true, true, typeof(SecurityIdentifier)); // get as SID not string
-      foreach (RegistryAccessRule rule in rules)
-        if (rule.IdentityReference.Value.Equals(FileOps.MF_SID_SYSTEM))
+      var hasSystemAllow = false;
+      var rules = ac.GetAccessRules(true, true, typeof(SecurityIdentifier)); // get as SID not string
+      foreach (RegistryAccessRule rule in rules) {
+        if (!rule.IdentityReference.Equals(system))
+          continue;
+        // Only the deny entry added on disable is removed; the original allow entries stay intact.
+        if (rule.AccessControlType == AccessControlType.Deny)
           ac.RemoveAccessRule(rule);
+        else
+          hasSystemAllow = true;
+      }
+
       if (mode == ServiceStartMode.Disabled)
-        ac.AddAccessRule(new RegistryAccessRule(new SecurityIdentifier(FileOps.MF_SID_SYSTEM),
-            RegistryRights.FullControl, AccessControlType.Deny));
+        ac.AddAccessRule(new RegistryAccessRule(system, RegistryRights.FullControl, AccessControlType.Deny));
+      else if (!hasSystemAllow) // restore access removed by earlier versions of this tool
+        ac.AddAccessRule(new RegistryAccessRule(system, RegistryRights.FullControl,
+            InheritanceFlags.ContainerInherit, PropagationFlags.None, AccessControlType.Allow));
       subKey.SetAccessControl(ac);
     }
     catch (Exception e) {
