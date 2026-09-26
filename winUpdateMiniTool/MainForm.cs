@@ -251,7 +251,7 @@ internal partial class MainForm : Form {
     Updater.Subscribe(
       (message, isError) => { MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OK, isError ? MessageBoxIcon.Warning : MessageBoxIcon.Information); },
       (message) => MessageBox.Show(message, Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK,
-      () => { menuExit_Click(null, EventArgs.Empty); },
+      ExitApplication,
       MiscFunc.ParseInt(GetConfig("AppAutoUpdate", "0")) != 0
     );
     chkAutoUpdateApp.Checked = Updater.AutoUpdate;
@@ -421,6 +421,11 @@ internal partial class MainForm : Form {
       e.Cancel = true;
       allowShowDisplay = false;
       Hide();
+      return;
+    }
+
+    if (!exiting && e.CloseReason == CloseReason.UserClosing && !ConfirmExitWhileBusy()) {
+      e.Cancel = true;
       return;
     }
 
@@ -705,8 +710,23 @@ internal partial class MainForm : Form {
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
+    if (ConfirmExitWhileBusy())
+      ExitApplication();
+  }
+
+  private bool ConfirmExitWhileBusy() {
+    if (!agent.IsBusy())
+      return true;
+    if (MessageBox.Show("An operation is still in progress. Cancel it and exit?", Updater.ApplicationTitle,
+          MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+      return false;
+    agent.CancelOperations();
+    return true;
+  }
+
+  private void ExitApplication() {
     if (InvokeRequired) {
-      Invoke(new EventHandler(menuExit_Click), sender, e);
+      Invoke(new Action(ExitApplication));
       return;
     }
     exiting = true;
