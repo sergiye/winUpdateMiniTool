@@ -296,8 +296,12 @@ internal static class Program {
   /// <param name="iniPath">The path to the INI file.</param>
   /// <returns>The value read from the INI file.</returns>
   public static string IniReadValue(string section, string key, string @default = "", string iniPath = null) {
-    var chars = new char[8193];
-    var size = GetPrivateProfileString(section, key, @default, chars, chars.Length, iniPath ?? GetIniPath());
+    var path = iniPath ?? GetIniPath();
+    var chars = new char[8192];
+    int size;
+    // A return value of buffer size - 1 means the value was truncated.
+    while ((size = GetPrivateProfileString(section, key, @default, chars, chars.Length, path)) == chars.Length - 1)
+      chars = new char[chars.Length * 2];
     return new string(chars, 0, size);
   }
 
