@@ -101,7 +101,7 @@ internal class WuAgent {
     if (restoreLists)
       LoadUpdates();
     else // older versions wrote the file regardless of the option
-      FileOps.DeleteFile(DlPath + @"\updates.ini");
+      DeleteStoredLists();
   }
 
   /// <summary>
@@ -117,7 +117,19 @@ internal class WuAgent {
       if (value)
         StoreUpdates();
       else
-        FileOps.DeleteFile(DlPath + @"\updates.ini");
+        DeleteStoredLists();
+    }
+  }
+
+  // The folder also holds downloads, so it is removed only when nothing else is left in it.
+  private void DeleteStoredLists() {
+    FileOps.DeleteFile(DlPath + @"\updates.ini");
+    try {
+      if (Directory.Exists(DlPath) && !Directory.EnumerateFileSystemEntries(DlPath).Any())
+        Directory.Delete(DlPath);
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to remove the empty folder {0}: {1}", DlPath, err.Message);
     }
   }
 
