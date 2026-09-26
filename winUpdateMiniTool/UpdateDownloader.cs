@@ -61,7 +61,7 @@ internal class UpdateDownloader {
 
       if (mUpdates != null)
         foreach (var update in mUpdates)
-          if (update.Kb.Equals(download.Kb)) {
+          if (update.Key.Equals(download.UpdateKey)) {
             mInfo = update.Title;
             break;
           }
@@ -146,7 +146,7 @@ internal class UpdateDownloader {
     public string Path;
     public string FileName;
     public bool Failed;
-    public string Kb;
+    public string UpdateKey;
   }
 
   /// <summary>

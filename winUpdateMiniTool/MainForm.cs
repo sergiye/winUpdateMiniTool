@@ -1289,7 +1289,7 @@ compact.exe /CompactOS:always";
     lblSupport.Visible = false;
     if (updateView.SelectedItems.Count != 1) return;
     var update = (MsUpdate)updateView.SelectedItems[0].Tag;
-    if (update.Kb == null || update.Kb.Length <= 2) return;
+    if (!update.HasKb) return;
     lblSupport.Links[0].LinkData = "https://support.microsoft.com/help/" + update.Kb.Substring(2);
     lblSupport.Links[0].Visited = false;
     lblSupport.Visible = true;

@@ -37,6 +37,11 @@ internal class MsUpdate {
   }
 
   /// <summary>
+  ///     KB value assigned to updates that have no KB article.
+  /// </summary>
+  public const string UnknownKb = "KBUnknown";
+
+  /// <summary>
   ///     The application ID associated with the update.
   /// </summary>
   public readonly string ApplicationId = "";
@@ -107,6 +112,21 @@ internal class MsUpdate {
   ///     UUID of the update.
   /// </summary>
   public string Uuid = "";
+
+  /// <summary>
+  ///     Whether the update refers to a real KB article.
+  /// </summary>
+  public bool HasKb => Kb.Length > 2 && Kb != UnknownKb;
+
+  /// <summary>
+  ///     Identifies the update uniquely; KB numbers can be missing or shared by several updates.
+  /// </summary>
+  public string Key => Uuid.Length > 0 ? Uuid : Kb;
+
+  /// <summary>
+  ///     Name of the folder the update files are downloaded to.
+  /// </summary>
+  public string DownloadFolder => HasKb ? Kb : Key;
 
   /// <summary>
   ///     Initializes a new instance of the <see cref="MsUpdate" /> class.
@@ -218,7 +238,7 @@ internal class MsUpdate {
   /// <param name="update">The update object.</param>
   /// <returns>The KB article ID.</returns>
   private static string GetKb(IUpdate update) {
-    return update.KBArticleIDs.Count > 0 ? "KB" + update.KBArticleIDs[0] : "KBUnknown";
+    return update.KBArticleIDs.Count > 0 ? "KB" + update.KBArticleIDs[0] : UnknownKb;
   }
 
   /// <summary>

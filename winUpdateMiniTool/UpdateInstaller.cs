@@ -111,7 +111,7 @@ internal class UpdateInstaller {
         Progress?.Invoke(this, new WuAgent.ProgressArgs(0, 0, 0, percent, string.Empty));
 
       if (doInstall) {
-        var files = mAllFiles.GetValues(mUpdates[mCurrentTask].Kb);
+        var files = mAllFiles.GetValues(mUpdates[mCurrentTask].Key);
 
         mThread = new Thread(RunInstall);
         mThread.Start(files);

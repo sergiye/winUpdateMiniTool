@@ -397,8 +397,8 @@ internal class WuAgent {
       foreach (var url in update.Downloads) {
         UpdateDownloader.Task download = new() {
           Url = url,
-          Path = DlPath + @"\" + update.Kb,
-          Kb = update.Kb
+          Path = DlPath + @"\" + update.DownloadFolder,
+          UpdateKey = update.Key
         };
         downloads.Add(download);
       }
@@ -475,7 +475,7 @@ internal class WuAgent {
     else {
       MultiValueDictionary<string, string> allFiles = new();
       foreach (var task in args.Downloads.Where(task => !task.Failed)) {
-        allFiles.Add(task.Kb, task.Path + @"\" + task.FileName);
+        allFiles.Add(task.UpdateKey, task.Path + @"\" + task.FileName);
       }
 
       // TODO
