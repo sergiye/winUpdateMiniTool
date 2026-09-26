@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using sergiye.Common;
@@ -751,6 +752,11 @@ internal partial class MainForm : Form {
   }
 
   private void menuClean_Click(object sender, EventArgs e) {
+    if (!OSHelper.IsAdministrator()) {
+      MessageBox.Show("Administrator privileges are required to clean the Windows Update cache.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      return;
+    }
+
     SetControlsState(false, "Cleaning Windows Update cache...");
     Task.Run(CleanCache);
   }
@@ -758,24 +764,47 @@ internal partial class MainForm : Form {
   private Task CleanCache() {
     var cachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download");
     long freedBytes = 0;
-    if (Directory.Exists(cachePath)) {
-      try {
+    var failedFiles = 0;
+    // The service keeps files of pending downloads open, so it is stopped while the cache is cleaned.
+    using var service = new ServiceController("wuauserv");
+    var serviceStopped = false;
+    try {
+      if (service.Status != ServiceControllerStatus.Stopped) {
+        service.Stop();
+        service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+        serviceStopped = true;
+      }
+      if (Directory.Exists(cachePath)) {
         foreach (var file in Directory.GetFiles(cachePath, "*", SearchOption.AllDirectories)) {
           var fileSize = new FileInfo(file).Length;
           if (FileOps.DeleteFile(file))
             freedBytes += fileSize;
+          else
+            failedFiles++;
         }
         foreach (var dir in Directory.GetDirectories(cachePath, "*", SearchOption.TopDirectoryOnly)) {
           FileOps.SafeDeleteFolder(dir);
         }
         FileOps.SafeDeleteFolder(cachePath);
       }
+    }
+    catch (Exception ex) {
+      LineLogger(null, new AppLog.LogEventArgs($"Error cleaning updates cache: {ex.Message}"));
+    }
+    finally {
+      try {
+        if (serviceStopped)
+          service.Start();
+      }
       catch (Exception ex) {
-        LineLogger(null, new AppLog.LogEventArgs($"Error cleaning updates cache: {ex.Message}"));
+        LineLogger(null, new AppLog.LogEventArgs($"Error restarting the Windows Update service: {ex.Message}"));
       }
     }
+
     SetControlsState(true);
-    LineLogger(null, new AppLog.LogEventArgs($"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"));
+    LineLogger(null, new AppLog.LogEventArgs(failedFiles == 0
+        ? $"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"
+        : $"Windows Update cache partially cleaned, freed {FileOps.FormatSize(freedBytes)}, {failedFiles} file(s) could not be deleted"));
     return Task.CompletedTask;
   }
 
