@@ -771,20 +771,23 @@ internal class WuAgent {
 
     OnUpdatesChanged();
 
-    if (mCurOperation == AgentOperation.PreparingUpdates) {
-      var ret = InstallUpdates(updates);
+    var ret = downloadResults.ResultCode switch {
+      OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors => RetCodes.Success,
+      OperationResultCode.orcAborted => RetCodes.Aborted,
+      OperationResultCode.orcFailed => RetCodes.DownloadFailed,
+      _ => RetCodes.Undefined
+    };
+
+    if (mCurOperation == AgentOperation.PreparingUpdates && ret == RetCodes.Success) {
+      ret = InstallUpdates(updates);
       if (ret <= 0)
         OnFinished(ret);
     }
     else {
-      AppLog.Line("Updates downloaded to %windir%\\SoftwareDistribution\\Download");
-
-      var ret = downloadResults.ResultCode switch {
-        OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors => RetCodes.Success,
-        OperationResultCode.orcAborted => RetCodes.Aborted,
-        OperationResultCode.orcFailed => RetCodes.InternalError,
-        _ => RetCodes.Undefined
-      };
+      if (ret == RetCodes.Success)
+        AppLog.Line("Updates downloaded to %windir%\\SoftwareDistribution\\Download");
+      else
+        AppLog.Line("Downloading updates failed");
       OnFinished(ret);
     }
   }
