@@ -10,16 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: nuget/setup-nuget@v2
-      - uses: microsoft/setup-msbuild@v1.1
+      - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: x64
-
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            buildprops:
-              - 'Directory.Build.props'
 
       - name: NuGet restore
         run: nuget restore winUpdateMiniTool.sln
