@@ -714,6 +714,20 @@ internal class WuAgent {
       return;
     }
 
+    var ret = searchResults.ResultCode switch {
+      OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors => RetCodes.Success,
+      OperationResultCode.orcAborted => RetCodes.Aborted,
+      OperationResultCode.orcFailed => RetCodes.InternalError,
+      _ => RetCodes.Undefined
+    };
+
+    // Partial results of an aborted or failed search must neither replace the lists nor count as a completed check.
+    if (ret != RetCodes.Success) {
+      AppLog.Line("Search for updates did not complete");
+      OnFinished(ret);
+      return;
+    }
+
     MPendingUpdates.Clear();
     MInstalledUpdates.Clear();
     MHiddenUpdates.Clear();
@@ -733,14 +747,6 @@ internal class WuAgent {
 
     OnUpdatesChanged(true);
 
-    var ret = RetCodes.Undefined;
-    if (searchResults.ResultCode == OperationResultCode.orcSucceeded ||
-        searchResults.ResultCode == OperationResultCode.orcSucceededWithErrors)
-      ret = RetCodes.Success;
-    else if (searchResults.ResultCode == OperationResultCode.orcAborted)
-      ret = RetCodes.Aborted;
-    else if (searchResults.ResultCode == OperationResultCode.orcFailed)
-      ret = RetCodes.InternalError;
     OnFinished(ret);
   }
 
