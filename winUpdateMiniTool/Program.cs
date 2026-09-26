@@ -486,6 +486,17 @@ internal static class Program {
     if (!OSHelper.IsAdministrator())
       return;
 
+    var startupTaskPath = GetTaskExecPath(GetStartupTaskPath());
+    if (startupTaskPath != null && IsStaleExecutable(startupTaskPath)) {
+      AppLog.Line("Updating the outdated auto-start task: {0}", startupTaskPath);
+      try {
+        new StartupManager(AutoStartArguments).Startup = true;
+      }
+      catch (Exception err) {
+        AppLog.Line("Failed to update the auto-start task: {0}", err.Message);
+      }
+    }
+
     var skipUacPath = GetTaskExecPath(MF_APP_TASK_NAME);
     if (skipUacPath != null && IsStaleExecutable(skipUacPath)) {
       AppLog.Line("Updating the outdated UAC skip task: {0}", skipUacPath);
