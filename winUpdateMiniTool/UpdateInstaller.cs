@@ -327,9 +327,9 @@ internal class UpdateInstaller {
   /// </summary>
   /// <param name="fileName">The name of the CAB file.</param>
   /// <returns>True if the CAB file is applicable, otherwise false.</returns>
-  private static bool CheckCab(string fileName) {
+  private bool CheckCab(string fileName) {
+    using Process proc = new();
     try {
-      Process proc = new();
       proc.StartInfo.FileName = Environment.ExpandEnvironmentVariables(
           @"%SystemRoot%\System32\Dism.exe"
       );
@@ -338,6 +338,12 @@ internal class UpdateInstaller {
       proc.StartInfo.RedirectStandardOutput = true;
       proc.StartInfo.UseShellExecute = false;
       proc.StartInfo.CreateNoWindow = true;
+      lock (mProcessLock) {
+        if (canceled)
+          return false;
+        mCurProcess = proc;
+      }
+
       proc.Start();
       // Read the whole output before waiting, otherwise DISM blocks on a full pipe.
       var output = proc.StandardOutput.ReadToEnd();
@@ -353,6 +359,12 @@ internal class UpdateInstaller {
     catch (Exception e) {
       AppLog.Line("Dism error: {0}", e.Message);
     }
+    finally {
+      lock (mProcessLock) {
+        if (mCurProcess == proc)
+          mCurProcess = null;
+      }
+    }
 
     return false;
   }
@@ -363,10 +375,11 @@ internal class UpdateInstaller {
   /// <param name="fileName">The name of the CAB file.</param>
   /// <returns>The exit code of the installation process.</returns>
   private int InstallCab(string fileName) {
-    if (!CheckCab(fileName))
-      return 0; // update not applicable
+    var applicable = CheckCab(fileName);
     if (canceled)
       return CanceledExitCode;
+    if (!applicable)
+      return 0; // update not applicable
 
     ProcessStartInfo startInfo =
         new() {
