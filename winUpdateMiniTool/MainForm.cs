@@ -23,6 +23,7 @@ internal partial class MainForm : Form {
   private readonly Gpo.Respect mGpoRespect;
   private readonly float mWinVersion;
   private bool allowShowDisplay = true;
+  private bool autoSearchRunning;
   private AutoUpdateOptions autoUpdate = AutoUpdateOptions.No;
   private bool bUpdateList;
   private bool checkChecks;
@@ -374,11 +375,15 @@ internal partial class MainForm : Form {
     }
 
     if ((doUpdate || updateNow) && agent.IsActive()) {
+      autoSearchRunning = updateNow && !doUpdate;
       doUpdate = false;
-      if (chkOffline.Checked)
-        agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked);
-      else
-        agent.SearchForUpdates(dlSource.Text, chkOld.Checked);
+      var ret = chkOffline.Checked
+        ? agent.SearchForUpdates(chkDownload.Checked, chkOld.Checked)
+        : agent.SearchForUpdates(dlSource.Text, chkOld.Checked);
+      if (ret != WuAgent.RetCodes.InProgress) {
+        ShowResult(WuAgent.AgentOperation.CheckingUpdates, ret, silent: autoSearchRunning);
+        autoSearchRunning = false;
+      }
     }
 
     if (bUpdateList) {
@@ -1032,10 +1037,12 @@ compact.exe /CompactOS:always";
     lblStatus.Text = "";
     toolTip.SetToolTip(lblStatus, "");
 
-    ShowResult(args.Op, args.Ret, args.RebootNeeded);
+    var silent = autoSearchRunning;
+    autoSearchRunning = false;
+    ShowResult(args.Op, args.Ret, args.RebootNeeded, silent);
   }
 
-  private void ShowResult(WuAgent.AgentOperation op, WuAgent.RetCodes ret, bool reboot = false) {
+  private void ShowResult(WuAgent.AgentOperation op, WuAgent.RetCodes ret, bool reboot = false, bool silent = false) {
     if (op == WuAgent.AgentOperation.DownloadingUpdates && chkManual.Checked) {
       if (ret == WuAgent.RetCodes.Success) {
         MessageBox.Show($"Updates were downloaded to {agent.DlPath} and are ready to be installed manually.", Updater.ApplicationTitle, MessageBoxButtons.OK,
@@ -1105,6 +1112,12 @@ compact.exe /CompactOS:always";
     }
 
     var action = GetOpStr(op);
+
+    // Background checks are retried later and reported by the overdue balloon, so do not pop up dialogs.
+    if (silent) {
+      AppLog.Line("Automatic {0} failed: {1}.", action.ToLowerInvariant(), status);
+      return;
+    }
 
     resultShown = true;
     MessageBox.Show($"{action} failed: {status}.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
