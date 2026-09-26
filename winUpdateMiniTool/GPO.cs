@@ -236,7 +236,8 @@ internal abstract class Gpo {
 
       if (valueBlock as int? == 1 && valueWsus as int? == 1)
         return 1; // CheckState.Checked;
-      if (valueBlock as int? == 0 && valueWsus as int? == 0)
+      // BlockMs(false) deletes the values, so a missing value also means not blocked.
+      if (valueBlock as int? is null or 0 && valueWsus as int? is null or 0)
         return 0; // CheckState.Unchecked;
       return 2; // CheckState.Indeterminate;
     }
