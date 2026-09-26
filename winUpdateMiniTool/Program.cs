@@ -385,6 +385,12 @@ internal static class Program {
         return false;
       }
 
+      // Without admin rights StartupManager manages only the Run value and cannot remove the elevated logon task.
+      if (!enable && !OSHelper.IsAdministrator() && GetTaskExecPath(GetStartupTaskPath()) != null) {
+        AppLog.Line("Administrator rights are required to disable auto-start.");
+        return false;
+      }
+
       manager.Startup = enable;
       // The setter does nothing when the state already matches, which leaves a Run value written by older
       // versions in place while running elevated.
