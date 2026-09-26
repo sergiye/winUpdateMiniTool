@@ -775,6 +775,9 @@ internal partial class MainForm : Form {
   }
 
   private void menuOptimize_Click(object sender, EventArgs e) {
+    if (MessageBox.Show("This will disable reserved storage, remove superseded component versions and compress the Windows system files. These changes cannot be easily undone.\r\n\r\nContinue?",
+          Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+      return;
     SetControlsState(false, "Windows kernel optimization...");
     Task.Run(OptimizeKernel);
   }
