@@ -231,7 +231,9 @@ internal class UpdateInstaller {
           AppLog.Line("Update is not applicable to this system: {0}", file);
           ok = false;
         }
-        else if (exitCode != 1 && exitCode != 0) {
+        // For msiexec, 1 is ERROR_INVALID_FUNCTION rather than a success code.
+        else if (exitCode != 0 && (exitCode != 1 || ext.Equals(".msi", StringComparison.OrdinalIgnoreCase))) {
+          AppLog.Line("Installer exit code 0x{0:X8}: {1}", exitCode, file);
           ok = false; // some error
         }
       }
