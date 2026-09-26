@@ -284,7 +284,7 @@ internal class WuAgent {
 
     SetOnline(source);
 
-    return SearchForUpdates();
+    return EndSyncStart(SearchForUpdates());
   }
 
   public RetCodes SearchForUpdates(bool download, bool includePotentiallySupersededUpdates = false) {
@@ -311,16 +311,23 @@ internal class WuAgent {
     }
 
     var ret = SetupOffline();
-    return ret < 0 ? ret : SearchForUpdates();
+    return ret < 0 ? ret : EndSyncStart(SearchForUpdates());
   }
 
+  // A failed start is reported only through the return value; the caller either returns it to the UI
+  // or raises Finished itself, so raising Finished here would report the error twice.
   private RetCodes OnWuError(Exception err) {
     var access = err.GetType() == typeof(UnauthorizedAccessException);
     var ret = access ? RetCodes.AccessError : RetCodes.InternalError;
 
     mCallback = null;
     AppLog.Line(err.Message);
-    OnFinished(ret);
+    return ret;
+  }
+
+  private RetCodes EndSyncStart(RetCodes ret) {
+    if (ret != RetCodes.InProgress)
+      mCurOperation = AgentOperation.None;
     return ret;
   }
 
@@ -405,10 +412,8 @@ internal class WuAgent {
     mManualInstallOperation = mCurOperation;
     OnProgress(-1, 0, 0, 0);
 
-    if (!mUpdateInstaller.Install(updates, allFiles)) {
-      OnFinished(RetCodes.InstallFailed);
+    if (!mUpdateInstaller.Install(updates, allFiles))
       return RetCodes.InstallFailed;
-    }
 
     return RetCodes.InProgress;
   }
@@ -570,7 +575,7 @@ internal class WuAgent {
       mDownloadJob = mDownloader.BeginDownload(mCallback, mCallback, updates);
     }
     catch (Exception err) {
-      return OnWuError(err);
+      return EndSyncStart(OnWuError(err));
     }
 
     return RetCodes.InProgress;

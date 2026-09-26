@@ -1043,6 +1043,9 @@ compact.exe /CompactOS:always";
   }
 
   private void ShowResult(WuAgent.AgentOperation op, WuAgent.RetCodes ret, bool reboot = false, bool silent = false) {
+    // An operation that failed to start raises no Finished event, so refresh the busy state here.
+    UpdateState();
+
     if (op == WuAgent.AgentOperation.DownloadingUpdates && chkManual.Checked) {
       if (ret == WuAgent.RetCodes.Success) {
         MessageBox.Show($"Updates were downloaded to {agent.DlPath} and are ready to be installed manually.", Updater.ApplicationTitle, MessageBoxButtons.OK,
