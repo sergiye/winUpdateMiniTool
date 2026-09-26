@@ -811,16 +811,22 @@ compact.exe /CompactOS:always";
   }
 
   private void menuWuAu_Click(object sender, EventArgs e) {
-    wuauMenu.Checked = !wuauMenu.Checked;
-    if (wuauMenu.Checked) {
+    if (agent.IsBusy()) {
+      MessageBox.Show("Wait for the current operation to finish or cancel it first.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      return;
+    }
+
+    if (!wuauMenu.Checked) {
       agent.EnableWuAuServ();
       agent.Init();
+      LoadProviders(dlSource.Text);
     }
     else {
       agent.UnInit();
       agent.EnableWuAuServ(false);
     }
 
+    wuauMenu.Checked = agent.TestWuAuServ();
     UpdateState();
   }
 
