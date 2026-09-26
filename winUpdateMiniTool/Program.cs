@@ -139,7 +139,7 @@ internal static class Program {
       agent.EnableWuAuServ();
 
     var onStart = IniReadValue("OnStart", "Exec", "", toolsIni);
-    if (onStart.Length > 0)
+    if (onStart.Length > 0 && IsToolsCommandAllowed("OnStart", onStart))
       DoExec(PrepExec(onStart, MiscFunc.ParseInt(IniReadValue("OnStart", "Silent", "1", toolsIni)) != 0), true);
   }
 
@@ -150,7 +150,7 @@ internal static class Program {
     var toolsIni = GetToolsPath() + @"\Tools.ini";
 
     var onClose = IniReadValue("OnClose", "Exec", "", toolsIni);
-    if (onClose.Length > 0)
+    if (onClose.Length > 0 && IsToolsCommandAllowed("OnClose", onClose))
       DoExec(PrepExec(onClose, MiscFunc.ParseInt(IniReadValue("OnClose", "Silent", "1", toolsIni)) != 0), true);
 
     if (MiscFunc.ParseInt(IniReadValue("OnClose", "DisableWuAuServ", "0", toolsIni)) != 0)
@@ -161,6 +161,20 @@ internal static class Program {
     for (var i = 0; i < args.Length; i++)
       if (args[i].Equals("-onclose", StringComparison.CurrentCultureIgnoreCase) && i + 1 < args.Length)
         DoExec(PrepExec(args[++i]));
+  }
+
+  /// <summary>
+  ///     Checks whether an automatic Tools.ini command may run. When the tool is elevated and its folder can be
+  ///     modified without administrator rights, anyone could plant such a command, so it is skipped.
+  /// </summary>
+  /// <param name="section">The Tools.ini section the command comes from.</param>
+  /// <param name="command">The command line.</param>
+  /// <returns>True if the command may be executed.</returns>
+  private static bool IsToolsCommandAllowed(string section, string command) {
+    if (!OSHelper.IsAdministrator() || !IsAppDirWritableByUsers())
+      return true;
+    AppLog.Line("Skipped the Tools.ini {0} command because the application folder can be modified without administrator rights: {1}", section, command);
+    return false;
   }
 
   /// <summary>

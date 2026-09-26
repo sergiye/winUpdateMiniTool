@@ -138,4 +138,4 @@ Silent=1
 
 Values must not contain trailing comments: Windows INI parsing keeps them as part of the value.
 
-Commands from these files run with the tool's administrator rights, so make sure only administrators can modify the application folder.
+Commands from these files run with the tool's administrator rights, so make sure only administrators can modify the application folder. If the folder can be modified without administrator rights, the `OnStart` and `OnClose` commands are skipped, and a Tools menu entry asks for confirmation before running.

@@ -711,6 +711,11 @@ internal partial class MainForm : Form {
   }
 
   private void menuExec_Click(object sender, EventArgs e, string exec, string dir, bool silent = false) {
+    // The tool definition may have been planted by a non-administrator, so show what is about to run elevated.
+    if (OSHelper.IsAdministrator() && Program.IsAppDirWritableByUsers() &&
+        MessageBox.Show($"The application folder can be modified without administrator rights, so this tool definition may have been changed by another program. The following command will run with administrator rights:\r\n\r\n{exec}\r\n\r\nRun it?",
+          Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+      return;
     var startInfo = Program.PrepExec(exec, silent);
     startInfo.WorkingDirectory = dir;
     if (!Program.DoExec(startInfo))
