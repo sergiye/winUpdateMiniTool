@@ -25,6 +25,7 @@ internal partial class MainForm : Form {
   private readonly float mWinVersion;
   private bool allowShowDisplay = true;
   private bool autoSearchRunning;
+  private bool maintenanceRunning;
   private AutoUpdateOptions autoUpdate = AutoUpdateOptions.No;
   private bool bUpdateList;
   private bool checkChecks;
@@ -344,7 +345,7 @@ internal partial class MainForm : Form {
     var updateNow = false;
     if (notifyIcon.Visible) {
       var daysDue = GetAutoUpdateDue();
-      if (daysDue != 0 && !agent.IsBusy()) {
+      if (daysDue != 0 && !agent.IsBusy() && !maintenanceRunning) {
         // ensure we only start a check when user is not doing anything
         var idleTime = OSHelper.GetIdleTime();
         if (idleDelay * 60 < idleTime) {
@@ -375,7 +376,7 @@ internal partial class MainForm : Form {
         }
     }
 
-    if ((doUpdate || updateNow) && agent.IsActive()) {
+    if ((doUpdate || updateNow) && agent.IsActive() && !maintenanceRunning) {
       autoSearchRunning = updateNow && !doUpdate;
       doUpdate = false;
       var ret = chkOffline.Checked
@@ -758,6 +759,7 @@ internal partial class MainForm : Form {
       return;
     }
 
+    maintenanceRunning = true;
     SetControlsState(false, "Cleaning Windows Update cache...");
     // Same as the Windows Update Service menu: drop the agent session before the service is stopped.
     agent.UnInit();
@@ -807,6 +809,7 @@ internal partial class MainForm : Form {
     BeginInvoke(new Action(() => {
       agent.Init();
       LoadProviders(dlSource.Text);
+      maintenanceRunning = false;
       UpdateState();
     }));
     SetControlsState(true);
@@ -820,6 +823,7 @@ internal partial class MainForm : Form {
     if (MessageBox.Show("This will disable reserved storage, remove superseded component versions and compress the Windows system files. These changes cannot be easily undone.\r\n\r\nContinue?",
           Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
       return;
+    maintenanceRunning = true;
     SetControlsState(false, "Windows kernel optimization...");
     Task.Run(OptimizeKernel);
   }
@@ -838,6 +842,7 @@ compact.exe /CompactOS:always";
       LineLogger(null, new AppLog.LogEventArgs($"Error optimizing kernel: {ex.Message}"));
     }
     LineLogger(null, new AppLog.LogEventArgs($"Windows kernel optimization finished."));
+    BeginInvoke(new Action(() => maintenanceRunning = false));
     SetControlsState(true);
   }
 
