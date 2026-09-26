@@ -150,6 +150,27 @@ internal class UpdateDownloader {
   }
 
   /// <summary>
+  ///     Derives a local file name from the download URL, so the server-supplied Content-Disposition
+  ///     name, which may contain path segments, is never used.
+  /// </summary>
+  /// <param name="url">The download URL.</param>
+  /// <param name="fallback">The name to use if the URL does not contain a usable file name.</param>
+  /// <returns>A file name without any directory components.</returns>
+  public static string GetSafeFileName(string url, string fallback) {
+    string name;
+    try {
+      name = Path.GetFileName(Uri.UnescapeDataString(new Uri(url).AbsolutePath));
+    }
+    catch (UriFormatException) {
+      name = "";
+    }
+
+    foreach (var c in Path.GetInvalidFileNameChars())
+      name = name.Replace(c, '_');
+    return name.Trim('.', ' ').Length == 0 ? fallback : name;
+  }
+
+  /// <summary>
   ///     Event arguments for the Finished event.
   /// </summary>
   public class FinishedEventArgs : EventArgs {

@@ -398,6 +398,7 @@ internal class WuAgent {
         UpdateDownloader.Task download = new() {
           Url = url,
           Path = DlPath + @"\" + update.DownloadFolder,
+          FileName = UpdateDownloader.GetSafeFileName(url, "Download_" + downloads.Count),
           UpdateKey = update.Key
         };
         downloads.Add(download);
