@@ -697,12 +697,12 @@ internal class WuAgent {
           MPendingUpdates.Add(upd);
           RemoveFrom(MHiddenUpdates, upd);
         }
-
-        OnUpdatesChanged();
       }
       catch (Exception e) {
         AppLog.Line("Error hiding/unhiding update {0}: {1}", upd.Title, e.Message);
       } // Hide update may throw an exception, if the user has hidden the update manually while the search was in progress.
+
+    OnUpdatesChanged();
   }
 
   private void OnUpdatesFound(ISearchJob searchJob) {
