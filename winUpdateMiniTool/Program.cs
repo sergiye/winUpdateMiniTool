@@ -268,8 +268,9 @@ internal static class Program {
     return true;
   }
 
-  [DllImport("kernel32")]
-  private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+  [DllImport("kernel32", CharSet = CharSet.Unicode)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  private static extern bool WritePrivateProfileString(string section, string key, string val, string filePath);
 
   /// <summary>
   ///     Writes a value to the INI file.
@@ -282,7 +283,7 @@ internal static class Program {
     WritePrivateProfileString(section, key, value, iniPath ?? GetIniPath());
   }
 
-  [DllImport("kernel32")]
+  [DllImport("kernel32", CharSet = CharSet.Unicode)]
   private static extern int GetPrivateProfileString(string section, string key, string def, [In][Out] char[] retVal,
       int size, string filePath);
 
@@ -306,9 +307,13 @@ internal static class Program {
   /// <param name="iniPath">The path to the INI file.</param>
   /// <returns>An array of section names.</returns>
   public static string[] IniEnumSections(string iniPath = null) {
-    var chars = new char[8193];
-    var size = GetPrivateProfileString(null, null, null, chars, 8193, iniPath ?? GetIniPath());
-    return new string(chars, 0, size).Split('\0');
+    var path = iniPath ?? GetIniPath();
+    var chars = new char[8192];
+    int size;
+    // A return value of buffer size - 2 means the section list was truncated.
+    while ((size = GetPrivateProfileString(null, null, null, chars, chars.Length, path)) == chars.Length - 2)
+      chars = new char[chars.Length * 2];
+    return new string(chars, 0, size).Split(['\0'], StringSplitOptions.RemoveEmptyEntries);
   }
 
   /// <summary>
