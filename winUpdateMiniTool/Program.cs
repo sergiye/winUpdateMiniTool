@@ -462,20 +462,33 @@ internal static class Program {
         "S-1-5-32-545", // Users
         WindowsIdentity.GetCurrent().User?.Value
       ];
-      const FileSystemRights writeRights = FileSystemRights.WriteData | FileSystemRights.AppendData |
-                                           FileSystemRights.Delete | FileSystemRights.ChangePermissions |
-                                           FileSystemRights.TakeOwnership;
-      var rules = new DirectoryInfo(appPath).GetAccessControl()
-          .GetAccessRules(true, true, typeof(SecurityIdentifier));
-      return rules.Cast<FileSystemAccessRule>().Any(rule =>
-          rule.AccessControlType == AccessControlType.Allow &&
-          (rule.FileSystemRights & writeRights) != 0 &&
-          userSids.Contains(rule.IdentityReference.Value));
+      var toolsPath = GetToolsPath();
+      return GrantsWrite(new DirectoryInfo(appPath).GetAccessControl(), userSids) ||
+             GrantsWrite(new FileInfo(Updater.CurrentFileLocation).GetAccessControl(), userSids) ||
+             Directory.Exists(toolsPath) && GrantsWrite(new DirectoryInfo(toolsPath).GetAccessControl(), userSids);
     }
     catch (Exception err) {
       AppLog.Line("Failed to check application directory permissions: {0}", err.Message);
       return true;
     }
+  }
+
+  private static bool GrantsWrite(FileSystemSecurity security, string[] sids) {
+    const FileSystemRights writeRights = FileSystemRights.WriteData | FileSystemRights.AppendData |
+                                         FileSystemRights.Delete | FileSystemRights.ChangePermissions |
+                                         FileSystemRights.TakeOwnership;
+    FileSystemRights allowed = 0, denied = 0;
+    foreach (FileSystemAccessRule rule in security.GetAccessRules(true, true, typeof(SecurityIdentifier))) {
+      // Inherit-only entries apply to children, not to the object itself.
+      if ((rule.PropagationFlags & PropagationFlags.InheritOnly) != 0 || !sids.Contains(rule.IdentityReference.Value))
+        continue;
+      if (rule.AccessControlType == AccessControlType.Deny)
+        denied |= rule.FileSystemRights;
+      else
+        allowed |= rule.FileSystemRights;
+    }
+
+    return (allowed & ~denied & writeRights) != 0;
   }
 
   /// <summary>
