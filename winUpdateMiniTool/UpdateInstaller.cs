@@ -176,7 +176,7 @@ internal class UpdateInstaller {
         var ext = Path.GetExtension(file);
 
         if (ext.Equals(".zip", StringComparison.CurrentCultureIgnoreCase)) {
-          var path = Path.GetDirectoryName(file) + @"\files"; // + Path.GetFileNameWithoutExtension(File);
+          var path = Path.Combine(Path.GetDirectoryName(file)!, "files", Path.GetFileNameWithoutExtension(file));
 
           if (!Directory.Exists(path)) // is it already unpacked?
             ZipFile.ExtractToDirectory(file, path);
