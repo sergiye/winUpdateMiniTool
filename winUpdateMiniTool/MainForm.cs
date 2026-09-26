@@ -1030,7 +1030,7 @@ compact.exe /CompactOS:always";
         return;
       }
 
-      if (ret == WuAgent.RetCodes.DownloadFailed) {
+      if (ret == WuAgent.RetCodes.InstallFailed) {
         MessageBox.Show("Installation of some updates failed, and a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
