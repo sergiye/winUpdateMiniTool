@@ -348,22 +348,6 @@ internal class WuAgent {
     return RetCodes.InProgress;
   }
 
-  public IUpdate FindUpdate(string uuid) {
-    if (mUpdateSearcher == null)
-      return null;
-    try {
-      // Note: this is slow!
-      var result = mUpdateSearcher.Search("UpdateID = '" + uuid + "'");
-      if (result.Updates.Count > 0)
-        return result.Updates[0];
-    }
-    catch (Exception err) {
-      AppLog.Line(err.Message);
-    }
-
-    return null;
-  }
-
   public void CancelOperations() {
     if (IsBusy())
       mCurOperation = AgentOperation.CancelingOperation;

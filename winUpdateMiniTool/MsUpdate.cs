@@ -276,12 +276,6 @@ internal class MsUpdate {
   /// </summary>
   /// <returns>The update object.</returns>
   public IUpdate GetUpdate() {
-    /*if (Entry == null)
-    {
-        WuAgent agen = WuAgent.GetInstance();
-        if (agen.IsActive())
-            Entry = agen.FindUpdate(UUID);
-    }*/
     return entry;
   }
 }
