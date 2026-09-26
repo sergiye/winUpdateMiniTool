@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
+using System.Text;
 using System.Windows.Threading;
 using sergiye.Common;
 using winUpdateMiniTool.Common;
@@ -889,69 +890,99 @@ internal class WuAgent {
   public event EventHandler<UpdatesArgs> UpdatesChanged;
 
   private void OnUpdatesChanged(bool found = false) {
-    var iniPath = DlPath + @"\updates.ini";
-    FileOps.DeleteFile(iniPath);
-
-    StoreUpdates(MUpdateHistory);
-    StoreUpdates(MPendingUpdates);
-    StoreUpdates(MInstalledUpdates);
-    StoreUpdates(MHiddenUpdates);
+    StoreUpdates();
 
     UpdatesChanged?.Invoke(this, new UpdatesArgs(found));
   }
 
-  private void StoreUpdates(List<MsUpdate> updates) {
+  private void StoreUpdates() {
     var iniPath = DlPath + @"\updates.ini";
-    foreach (var update in updates) {
-      if (update.Kb.Length == 0) // sanity check
+    StringBuilder ini = new();
+    HashSet<string> stored = [];
+    foreach (var update in MPendingUpdates.Concat(MInstalledUpdates).Concat(MHiddenUpdates)) {
+      if (update.Key.Length == 0 || !stored.Add(update.Key)) // sanity check
         continue;
 
-      Program.IniWriteValue(update.Kb, "UUID", update.Uuid, iniPath);
-      Program.IniWriteValue(update.Kb, "Title", update.Title, iniPath);
-      Program.IniWriteValue(update.Kb, "Info", update.Description, iniPath);
-      Program.IniWriteValue(update.Kb, "Category", update.Category, iniPath);
-      Program.IniWriteValue(update.Kb, "Date",
-          update.Date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern), iniPath);
-      Program.IniWriteValue(update.Kb, "Size", update.Size.ToString(CultureInfo.InvariantCulture), iniPath);
-      Program.IniWriteValue(update.Kb, "SupportUrl", update.SupportUrl, iniPath);
-      Program.IniWriteValue(update.Kb, "Downloads", string.Join("|", update.Downloads.Cast<string>().ToArray()),
-          iniPath);
-      Program.IniWriteValue(update.Kb, "State", ((int)update.State).ToString(), iniPath);
-      Program.IniWriteValue(update.Kb, "Attributes", update.Attributes.ToString(), iniPath);
-      Program.IniWriteValue(update.Kb, "ResultCode", update.ResultCode.ToString(), iniPath);
-      Program.IniWriteValue(update.Kb, "HResult", update.HResult.ToString(), iniPath);
+      ini.Append('[').Append(update.Key).Append("]\r\n");
+      AppendIniValue(ini, "KB", update.Kb);
+      AppendIniValue(ini, "UUID", update.Uuid);
+      AppendIniValue(ini, "Title", update.Title);
+      AppendIniValue(ini, "Info", update.Description);
+      AppendIniValue(ini, "Category", update.Category);
+      AppendIniValue(ini, "Date", update.Date.ToString("o", CultureInfo.InvariantCulture));
+      AppendIniValue(ini, "Size", update.Size.ToString(CultureInfo.InvariantCulture));
+      AppendIniValue(ini, "SupportUrl", update.SupportUrl);
+      AppendIniValue(ini, "Downloads", string.Join("|", update.Downloads.Cast<string>().ToArray()));
+      AppendIniValue(ini, "State", ((int)update.State).ToString());
+      AppendIniValue(ini, "Attributes", update.Attributes.ToString());
+      AppendIniValue(ini, "ResultCode", update.ResultCode.ToString());
+      AppendIniValue(ini, "HResult", update.HResult.ToString());
     }
+
+    try {
+      Directory.CreateDirectory(DlPath);
+      // UTF-16 with BOM makes the profile API read the file as Unicode, so localized titles survive.
+      File.WriteAllText(iniPath, ini.ToString(), Encoding.Unicode);
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to store the update list: {0}", err.Message);
+    }
+  }
+
+  private static void AppendIniValue(StringBuilder ini, string key, string value) {
+    ini.Append(key).Append('=').Append(EscapeIniValue(value)).Append("\r\n");
+  }
+
+  private static string EscapeIniValue(string value) {
+    return (value ?? "").Replace("\\", "\\\\").Replace("\r", "").Replace("\n", "\\n");
+  }
+
+  private static string UnescapeIniValue(string value) {
+    if (value.IndexOf('\\') < 0)
+      return value;
+    StringBuilder sb = new(value.Length);
+    for (var i = 0; i < value.Length; i++) {
+      if (value[i] == '\\' && i + 1 < value.Length) {
+        i++;
+        sb.Append(value[i] == 'n' ? '\n' : value[i]);
+      }
+      else {
+        sb.Append(value[i]);
+      }
+    }
+
+    return sb.ToString();
   }
 
   private void LoadUpdates() {
     var iniPath = DlPath + @"\updates.ini";
-    foreach (var kb in Program.IniEnumSections(iniPath)) {
-      if (kb.Length == 0)
-        continue;
+    foreach (var section in Program.IniEnumSections(iniPath)) {
+      string Read(string key, string def = "") => UnescapeIniValue(Program.IniReadValue(section, key, def, iniPath));
 
+      // Older files used the KB number as the section name and had no KB value.
       MsUpdate update = new() {
-        Kb = kb
+        Kb = Read("KB", section),
+        Uuid = Read("UUID"),
+        Title = Read("Title"),
+        Description = Read("Info"),
+        Category = Read("Category"),
+        SupportUrl = Read("SupportUrl")
       };
-      update.Uuid = Program.IniReadValue(update.Kb, "UUID", "", iniPath);
-      update.Title = Program.IniReadValue(update.Kb, "Title", "", iniPath);
-      update.Description = Program.IniReadValue(update.Kb, "Info", "", iniPath);
-      update.Category = Program.IniReadValue(update.Kb, "Category", "", iniPath);
 
-      try {
-        update.Date = DateTime.Parse(Program.IniReadValue(update.Kb, "Date", "", iniPath));
-      }
-      catch (Exception e) {
-        AppLog.Line("Error parsing stored date for update {0}: {1}", update.Kb, e.Message);
-      }
+      var date = Read("Date");
+      if (DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var parsedDate) ||
+          DateTime.TryParse(date, out parsedDate))
+        update.Date = parsedDate;
+      else
+        AppLog.Line("Error parsing stored date for update {0}: {1}", update.Kb, date);
 
-      update.Size = MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "Size", "0", iniPath));
-      update.SupportUrl = Program.IniReadValue(update.Kb, "SupportUrl", "", iniPath);
-      update.Downloads.AddRange(Program.IniReadValue(update.Kb, "Downloads", "", iniPath).Split('|'));
-      update.State =
-          (MsUpdate.UpdateState)MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "State", "0", iniPath));
-      update.Attributes = MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "Attributes", "0", iniPath));
-      update.ResultCode = MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "ResultCode", "0", iniPath));
-      update.HResult = MiscFunc.ParseInt(Program.IniReadValue(update.Kb, "HResult", "0", iniPath));
+      if (decimal.TryParse(Read("Size", "0"), NumberStyles.Number, CultureInfo.InvariantCulture, out var size))
+        update.Size = size;
+      update.Downloads.AddRange(Read("Downloads").Split(['|'], StringSplitOptions.RemoveEmptyEntries));
+      update.State = (MsUpdate.UpdateState)MiscFunc.ParseInt(Read("State", "0"));
+      update.Attributes = MiscFunc.ParseInt(Read("Attributes", "0"));
+      update.ResultCode = MiscFunc.ParseInt(Read("ResultCode", "0"));
+      update.HResult = MiscFunc.ParseInt(Read("HResult", "0"));
 
       switch (update.State) {
         case MsUpdate.UpdateState.Pending:
