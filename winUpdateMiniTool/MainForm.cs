@@ -42,7 +42,7 @@ internal partial class MainForm : Form {
   public MainForm() {
     InitializeComponent();
 
-    Icon = Icon.ExtractAssociatedIcon(typeof(MainForm).Assembly.Location);
+    Icon = Icon.ExtractAssociatedIcon(Updater.CurrentFileLocation);
     notifyIcon.Icon = Icon;
     notifyIcon.Text = Updater.ApplicationTitle;
 

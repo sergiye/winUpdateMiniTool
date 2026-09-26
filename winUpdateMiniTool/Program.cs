@@ -25,7 +25,7 @@ internal static class Program {
   private static WuAgent agent;
 
   private static string GetIniPath() {
-    return Path.Combine(WrkPath, Path.ChangeExtension(Path.GetFileName(typeof(Program).Assembly.Location), ".ini"));
+    return Path.Combine(WrkPath, Path.ChangeExtension(Path.GetFileName(Updater.CurrentFileLocation), ".ini"));
   }
 
   public static string GetToolsPath() {
@@ -345,7 +345,7 @@ internal static class Program {
   public static void AutoStart(bool enable) {
     var subKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
     if (enable) {
-      var value = $"\"{typeof(Program).Assembly.Location}\" -tray";
+      var value = $"\"{Updater.CurrentFileLocation}\" -tray";
       subKey.SetValue("winUpdateMiniTool", value);
     }
     else {
@@ -392,7 +392,7 @@ internal static class Program {
       service.Connect();
       var folder = service.GetFolder(@"\"); // root
       if (isEnable) {
-        var exePath = typeof(Program).Assembly.Location;
+        var exePath = Updater.CurrentFileLocation;
         var task = service.NewTask(0);
         task.RegistrationInfo.Author = "winUpdateMiniTool";
         task.Principal.RunLevel = _TASK_RUNLEVEL.TASK_RUNLEVEL_HIGHEST;
@@ -450,7 +450,7 @@ internal static class Program {
       var task = folder.GetTask(MF_APP_TASK_NAME);
       AppLog.Line("Trying to SkipUAC ...");
       var action = (IExecAction)task.Definition.Actions[1];
-      if (action.Path.Equals(typeof(Program).Assembly.Location, StringComparison.CurrentCultureIgnoreCase)) {
+      if (action.Path.Equals(Updater.CurrentFileLocation, StringComparison.OrdinalIgnoreCase)) {
         var arguments = string.Join(" ", args.Select(EscapeArg));
         var runningTask = task.RunEx(arguments, (int)_TASK_RUN_FLAGS.TASK_RUN_NO_FLAGS, 0, null);
 
