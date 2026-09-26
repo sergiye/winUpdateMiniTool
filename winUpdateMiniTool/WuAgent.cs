@@ -66,6 +66,7 @@ internal class WuAgent {
   // Tracks whether the in-flight WUA installation job is an install or an uninstall, independent of
   // mCurOperation, which CancelOperations() overwrites with CancelingOperation before the job completes.
   private AgentOperation mInstalationOperation = AgentOperation.None;
+  private AgentOperation mManualInstallOperation = AgentOperation.None;
   private IUpdateInstaller mInstaller;
   private bool mIsValid;
   private IUpdateService mOfflineService;
@@ -417,6 +418,7 @@ internal class WuAgent {
       return RetCodes.Busy;
 
     mCurOperation = AgentOperation.InstallingUpdates;
+    mManualInstallOperation = mCurOperation;
     OnProgress(-1, 0, 0, 0);
 
     if (!mUpdateInstaller.Install(updates, allFiles)) {
@@ -448,6 +450,7 @@ internal class WuAgent {
     }
 
     mCurOperation = AgentOperation.RemovingUpdates;
+    mManualInstallOperation = mCurOperation;
     OnProgress(-1, 0, 0, 0);
 
     if (!mUpdateInstaller.UnInstall(filteredUpdates))
@@ -516,32 +519,30 @@ internal class WuAgent {
 
   private void InstallFinished(object sender, UpdateInstaller.FinishedEventArgs args) // "manual" mode
   {
-    if (args.Success) {
-      AppLog.Line("Updates (Un)Installed successfully");
+    AppLog.Line(args.Success ? "Updates (Un)Installed successfully" : "Updates failed to (Un)Install");
 
-      foreach (var update in args.Updates)
-        switch (mCurOperation) {
-          case AgentOperation.InstallingUpdates: {
-              if (RemoveFrom(MPendingUpdates, update)) {
-                update.Attributes |= (int)MsUpdate.UpdateAttr.Installed;
-                MInstalledUpdates.Add(update);
-              }
-
-              break;
+    // mCurOperation is overwritten on cancel, so the operation kind is tracked separately.
+    var operation = mManualInstallOperation;
+    mManualInstallOperation = AgentOperation.None;
+    foreach (var update in args.Succeeded)
+      switch (operation) {
+        case AgentOperation.InstallingUpdates: {
+            if (RemoveFrom(MPendingUpdates, update)) {
+              update.Attributes |= (int)MsUpdate.UpdateAttr.Installed;
+              MInstalledUpdates.Add(update);
             }
-          case AgentOperation.RemovingUpdates: {
-              if (RemoveFrom(MInstalledUpdates, update)) {
-                update.Attributes &= ~(int)MsUpdate.UpdateAttr.Installed;
-                MPendingUpdates.Add(update);
-              }
 
-              break;
+            break;
+          }
+        case AgentOperation.RemovingUpdates: {
+            if (RemoveFrom(MInstalledUpdates, update)) {
+              update.Attributes &= ~(int)MsUpdate.UpdateAttr.Installed;
+              MPendingUpdates.Add(update);
             }
-        }
-    }
-    else {
-      AppLog.Line("Updates failed to (Un)Install");
-    }
+
+            break;
+          }
+      }
 
     if (args.Reboot)
       AppLog.Line("Reboot is required for one or more updates");

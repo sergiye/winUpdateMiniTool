@@ -25,12 +25,14 @@ internal class UpdateInstaller {
   private Process mCurProcess;
   private Thread mThread;
   private List<MsUpdate> mUpdates;
+  private List<MsUpdate> mSucceeded = [];
   private bool rebootRequired;
 
   /// <summary>
   ///     Resets the internal state of the installer.
   /// </summary>
   private void Reset() {
+    mSucceeded = [];
     errorCount = 0;
     rebootRequired = false;
     canceled = false;
@@ -130,7 +132,8 @@ internal class UpdateInstaller {
     FinishedEventArgs args =
         new(errorCount, rebootRequired) {
           //args.AllFiles = mAllFiles;
-          Updates = mUpdates
+          Updates = mUpdates,
+          Succeeded = mSucceeded
         };
     mAllFiles = null;
     mUpdates = null;
@@ -143,7 +146,9 @@ internal class UpdateInstaller {
   /// <param name="success">Indicates if the task was successful.</param>
   /// <param name="reboot">Indicates if a reboot is required.</param>
   private void OnFinished(bool success, bool reboot) {
-    if (!success)
+    if (success)
+      mSucceeded.Add(mUpdates[mCurrentTask]);
+    else
       errorCount++;
     if (reboot)
       rebootRequired = true;
@@ -454,6 +459,7 @@ internal class UpdateInstaller {
   public class FinishedEventArgs(int errorCount, bool reboot) : EventArgs {
     public readonly bool Reboot = reboot;
     public List<MsUpdate> Updates;
+    public List<MsUpdate> Succeeded;
 
     //public MultiValueDictionary<string, string> AllFiles;
     public bool Success => errorCount == 0;
