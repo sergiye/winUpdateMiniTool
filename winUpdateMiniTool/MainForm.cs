@@ -1339,7 +1339,13 @@ compact.exe /CompactOS:always";
       return;
     }
 
-    Program.AutoStart(chkAutoRun.Checked);
+    if (Program.AutoStart(chkAutoRun.Checked))
+      return;
+
+    chkAutoRun.Checked = !chkAutoRun.Checked;
+    notifyIcon.Visible = dlAutoCheck.Enabled = chkAutoRun.Checked;
+    autoUpdate = chkAutoRun.Checked ? (AutoUpdateOptions)dlAutoCheck.SelectedIndex : AutoUpdateOptions.No;
+    MessageBox.Show("Auto-start could not be changed. See the log for details.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   }
 
   private void chkAutoUpdateApp_Click(object sender, EventArgs e) {

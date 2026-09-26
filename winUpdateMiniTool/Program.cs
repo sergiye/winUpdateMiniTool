@@ -376,12 +376,13 @@ internal static class Program {
   ///     starts with administrator rights without a UAC prompt. Otherwise it uses the per-user Run registry value.
   /// </remarks>
   /// <param name="enable">True to enable auto-start, false to disable.</param>
-  public static void AutoStart(bool enable) {
+  /// <returns>True if auto-start is now in the requested state.</returns>
+  public static bool AutoStart(bool enable) {
     try {
       var manager = new StartupManager(AutoStartArguments);
       if (!manager.IsAvailable) {
         AppLog.Line("Auto-start is not available");
-        return;
+        return false;
       }
 
       manager.Startup = enable;
@@ -389,9 +390,11 @@ internal static class Program {
       // versions in place while running elevated.
       if (!enable)
         DeleteAutoStartRunValue();
+      return true;
     }
     catch (Exception err) {
       AppLog.Line("Failed to {0} auto-start: {1}", enable ? "enable" : "disable", err.Message);
+      return false;
     }
   }
 
