@@ -14,6 +14,7 @@ namespace winUpdateMiniTool;
 ///     Handles the installation and uninstallation of updates.
 /// </summary>
 internal class UpdateInstaller {
+  private const int CanceledExitCode = -1;
   private readonly Dispatcher mDispatcher = Dispatcher.CurrentDispatcher;
   private readonly object mProcessLock = new();
   private bool canceled;
@@ -164,9 +165,16 @@ internal class UpdateInstaller {
     var ok = true;
     var reboot = false;
 
+    if (files.Count == 0) {
+      AppLog.Line("No downloaded files to install");
+      ok = false;
+    }
+
     foreach (var curFile in files) {
-      if (canceled)
+      if (canceled) {
+        ok = false;
         break;
+      }
 
       var file = curFile;
 
@@ -193,8 +201,10 @@ internal class UpdateInstaller {
           ext = Path.GetExtension(file);
         }
 
-        if (canceled)
+        if (canceled) {
+          ok = false;
           break;
+        }
 
         if (!SignatureVerifier.IsMicrosoftSigned(file, out var signatureError))
           throw new InvalidDataException($"Refusing to install {Path.GetFileName(file)}: {signatureError}");
@@ -328,8 +338,10 @@ internal class UpdateInstaller {
   /// <param name="fileName">The name of the CAB file.</param>
   /// <returns>The exit code of the installation process.</returns>
   private int InstallCab(string fileName) {
-    if (!CheckCab(fileName) || canceled)
-      return 0; // update not applicable or user canceled
+    if (!CheckCab(fileName))
+      return 0; // update not applicable
+    if (canceled)
+      return CanceledExitCode;
 
     ProcessStartInfo startInfo =
         new() {
@@ -358,7 +370,7 @@ internal class UpdateInstaller {
     proc.EnableRaisingEvents = true;
 
     lock (mProcessLock) {
-      if (canceled) return 0; // canceled before this step even started
+      if (canceled) return CanceledExitCode; // canceled before this step even started
       mCurProcess = proc;
     }
 
