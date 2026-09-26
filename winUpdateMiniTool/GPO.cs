@@ -47,12 +47,14 @@ internal abstract class Gpo {
   public static void ConfigAu(AuOptions option, int day = -1, int time = -1) {
     try {
       using var subKey = Registry.LocalMachine.CreateSubKey(MWuGpo + @"\AU", true);
-      subKey.SetValue("NoAutoUpdate", option == AuOptions.Disabled ? 1 : 0);
-
-      if (option == AuOptions.Default)
+      if (option == AuOptions.Default) {
+        subKey.DeleteValue("NoAutoUpdate", false);
         subKey.DeleteValue("AUOptions", false);
-      else
+      }
+      else {
+        subKey.SetValue("NoAutoUpdate", option == AuOptions.Disabled ? 1 : 0);
         subKey.SetValue("AUOptions", (int)option);
+      }
 
       if (option == AuOptions.Scheduled) {
         if (day != -1) subKey.SetValue("ScheduledInstallDay", day);
