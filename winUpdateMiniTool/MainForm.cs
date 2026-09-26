@@ -759,6 +759,8 @@ internal partial class MainForm : Form {
     }
 
     SetControlsState(false, "Cleaning Windows Update cache...");
+    // Same as the Windows Update Service menu: drop the agent session before the service is stopped.
+    agent.UnInit();
     Task.Run(CleanCache);
   }
 
@@ -802,6 +804,11 @@ internal partial class MainForm : Form {
       }
     }
 
+    BeginInvoke(new Action(() => {
+      agent.Init();
+      LoadProviders(dlSource.Text);
+      UpdateState();
+    }));
     SetControlsState(true);
     LineLogger(null, new AppLog.LogEventArgs(failedFiles == 0
         ? $"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"
