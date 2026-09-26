@@ -724,19 +724,19 @@ internal partial class MainForm : Form {
   }
 
   private Task CleanCache() {
-    const string CachePath = "c:\\Windows\\SoftwareDistribution\\Download";
+    var cachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download");
     long freedBytes = 0;
-    if (Directory.Exists(CachePath)) {
+    if (Directory.Exists(cachePath)) {
       try {
-        foreach (var file in Directory.GetFiles(CachePath, "*", SearchOption.AllDirectories)) {
+        foreach (var file in Directory.GetFiles(cachePath, "*", SearchOption.AllDirectories)) {
           var fileSize = new FileInfo(file).Length;
           if (FileOps.DeleteFile(file))
             freedBytes += fileSize;
         }
-        foreach (var dir in Directory.GetDirectories(CachePath, "*", SearchOption.TopDirectoryOnly)) {
+        foreach (var dir in Directory.GetDirectories(cachePath, "*", SearchOption.TopDirectoryOnly)) {
           FileOps.SafeDeleteFolder(dir);
         }
-        FileOps.SafeDeleteFolder(CachePath);
+        FileOps.SafeDeleteFolder(cachePath);
       }
       catch (Exception ex) {
         LineLogger(null, new AppLog.LogEventArgs($"Error cleaning updates cache: {ex.Message}"));
