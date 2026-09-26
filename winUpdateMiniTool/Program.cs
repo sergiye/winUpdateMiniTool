@@ -414,6 +414,16 @@ internal static class Program {
     return subKey?.GetValue(Updater.ApplicationName) as string;
   }
 
+  private static void RestoreAutoStartRunValue(string command) {
+    try {
+      using var subKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+      subKey.SetValue(Updater.ApplicationName, command);
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to restore the auto-start entry: {0}", err.Message);
+    }
+  }
+
   private static void DeleteAutoStartRunValue() {
     using var subKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
     subKey?.DeleteValue(Updater.ApplicationName, false);
@@ -440,8 +450,9 @@ internal static class Program {
   /// </summary>
   private static void RepairRegistrations() {
     if (!OSHelper.IsRunningAsUwp()) {
+      string command = null;
       try {
-        var command = GetAutoStartRunCommand();
+        command = GetAutoStartRunCommand();
         var manager = new StartupManager(AutoStartArguments);
         if (command != null && manager.IsAvailable && !manager.Startup) {
           var path = GetCommandPath(command);
@@ -452,7 +463,11 @@ internal static class Program {
         }
       }
       catch (Exception err) {
-        AppLog.Line("Failed to check the auto-start entry: {0}", err.Message);
+        AppLog.Line("Failed to update the auto-start entry: {0}", err.Message);
+        // Older StartupManager versions remove the Run value before creating the task, so restore it
+        // rather than silently losing auto-start.
+        if (command != null && GetAutoStartRunCommand() == null)
+          RestoreAutoStartRunValue(command);
       }
     }
 
