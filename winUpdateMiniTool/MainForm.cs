@@ -729,9 +729,14 @@ internal partial class MainForm : Form {
 
   // Updater raises its callbacks from a timer thread.
   private DialogResult ShowOnUiThread(Func<DialogResult> show) {
-    if (IsDisposed || !IsHandleCreated)
-      return DialogResult.Cancel;
-    return InvokeRequired ? (DialogResult)Invoke(show) : show();
+    try {
+      if (IsDisposed || !IsHandleCreated)
+        return DialogResult.Cancel;
+      return InvokeRequired ? (DialogResult)Invoke(show) : show();
+    }
+    catch (Exception e) when (e is InvalidOperationException or ObjectDisposedException) {
+      return DialogResult.Cancel; // the form was closed in the meantime
+    }
   }
 
   // Background tasks may still report back while the form is being closed.
@@ -762,9 +767,17 @@ internal partial class MainForm : Form {
 
   private void ExitApplication() {
     if (InvokeRequired) {
-      Invoke(new Action(ExitApplication));
+      try {
+        if (!IsDisposed && IsHandleCreated)
+          Invoke(new Action(ExitApplication));
+      }
+      catch (Exception e) when (e is InvalidOperationException or ObjectDisposedException) {
+        // the form is already closing
+      }
       return;
     }
+    if (exiting)
+      return;
     exiting = true;
     Visible = false;
     notifyIcon.Visible = false;
