@@ -1406,7 +1406,12 @@ compact.exe /CompactOS:always";
     if (mSuspendUpdate)
       return;
     var source = dlSource.Text;
-    agent.EnableService(WuAgent.MsUpdGuid, chkMsUpd.Checked);
+    if (!agent.EnableService(WuAgent.MsUpdGuid, chkMsUpd.Checked)) {
+      mSuspendUpdate = true;
+      chkMsUpd.Checked = agent.TestService(WuAgent.MsUpdGuid);
+      mSuspendUpdate = false;
+      MessageBox.Show("The Microsoft Update service could not be changed. See the log for details.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
     LoadProviders(source);
   }
 

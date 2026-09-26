@@ -165,12 +165,23 @@ internal class WuAgent {
     AppLog.Line("Error 0x{0}: {1}", errCode.ToString("X").PadLeft(8, '0'), UpdateErrors.GetErrorStr(errCode));
   }
 
-  public void EnableService(string guid, bool enable = true) {
-    if (enable)
-      AddService(guid);
-    else
-      RemoveService(guid);
-    LoadServices();
+  /// <returns>True if the service was added or removed.</returns>
+  public bool EnableService(string guid, bool enable = true) {
+    try {
+      if (enable)
+        AddService(guid);
+      else
+        RemoveService(guid);
+      return true;
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to {0} update service {1}", enable ? "register" : "remove", guid);
+      LogError(err);
+      return false;
+    }
+    finally {
+      LoadServices();
+    }
   }
 
   private void AddService(string id) {
@@ -184,26 +195,43 @@ internal class WuAgent {
   }
 
   public bool TestService(string id) {
-    return mUpdateServiceManager.Services.Cast<IUpdateService>().Any(service => service.ServiceID.Equals(id));
+    try {
+      return mUpdateServiceManager.Services.Cast<IUpdateService>().Any(service => service.ServiceID.Equals(id));
+    }
+    catch (Exception err) {
+      LogError(err);
+      return false;
+    }
   }
 
   public string GetServiceName(string id, bool bAdd = false) {
-    foreach (var service in mUpdateServiceManager.Services.Cast<IUpdateService>().Where(service => service.ServiceID.Equals(id)))
-      return service.Name;
-    if (bAdd == false)
+    try {
+      foreach (var service in mUpdateServiceManager.Services.Cast<IUpdateService>().Where(service => service.ServiceID.Equals(id)))
+        return service.Name;
+    }
+    catch (Exception err) {
+      LogError(err);
       return null;
-    AddService(id);
-    LoadServices();
+    }
+
+    if (bAdd == false || !EnableService(id))
+      return null;
     return GetServiceName(id);
   }
 
   public void UpdateHistory() {
     MUpdateHistory.Clear();
-    var count = mUpdateSearcher.GetTotalHistoryCount();
-    if (count == 0) // sanity check
-      return;
-    foreach (var update in mUpdateSearcher.QueryHistory(0, count).Cast<IUpdateHistoryEntry2>().Where(update => update.Title != null)) {
-      MUpdateHistory.Add(new MsUpdate(update));
+    try {
+      var count = mUpdateSearcher.GetTotalHistoryCount();
+      if (count == 0) // sanity check
+        return;
+      foreach (var update in mUpdateSearcher.QueryHistory(0, count).Cast<IUpdateHistoryEntry2>().Where(update => update.Title != null)) {
+        MUpdateHistory.Add(new MsUpdate(update));
+      }
+    }
+    catch (Exception err) {
+      AppLog.Line("Failed to read the update history");
+      LogError(err);
     }
   }
 
