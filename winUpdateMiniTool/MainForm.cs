@@ -328,7 +328,7 @@ internal partial class MainForm : Form {
 
   private void LineLogger(object sender, AppLog.LogEventArgs args) {
     if (InvokeRequired) {
-      BeginInvoke(new EventHandler<AppLog.LogEventArgs>(LineLogger), sender, args);
+      PostToUi(() => LineLogger(sender, args));
       return;
     }
 
@@ -734,7 +734,23 @@ internal partial class MainForm : Form {
     return InvokeRequired ? (DialogResult)Invoke(show) : show();
   }
 
+  // Background tasks may still report back while the form is being closed.
+  private void PostToUi(Action action) {
+    try {
+      if (!IsDisposed && IsHandleCreated)
+        BeginInvoke(action);
+    }
+    catch (Exception e) when (e is InvalidOperationException or ObjectDisposedException) {
+      // the form is closing
+    }
+  }
+
   private bool ConfirmExitWhileBusy() {
+    // Maintenance tasks cannot be cancelled; exiting in the middle of the cache cleanup leaves the Windows
+    // Update service stopped.
+    if (maintenanceRunning)
+      return MessageBox.Show("Cache cleanup or system optimization is still running and cannot be cancelled. Exiting now may leave the Windows Update service stopped. Exit anyway?", Updater.ApplicationTitle,
+          MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
     if (!agent.IsBusy())
       return true;
     if (MessageBox.Show("An operation is still in progress. Cancel it and exit?", Updater.ApplicationTitle,
@@ -811,12 +827,12 @@ internal partial class MainForm : Form {
       }
     }
 
-    BeginInvoke(new Action(() => {
+    PostToUi(() => {
       agent.Init();
       LoadProviders(dlSource.Text);
       maintenanceRunning = false;
       UpdateState();
-    }));
+    });
     SetControlsState(true);
     LineLogger(null, new AppLog.LogEventArgs(failedFiles == 0
         ? $"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"
@@ -847,7 +863,7 @@ compact.exe /CompactOS:always";
       LineLogger(null, new AppLog.LogEventArgs($"Error optimizing kernel: {ex.Message}"));
     }
     LineLogger(null, new AppLog.LogEventArgs($"Windows kernel optimization finished."));
-    BeginInvoke(new Action(() => maintenanceRunning = false));
+    PostToUi(() => maintenanceRunning = false);
     SetControlsState(true);
   }
 
@@ -877,7 +893,7 @@ compact.exe /CompactOS:always";
 
   private void SetControlsState(bool enabled, string status = null) {
     if (InvokeRequired) {
-      BeginInvoke(new Action(() => { SetControlsState(enabled, status); }));
+      PostToUi(() => SetControlsState(enabled, status));
       return;
     }
 
