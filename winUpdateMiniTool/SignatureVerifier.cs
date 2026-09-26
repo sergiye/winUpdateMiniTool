@@ -62,7 +62,9 @@ internal static class SignatureVerifier {
     }
 
     try {
-      var subject = new X509Certificate2(X509Certificate.CreateFromSignedFile(fileName)).SubjectName;
+      using var signer = X509Certificate.CreateFromSignedFile(fileName);
+      using var certificate = new X509Certificate2(signer);
+      var subject = certificate.SubjectName;
       // Compare whole RDNs, so a value like CN="O=Microsoft Corporation" does not match.
       var rdns = subject.Decode(X500DistinguishedNameFlags.UseNewLines)
           .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
