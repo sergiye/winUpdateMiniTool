@@ -93,6 +93,7 @@ namespace winUpdateMiniTool {
       this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
       this.chkAutoRun = new System.Windows.Forms.ToolStripMenuItem();
       this.chkAutoUpdateApp = new System.Windows.Forms.ToolStripMenuItem();
+      this.chkLoadLists = new System.Windows.Forms.ToolStripMenuItem();
       this.chkNoUAC = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
       this.themeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -952,6 +953,7 @@ namespace winUpdateMiniTool {
             this.chkAutoRun,
             this.chkAutoUpdateApp,
             this.chkNoUAC,
+            this.chkLoadLists,
             this.toolStripMenuItem2,
             this.themeMenuItem,
             this.selectUIFontToolStripMenuItem});
@@ -990,6 +992,13 @@ namespace winUpdateMiniTool {
       this.chkNoUAC.Size = new System.Drawing.Size(222, 22);
       this.chkNoUAC.Text = "Always run as Administrator";
       this.chkNoUAC.Click += new System.EventHandler(this.chkNoUAC_CheckedChanged);
+      // 
+      // chkLoadLists
+      // 
+      this.chkLoadLists.Name = "chkLoadLists";
+      this.chkLoadLists.Size = new System.Drawing.Size(222, 22);
+      this.chkLoadLists.Text = "Restore update lists on start";
+      this.chkLoadLists.Click += new System.EventHandler(this.chkLoadLists_Click);
       // 
       // toolStripMenuItem2
       // 
@@ -1154,6 +1163,7 @@ namespace winUpdateMiniTool {
     private ToolStripMenuItem themeMenuItem;
     private ToolStripMenuItem chkAutoRun;
     private ToolStripMenuItem chkAutoUpdateApp;
+    private ToolStripMenuItem chkLoadLists;
     private ToolStripMenuItem chkNoUAC;
     private ToolStripSeparator toolStripMenuItem2;
     private ToolStripMenuItem cleanToolStripMenuItem;

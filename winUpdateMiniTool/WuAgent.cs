@@ -70,6 +70,7 @@ internal class WuAgent {
   private IUpdateInstaller mInstaller;
   private bool mIsValid;
   private IUpdateService mOfflineService;
+  private bool restoreLists;
   private ISearchJob mSearchJob;
   private IUpdateSearcher mUpdateSearcher;
 
@@ -96,8 +97,26 @@ internal class WuAgent {
 
     mUpdateServiceManager = new UpdateServiceManager();
 
-    if (MiscFunc.ParseInt(Program.IniReadValue("Options", "LoadLists", "0")) != 0)
+    restoreLists = MiscFunc.ParseInt(Program.IniReadValue("Options", "LoadLists", "0")) != 0;
+    if (restoreLists)
       LoadUpdates();
+  }
+
+  /// <summary>
+  ///     Whether the update lists are saved to updates.ini and restored on the next start.
+  /// </summary>
+  public bool RestoreLists {
+    get => restoreLists;
+    set {
+      if (restoreLists == value)
+        return;
+      restoreLists = value;
+      Program.IniWriteValue("Options", "LoadLists", value ? "1" : "0");
+      if (value)
+        StoreUpdates();
+      else
+        FileOps.DeleteFile(DlPath + @"\updates.ini");
+    }
   }
 
   public static WuAgent GetInstance() {
@@ -943,7 +962,8 @@ internal class WuAgent {
   public event EventHandler<UpdatesArgs> UpdatesChanged;
 
   private void OnUpdatesChanged(bool found = false) {
-    StoreUpdates();
+    if (restoreLists)
+      StoreUpdates();
 
     UpdatesChanged?.Invoke(this, new UpdatesArgs(found));
   }

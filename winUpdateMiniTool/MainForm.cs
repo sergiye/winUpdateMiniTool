@@ -258,6 +258,7 @@ internal partial class MainForm : Form {
       MiscFunc.ParseInt(GetConfig("AppAutoUpdate", "0")) != 0
     );
     chkAutoUpdateApp.Checked = Updater.AutoUpdate;
+    chkLoadLists.Checked = agent.RestoreLists;
     InitializeTheme();
   }
 
@@ -1375,6 +1376,11 @@ compact.exe /CompactOS:always";
     notifyIcon.Visible = dlAutoCheck.Enabled = chkAutoRun.Checked;
     autoUpdate = chkAutoRun.Checked ? (AutoUpdateOptions)dlAutoCheck.SelectedIndex : AutoUpdateOptions.No;
     MessageBox.Show("Auto-start could not be changed. See the log for details.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+  }
+
+  private void chkLoadLists_Click(object sender, EventArgs e) {
+    agent.RestoreLists = !agent.RestoreLists;
+    chkLoadLists.Checked = agent.RestoreLists;
   }
 
   private void chkAutoUpdateApp_Click(object sender, EventArgs e) {

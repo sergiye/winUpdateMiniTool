@@ -68,6 +68,7 @@ Windows Home editions ignore most of these policies and Pro editions honor only 
 - **Options > Tools > Windows Update Service**: starts or stops the Windows Update service.
 - **Options > Always run as Administrator**: registers a scheduled task that starts the tool elevated without a UAC prompt. Keep the tool in a protected folder, such as Program Files, when you use this option.
 - **Options > Auto-update application**: installs new versions of the tool automatically. **Help > Check for new version** checks manually.
+- **Options > Restore update lists on start**: saves the update lists to `Updates\updates.ini` and shows them at the next start, before a new search. When the option is off, the file is not written.
 - **Options > Themes**: Light, Dark or Auto mode, plus custom themes from JSON files (see the main README).
 - **Options > Select UI font**: changes the font of the main window.
 
@@ -91,7 +92,6 @@ Settings are stored in `winUpdateMiniTool.ini` next to the executable. If that f
 
 - `IdleDelay`: idle minutes required before an automatic search starts (default 20).
 - `OfflineCab`: download URL of the offline scan catalog.
-- `LoadLists=1`: load the update lists saved by the previous session at start.
 - `Refresh=1`: search again automatically after installing or removing updates.
 
 **Per-update marks.** Create `Updates.ini` in the working folder with one section per KB number to highlight updates in the lists:
