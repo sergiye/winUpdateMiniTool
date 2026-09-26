@@ -1399,7 +1399,7 @@ compact.exe /CompactOS:always";
         txtFilter.SelectAll();
         txtFilter.Focus();
         return true;
-      case Keys.Control | Keys.C: {
+      case Keys.Control | Keys.C when updateView.Focused: {
         var info = "";
         foreach (ListViewItem item in updateView.SelectedItems) {
           if (info.Length != 0)
