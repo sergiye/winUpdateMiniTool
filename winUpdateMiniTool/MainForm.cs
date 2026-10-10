@@ -278,14 +278,13 @@ internal partial class MainForm : Form {
     btnGetLink.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_link_32, new Size(25, 25));
     btnCancel.Image = Theme.Current.GetBitmapFromImage(Resources.icons8_cancel_32, new Size(25, 25));
 
-    Program.IniWriteValue("Root", "Theme", Theme.IsAutoThemeEnabled ? "auto" : Theme.Current.Id);
   }
 
   private void InitializeTheme() {
 
-    ToolStripRadioButtonMenuItem.DisplayAsCheckboxes = true;
-    mainMenu.Renderer = new ThemedToolStripRenderer();
-    notifyIcon.ContextMenuStrip.Renderer = new ThemedToolStripRenderer();
+    ThemeSupport.Initialize(Program.IniReadValue("Root", "Theme"), id => Program.IniWriteValue("Root", "Theme", id), "winUpdateMiniTool.themes");
+    ThemeSupport.Changed += OnThemeCurrentChanged;
+    ThemedWindowTitle.Attach(this, mainMenu, WindowTitleStyle.ThemeColors);
 
     themeMenuItem.DropDownItems.Clear();
     var currentItem = CustomTheme.FillThemesMenu((title, theme, onClick) => {
@@ -297,10 +296,11 @@ internal partial class MainForm : Form {
       themeMenuItem.DropDownItems.Add(item);
       return item;
     },
-    OnThemeCurrentChanged,
-    Program.IniReadValue("Root", "Theme"), "winUpdateMiniTool.themes");
-    currentItem?.PerformClick();
-    Theme.Current.Apply(this);
+    null, ThemeSupport.CurrentId, "winUpdateMiniTool.themes");
+    if (currentItem != null)
+      currentItem.Checked = true;
+    OnThemeCurrentChanged();
+    ThemeSupport.Apply(this);
   }
 
   #endregion
