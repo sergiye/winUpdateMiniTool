@@ -1,4 +1,5 @@
-﻿using System;
+﻿using winUpdateMiniTool.Properties;
+using System;
 using sergiye.Common;
 using WUApiLib;
 using StringCollection = System.Collections.Specialized.StringCollection;
@@ -179,7 +180,7 @@ internal class MsUpdate {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Error reading update details for {0}: {1}", Title, e.Message);
+      AppLog.Line(Strings.Log_UpdateDetailsError, Title, e.Message);
     }
   }
 
@@ -204,7 +205,7 @@ internal class MsUpdate {
       HResult = update.HResult;
     }
     catch (Exception e) {
-      AppLog.Line("Error reading update history entry details for {0}: {1}", Title, e.Message);
+      AppLog.Line(Strings.Log_HistoryDetailsError, Title, e.Message);
     }
   }
 

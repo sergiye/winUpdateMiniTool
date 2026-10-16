@@ -98,6 +98,7 @@ namespace winUpdateMiniTool {
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
       this.themeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.selectUIFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.languageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.siteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.checkForNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -956,7 +957,8 @@ namespace winUpdateMiniTool {
             this.chkLoadLists,
             this.toolStripMenuItem2,
             this.themeMenuItem,
-            this.selectUIFontToolStripMenuItem});
+            this.selectUIFontToolStripMenuItem,
+            this.languageMenuItem});
       this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
       this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
       this.optionsToolStripMenuItem.Text = "Options";
@@ -1015,8 +1017,14 @@ namespace winUpdateMiniTool {
       // 
       this.selectUIFontToolStripMenuItem.Name = "selectUIFontToolStripMenuItem";
       this.selectUIFontToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-      this.selectUIFontToolStripMenuItem.Text = "Select UI font";
-      this.selectUIFontToolStripMenuItem.Click += new System.EventHandler(this.selectUIFontToolStripMenuItem_Click);
+    this.selectUIFontToolStripMenuItem.Text = "Select UI font";
+    this.selectUIFontToolStripMenuItem.Click += new System.EventHandler(this.selectUIFontToolStripMenuItem_Click);
+    // 
+    // languageMenuItem
+    // 
+    this.languageMenuItem.Name = "languageMenuItem";
+    this.languageMenuItem.Size = new System.Drawing.Size(222, 22);
+    this.languageMenuItem.Text = "Language";
       // 
       // helpToolStripMenuItem
       // 
@@ -1161,6 +1169,7 @@ namespace winUpdateMiniTool {
     private ToolStripMenuItem checkForNewVersionToolStripMenuItem;
     private ToolStripMenuItem aboutToolStripMenuItem;
     private ToolStripMenuItem themeMenuItem;
+    private ToolStripMenuItem languageMenuItem;
     private ToolStripMenuItem chkAutoRun;
     private ToolStripMenuItem chkAutoUpdateApp;
     private ToolStripMenuItem chkLoadLists;

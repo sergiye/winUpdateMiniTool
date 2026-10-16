@@ -1,0 +1,2044 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_File" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Menu_CleanCache" xml:space="preserve">
+    <value>清理缓存</value>
+  </data>
+  <data name="Menu_OptimizeKernel" xml:space="preserve">
+    <value>优化内核体积</value>
+  </data>
+  <data name="Menu_RestoreDefaults" xml:space="preserve">
+    <value>恢复默认设置</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Menu_Options" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="Menu_Tools" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="Menu_AutoRun" xml:space="preserve">
+    <value>开机启动（驻留托盘）</value>
+  </data>
+  <data name="Menu_AutoUpdateApp" xml:space="preserve">
+    <value>自动更新本程序</value>
+  </data>
+  <data name="Menu_AlwaysAdmin" xml:space="preserve">
+    <value>始终以管理员身份运行</value>
+  </data>
+  <data name="Menu_RestoreLists" xml:space="preserve">
+    <value>启动时恢复更新列表</value>
+  </data>
+  <data name="Menu_Themes" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Menu_SelectFont" xml:space="preserve">
+    <value>选择界面字体</value>
+  </data>
+  <data name="Menu_Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Menu_Site" xml:space="preserve">
+    <value>项目主页</value>
+  </data>
+  <data name="Menu_CheckUpdates" xml:space="preserve">
+    <value>检查新版本</value>
+  </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Menu_WuService" xml:space="preserve">
+    <value>Windows 更新服务</value>
+  </data>
+  <data name="Menu_Refresh" xml:space="preserve">
+    <value>刷新(&amp;R)</value>
+  </data>
+  <data name="Menu_ShowHide" xml:space="preserve">
+    <value>显示/隐藏</value>
+  </data>
+  <data name="Menu_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Lang_Auto" xml:space="preserve">
+    <value>自动（跟随系统）</value>
+  </data>
+  <data name="Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Lang_ChineseSimplified" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="Group_Options" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="Group_AutoUpdate" xml:space="preserve">
+    <value>自动更新</value>
+  </data>
+  <data name="Group_BackgroundTasks" xml:space="preserve">
+    <value>后台任务</value>
+  </data>
+  <data name="Label_SearchFilter" xml:space="preserve">
+    <value>搜索筛选：</value>
+  </data>
+  <data name="Link_SupportUrl" xml:space="preserve">
+    <value>支持网址</value>
+  </data>
+  <data name="Check_GroupUpdates" xml:space="preserve">
+    <value>分组显示</value>
+  </data>
+  <data name="Check_SelectAll" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="Count_WindowsUpdates" xml:space="preserve">
+    <value>Windows 更新 ({0})</value>
+  </data>
+  <data name="Count_InstalledUpdates" xml:space="preserve">
+    <value>已安装更新 ({0})</value>
+  </data>
+  <data name="Count_HiddenUpdates" xml:space="preserve">
+    <value>已隐藏更新 ({0})</value>
+  </data>
+  <data name="Count_UpdateHistory" xml:space="preserve">
+    <value>更新历史 ({0})</value>
+  </data>
+  <data name="Col_Title" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="Col_Category" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="Col_KbArticle" xml:space="preserve">
+    <value>KB 编号</value>
+  </data>
+  <data name="Col_ApplicationId" xml:space="preserve">
+    <value>应用程序 ID</value>
+  </data>
+  <data name="Col_Date" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="Col_Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="Col_State" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Opt_OfflineMode" xml:space="preserve">
+    <value>离线模式</value>
+  </data>
+  <data name="Opt_DownloadCab" xml:space="preserve">
+    <value>下载 wsusscn2.cab</value>
+  </data>
+  <data name="Opt_ManualDownloadInstall" xml:space="preserve">
+    <value>“手动”下载/安装</value>
+  </data>
+  <data name="Opt_IncludeSuperseded" xml:space="preserve">
+    <value>包含已被取代的更新</value>
+  </data>
+  <data name="Opt_RegisterMicrosoftUpdate" xml:space="preserve">
+    <value>注册 Microsoft Update</value>
+  </data>
+  <data name="Opt_AutoRestart" xml:space="preserve">
+    <value>安装完成后自动重启</value>
+  </data>
+  <data name="Opt_BlockWuServers" xml:space="preserve">
+    <value>阻止访问 WU 服务器</value>
+  </data>
+  <data name="Opt_IncludeDrivers" xml:space="preserve">
+    <value>包含驱动程序</value>
+  </data>
+  <data name="Opt_DisableStoreAutoUpdate" xml:space="preserve">
+    <value>禁用应用商店自动更新</value>
+  </data>
+  <data name="Opt_HideWuSettingsPage" xml:space="preserve">
+    <value>隐藏 WU 设置页</value>
+  </data>
+  <data name="Opt_DisableFacilitators" xml:space="preserve">
+    <value>禁用更新辅助服务</value>
+  </data>
+  <data name="Radio_AutoDefault" xml:space="preserve">
+    <value>自动更新（默认）</value>
+  </data>
+  <data name="Radio_DisableAuto" xml:space="preserve">
+    <value>禁用自动更新</value>
+  </data>
+  <data name="Radio_NotifyOnly" xml:space="preserve">
+    <value>仅通知</value>
+  </data>
+  <data name="Radio_DownloadOnly" xml:space="preserve">
+    <value>仅下载</value>
+  </data>
+  <data name="Radio_ScheduledInstall" xml:space="preserve">
+    <value>计划安装(&amp;I)</value>
+  </data>
+  <data name="AutoCheck_None" xml:space="preserve">
+    <value>不自动搜索更新</value>
+  </data>
+  <data name="AutoCheck_Daily" xml:space="preserve">
+    <value>每天搜索一次更新</value>
+  </data>
+  <data name="AutoCheck_Weekly" xml:space="preserve">
+    <value>每周搜索一次更新</value>
+  </data>
+  <data name="AutoCheck_Monthly" xml:space="preserve">
+    <value>每月搜索一次更新</value>
+  </data>
+  <data name="Day_Daily" xml:space="preserve">
+    <value>每天</value>
+  </data>
+  <data name="Day_Sunday" xml:space="preserve">
+    <value>星期日</value>
+  </data>
+  <data name="Day_Monday" xml:space="preserve">
+    <value>星期一</value>
+  </data>
+  <data name="Day_Tuesday" xml:space="preserve">
+    <value>星期二</value>
+  </data>
+  <data name="Day_Wednesday" xml:space="preserve">
+    <value>星期三</value>
+  </data>
+  <data name="Day_Thursday" xml:space="preserve">
+    <value>星期四</value>
+  </data>
+  <data name="Day_Friday" xml:space="preserve">
+    <value>星期五</value>
+  </data>
+  <data name="Day_Saturday" xml:space="preserve">
+    <value>星期六</value>
+  </data>
+  <data name="RestartDelay_Immediately" xml:space="preserve">
+    <value>立即</value>
+  </data>
+  <data name="RestartDelay_1Min" xml:space="preserve">
+    <value>1 分钟后</value>
+  </data>
+  <data name="RestartDelay_2Min" xml:space="preserve">
+    <value>2 分钟后</value>
+  </data>
+  <data name="RestartDelay_5Min" xml:space="preserve">
+    <value>5 分钟后</value>
+  </data>
+  <data name="RestartDelay_10Min" xml:space="preserve">
+    <value>10 分钟后</value>
+  </data>
+  <data name="RestartDelay_15Min" xml:space="preserve">
+    <value>15 分钟后</value>
+  </data>
+  <data name="RestartDelay_30Min" xml:space="preserve">
+    <value>30 分钟后</value>
+  </data>
+  <data name="RestartDelay_60Min" xml:space="preserve">
+    <value>60 分钟后</value>
+  </data>
+  <data name="Tip_Search" xml:space="preserve">
+    <value>搜索更新</value>
+  </data>
+  <data name="Tip_Install" xml:space="preserve">
+    <value>安装</value>
+  </data>
+  <data name="Tip_Download" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="Tip_Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="Tip_GetLinks" xml:space="preserve">
+    <value>获取下载链接</value>
+  </data>
+  <data name="Tip_Uninstall" xml:space="preserve">
+    <value>卸载</value>
+  </data>
+  <data name="Tip_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="State_NotStarted" xml:space="preserve">
+    <value>未开始</value>
+  </data>
+  <data name="State_InProgress" xml:space="preserve">
+    <value>进行中</value>
+  </data>
+  <data name="State_Succeeded" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="State_SucceededWithErrors" xml:space="preserve">
+    <value>成功但有错误</value>
+  </data>
+  <data name="State_Failed" xml:space="preserve">
+    <value>失败</value>
+  </data>
+  <data name="State_Aborted" xml:space="preserve">
+    <value>已中止</value>
+  </data>
+  <data name="State_Beta" xml:space="preserve">
+    <value>测试版 </value>
+  </data>
+  <data name="State_Installed" xml:space="preserve">
+    <value>已安装</value>
+  </data>
+  <data name="State_Removable" xml:space="preserve">
+    <value> 可卸载</value>
+  </data>
+  <data name="State_Hidden" xml:space="preserve">
+    <value>已隐藏</value>
+  </data>
+  <data name="State_Downloaded" xml:space="preserve">
+    <value>已下载</value>
+  </data>
+  <data name="State_Pending" xml:space="preserve">
+    <value>待安装</value>
+  </data>
+  <data name="State_Mandatory" xml:space="preserve">
+    <value> 必需</value>
+  </data>
+  <data name="State_Exclusive" xml:space="preserve">
+    <value>，独占</value>
+  </data>
+  <data name="State_NeedsReboot" xml:space="preserve">
+    <value>，需要重启</value>
+  </data>
+  <data name="State_AutoSelect" xml:space="preserve">
+    <value> (!)</value>
+  </data>
+  <data name="Op_CheckingUpdates" xml:space="preserve">
+    <value>正在检查更新</value>
+  </data>
+  <data name="Op_PreparingCheck" xml:space="preserve">
+    <value>正在准备检查</value>
+  </data>
+  <data name="Op_DownloadingUpdates" xml:space="preserve">
+    <value>正在下载更新</value>
+  </data>
+  <data name="Op_InstallingUpdates" xml:space="preserve">
+    <value>正在安装更新</value>
+  </data>
+  <data name="Op_RemovingUpdates" xml:space="preserve">
+    <value>正在卸载更新</value>
+  </data>
+  <data name="Op_CancelingOperation" xml:space="preserve">
+    <value>正在取消操作</value>
+  </data>
+  <data name="Op_Unknown" xml:space="preserve">
+    <value>未知操作</value>
+  </data>
+  <data name="Result_AccessError" xml:space="preserve">
+    <value>所需权限不足</value>
+  </data>
+  <data name="Result_Busy" xml:space="preserve">
+    <value>已有其他操作正在进行</value>
+  </data>
+  <data name="Result_DownloadFailed" xml:space="preserve">
+    <value>下载失败</value>
+  </data>
+  <data name="Result_InstallFailed" xml:space="preserve">
+    <value>安装失败</value>
+  </data>
+  <data name="Result_NoUpdates" xml:space="preserve">
+    <value>未选择更新，或没有适用于该操作的更新</value>
+  </data>
+  <data name="Result_InternalError" xml:space="preserve">
+    <value>内部错误</value>
+  </data>
+  <data name="Result_FileNotFound" xml:space="preserve">
+    <value>找不到所需的文件</value>
+  </data>
+  <data name="Msg_WuServiceUnavailable" xml:space="preserve">
+    <value>Windows 更新服务当前不可用。是否立即启动？</value>
+  </data>
+  <data name="Log_WuServiceUnavailableHint" xml:space="preserve">
+    <value>Windows 更新服务当前不可用。可通过“选项 &gt; 工具 &gt; Windows 更新服务”启动。</value>
+  </data>
+  <data name="Log_UnknownEdition" xml:space="preserve">
+    <value>无法识别的 Windows 版本，组策略是否生效未知。</value>
+  </data>
+  <data name="Msg_CacheCleanupRunning" xml:space="preserve">
+    <value>缓存清理或系统优化仍在运行，且无法取消。此时退出可能导致 Windows 更新服务保持停止状态。仍要退出吗？</value>
+  </data>
+  <data name="Msg_OperationInProgressExit" xml:space="preserve">
+    <value>仍有操作正在进行。是否取消该操作并退出？</value>
+  </data>
+  <data name="Msg_AdminRequiredCleanCache" xml:space="preserve">
+    <value>清理 Windows 更新缓存需要管理员权限。</value>
+  </data>
+  <data name="Msg_OptimizeConfirm" xml:space="preserve">
+    <value>此操作将禁用保留存储、清除已被取代的组件版本，并压缩 Windows 系统文件。这些改动难以撤销。&#xD;&#xA;&#xD;&#xA;是否继续？</value>
+  </data>
+  <data name="Msg_RestoreDefaultsConfirm" xml:space="preserve">
+    <value>此操作会将本工具改动的全部选项与 Windows 更新策略设置重置为默认值。是否继续？</value>
+  </data>
+  <data name="Msg_DefaultsRestored" xml:space="preserve">
+    <value>已恢复默认设置。</value>
+  </data>
+  <data name="Msg_WaitForOperation" xml:space="preserve">
+    <value>请先等待当前操作完成，或先将其取消。</value>
+  </data>
+  <data name="Log_LanguageSwitchFailed" xml:space="preserve">
+    <value>切换语言时出错：{0}</value>
+  </data>
+  <data name="Msg_LanguageSwitchFailed" xml:space="preserve">
+    <value>无法切换语言。已恢复为原来的语言。</value>
+  </data>
+  <data name="Msg_AdminRequiredDownload" xml:space="preserve">
+    <value>通过 Windows 更新服务下载更新需要管理员权限。请改用“手动”下载。</value>
+  </data>
+  <data name="Msg_AdminRequiredInstall" xml:space="preserve">
+    <value>安装更新需要管理员权限。</value>
+  </data>
+  <data name="Msg_AdminRequiredRemove" xml:space="preserve">
+    <value>卸载更新需要管理员权限。</value>
+  </data>
+  <data name="Msg_ManualDownloadDone" xml:space="preserve">
+    <value>更新已下载到 {0}，可手动安装。</value>
+  </data>
+  <data name="Msg_ManualDownloadPartial" xml:space="preserve">
+    <value>更新已下载到 {0}，但部分更新下载失败。</value>
+  </data>
+  <data name="Msg_RebootScheduled" xml:space="preserve">
+    <value>更新已成功安装。计算机将在 {0} 重启。</value>
+  </data>
+  <data name="Msg_RebootRequired" xml:space="preserve">
+    <value>更新已成功安装，但需要重启计算机。</value>
+  </data>
+  <data name="Msg_InstallFailedReboot" xml:space="preserve">
+    <value>部分更新安装失败，且需要重启计算机。</value>
+  </data>
+  <data name="Msg_ToolElevatedConfirm" xml:space="preserve">
+    <value>程序所在文件夹无需管理员权限即可修改，因此该工具的定义可能已被其他程序更改。以下命令将以管理员权限运行：&#xD;&#xA;&#xD;&#xA;{0}&#xD;&#xA;&#xD;&#xA;是否运行？</value>
+  </data>
+  <data name="Msg_ToolStartFailed" xml:space="preserve">
+    <value>启动该工具失败。</value>
+  </data>
+  <data name="Msg_RebootNeededForConfig" xml:space="preserve">
+    <value>新配置需重启计算机后才能完全生效。</value>
+  </data>
+  <data name="Msg_GpoNotRespected" xml:space="preserve">
+    <value>当前 Windows 版本不遵循标准组策略。要继续阻止 Windows 自动更新，必须同时禁用更新辅助服务。</value>
+  </data>
+  <data name="Msg_ConfirmElevatedStart" xml:space="preserve">
+    <value>程序所在文件夹无需管理员权限即可修改。启用{0}后，以你账户运行的任何程序都可能替换本工具或其 Tools 配置，并在不弹出 UAC 提示的情况下以管理员权限运行代码。&#xD;&#xA;&#xD;&#xA;建议将本工具移动到 Program Files 等受保护文件夹以避免此风险。仍要启用{0}吗？</value>
+  </data>
+  <data name="Msg_AutoStartFailed" xml:space="preserve">
+    <value>无法更改开机启动设置。详情请查看日志。</value>
+  </data>
+  <data name="Msg_MsUpdateServiceFailed" xml:space="preserve">
+    <value>无法更改 Microsoft Update 服务。详情请查看日志。</value>
+  </data>
+  <data name="Msg_AutoRestartScheduleFailed" xml:space="preserve">
+    <value>无法安排自动重启：{0}</value>
+  </data>
+  <data name="Msg_AutoRestartCancelFailed" xml:space="preserve">
+    <value>无法取消自动重启：{0}</value>
+  </data>
+  <data name="Msg_DebuggerWait" xml:space="preserve">
+    <value>正在等待调试器。（附加完成后请点击“确定”。）</value>
+  </data>
+  <data name="Msg_AlreadyRunning" xml:space="preserve">
+    <value>{0} 已在运行中。</value>
+  </data>
+  <data name="Msg_WorkingDirNotWritable" xml:space="preserve">
+    <value>无法写入工作目录：{0}</value>
+  </data>
+  <data name="Log_LastChecked" xml:space="preserve">
+    <value>上次检查更新的时间：{0}</value>
+  </data>
+  <data name="Log_AutoSearchStart" xml:space="preserve">
+    <value>开始自动搜索更新。</value>
+  </data>
+  <data name="Balloon_CheckUpdatesTitle" xml:space="preserve">
+    <value>请检查更新</value>
+  </data>
+  <data name="Balloon_Overdue" xml:space="preserve">
+    <value>{0} 已连续 {1} 天未能成功检查更新。请手动检查更新并排查问题。</value>
+  </data>
+  <data name="Balloon_NewUpdatesTitle" xml:space="preserve">
+    <value>发现新更新</value>
+  </data>
+  <data name="Balloon_NewUpdates" xml:space="preserve">
+    <value>{0} 发现了 {1} 个新更新：&#xA;{2}&#xA;&#xA;请查看并安装这些更新。</value>
+  </data>
+  <data name="Log_LinksCopied" xml:space="preserve">
+    <value>更新下载链接已复制到剪贴板</value>
+  </data>
+  <data name="Log_NoUpdatesSelected" xml:space="preserve">
+    <value>未选择任何更新</value>
+  </data>
+  <data name="Log_AutoOperationFailed" xml:space="preserve">
+    <value>自动{0}失败：{1}。</value>
+  </data>
+  <data name="Msg_OperationFailed" xml:space="preserve">
+    <value>{0}失败：{1}。</value>
+  </data>
+  <data name="Log_CleaningCache" xml:space="preserve">
+    <value>正在清理 Windows 更新缓存…</value>
+  </data>
+  <data name="Log_KernelOptimization" xml:space="preserve">
+    <value>正在优化 Windows 内核…</value>
+  </data>
+  <data name="Log_CacheCleanError" xml:space="preserve">
+    <value>清理更新缓存时出错：{0}</value>
+  </data>
+  <data name="Log_WuServiceRestartError" xml:space="preserve">
+    <value>重启 Windows 更新服务时出错：{0}</value>
+  </data>
+  <data name="Log_CacheCleaned" xml:space="preserve">
+    <value>Windows 更新缓存已清理，释放 {0}</value>
+  </data>
+  <data name="Log_CachePartiallyCleaned" xml:space="preserve">
+    <value>Windows 更新缓存已部分清理，释放 {0}，其中 {1} 个文件无法删除</value>
+  </data>
+  <data name="Log_OptimizeError" xml:space="preserve">
+    <value>优化内核时出错：{0}</value>
+  </data>
+  <data name="Log_OptimizeFinished" xml:space="preserve">
+    <value>Windows 内核优化已完成。</value>
+  </data>
+  <data name="Log_RestartCancelled" xml:space="preserve">
+    <value>已请求取消自动重启。</value>
+  </data>
+  <data name="Log_RestartScheduled" xml:space="preserve">
+    <value>已计划在 {0} 分钟后自动重启。</value>
+  </data>
+  <data name="Log_FontRestoreError" xml:space="preserve">
+    <value>恢复已保存的界面字体时出错：{0}</value>
+  </data>
+  <data name="Word_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Word_Schedule" xml:space="preserve">
+    <value>安排</value>
+  </data>
+  <data name="Word_Enable" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="Word_Disable" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+  <data name="Word_Register" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="Word_Remove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="Word_AutoStart" xml:space="preserve">
+    <value>开机启动</value>
+  </data>
+  <data name="Word_FeatureUacTask" xml:space="preserve">
+    <value>UAC 跳过任务</value>
+  </data>
+  <data name="Log_AppVersion" xml:space="preserve">
+    <value>{0}，版本 v{1}</value>
+  </data>
+  <data name="Log_License" xml:space="preserve">
+    <value>本工具依据 GNU 通用公共许可证第 3 版开源。&#xD;&#xA;</value>
+  </data>
+  <data name="Log_AdminRequiredForUpdates" xml:space="preserve">
+    <value>安装更新需要管理员权限。</value>
+  </data>
+  <data name="Log_WorkingDirectory" xml:space="preserve">
+    <value>工作目录：{0}</value>
+  </data>
+  <data name="Log_SkippedToolsCommand" xml:space="preserve">
+    <value>已跳过 Tools.ini 中的 {0} 命令，因为程序所在文件夹无需管理员权限即可修改：{1}</value>
+  </data>
+  <data name="Log_AutoStartUnavailable" xml:space="preserve">
+    <value>开机启动功能不可用</value>
+  </data>
+  <data name="Log_AutoStartDisableAdminRequired" xml:space="preserve">
+    <value>禁用开机启动需要管理员权限。</value>
+  </data>
+  <data name="Log_AutoStartFailed" xml:space="preserve">
+    <value>无法{0}开机启动：{1}</value>
+  </data>
+  <data name="Log_AutoStartStateFailed" xml:space="preserve">
+    <value>读取开机启动状态时出错：{0}</value>
+  </data>
+  <data name="Log_AutoStartEntryUpdate" xml:space="preserve">
+    <value>正在更新开机启动项：{0}</value>
+  </data>
+  <data name="Log_AutoStartEntryUpdateFailed" xml:space="preserve">
+    <value>更新开机启动项时出错：{0}</value>
+  </data>
+  <data name="Log_AutoStartEntryRestoreFailed" xml:space="preserve">
+    <value>恢复开机启动项时出错：{0}</value>
+  </data>
+  <data name="Log_AutoStartTaskUpdate" xml:space="preserve">
+    <value>正在更新过时的开机启动任务：{0}</value>
+  </data>
+  <data name="Log_AutoStartTaskUpdateFailed" xml:space="preserve">
+    <value>更新开机启动任务时出错：{0}</value>
+  </data>
+  <data name="Log_SkipUacTaskUpdate" xml:space="preserve">
+    <value>正在更新过时的 UAC 跳过任务：{0}</value>
+  </data>
+  <data name="Log_SkipUacEnableError" xml:space="preserve">
+    <value>启用 SkipUAC 时出错：{0}</value>
+  </data>
+  <data name="Log_AppDirPermCheckFailed" xml:space="preserve">
+    <value>检查程序目录权限时出错：{0}</value>
+  </data>
+  <data name="Log_TryingSkipUac" xml:space="preserve">
+    <value>正在尝试 SkipUAC …</value>
+  </data>
+  <data name="Log_SkipUacError" xml:space="preserve">
+    <value>SkipUAC 出错：{0}</value>
+  </data>
+  <data name="Log_UacTaskFailed" xml:space="preserve">
+    <value>无法{0} UAC 跳过任务。</value>
+  </data>
+  <data name="Log_RestartFailed" xml:space="preserve">
+    <value>无法{0}自动重启。</value>
+  </data>
+  <data name="Log_RestartFailedDetails" xml:space="preserve">
+    <value>无法{0}自动重启：{1}</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>可用命令行选项&#xD;&#xA;</value>
+  </data>
+  <data name="Help_Tray" xml:space="preserve">
+    <value>-tray&#x9;&#x9;启动时驻留托盘</value>
+  </data>
+  <data name="Help_OnClose" xml:space="preserve">
+    <value>-onclose [cmd]&#x9;关闭时执行命令</value>
+  </data>
+  <data name="Help_Update" xml:space="preserve">
+    <value>-update&#x9;&#x9;启动后立即搜索更新</value>
+  </data>
+  <data name="Help_Console" xml:space="preserve">
+    <value>-console&#x9;&#x9;显示控制台（调试用）</value>
+  </data>
+  <data name="Help_Help" xml:space="preserve">
+    <value>-help&#x9;&#x9;显示本帮助信息</value>
+  </data>
+  <data name="Log_WuAgentVersion" xml:space="preserve">
+    <value>Windows 更新代理版本：{0}</value>
+  </data>
+  <data name="Log_RemoveEmptyFolderFailed" xml:space="preserve">
+    <value>删除空文件夹 {0} 时出错：{1}</value>
+  </data>
+  <data name="Log_ErrorRemovingService" xml:space="preserve">
+    <value>移除更新服务 {0} 时出错：{1}</value>
+  </data>
+  <data name="Log_ErrorCode" xml:space="preserve">
+    <value>错误 0x{0}：{1}</value>
+  </data>
+  <data name="Log_ServiceChangeFailed" xml:space="preserve">
+    <value>无法{0}更新服务 {1}</value>
+  </data>
+  <data name="Log_HistoryReadFailed" xml:space="preserve">
+    <value>读取更新历史失败</value>
+  </data>
+  <data name="Log_SetupOffline" xml:space="preserve">
+    <value>正在设置“离线同步服务”</value>
+  </data>
+  <data name="Log_DownloadingCab" xml:space="preserve">
+    <value>正在下载 wsusscn2.cab…</value>
+  </data>
+  <data name="Log_NoDownloadUrls" xml:space="preserve">
+    <value>错误：未找到更新 {0} 的下载地址</value>
+  </data>
+  <data name="Log_CannotUninstall" xml:space="preserve">
+    <value>该更新无法卸载：{0}</value>
+  </data>
+  <data name="Log_NoUpdatesForUninstall" xml:space="preserve">
+    <value>未选择更新，或没有可卸载的更新</value>
+  </data>
+  <data name="Log_CabDownloaded" xml:space="preserve">
+    <value>wsusscn2.cab 已下载</value>
+  </data>
+  <data name="Log_DownloadedCount" xml:space="preserve">
+    <value>已下载 {0} 个文件（共 {1} 个）到 {2}</value>
+  </data>
+  <data name="Log_InstallUninstallOk" xml:space="preserve">
+    <value>更新已成功安装/卸载</value>
+  </data>
+  <data name="Log_InstallUninstallFailed" xml:space="preserve">
+    <value>更新安装/卸载失败</value>
+  </data>
+  <data name="Log_RebootRequired" xml:space="preserve">
+    <value>一个或多个更新需要重启计算机</value>
+  </data>
+  <data name="Log_NoUpdatesForDownload" xml:space="preserve">
+    <value>未选择要下载的更新</value>
+  </data>
+  <data name="Log_DownloadingUpdates" xml:space="preserve">
+    <value>正在下载更新……这可能需要几分钟。</value>
+  </data>
+  <data name="Log_NoUpdatesForInstall" xml:space="preserve">
+    <value>未选择要安装的更新</value>
+  </data>
+  <data name="Log_InstallingUpdates" xml:space="preserve">
+    <value>正在安装更新……这可能需要几分钟。</value>
+  </data>
+  <data name="Log_HideError" xml:space="preserve">
+    <value>隐藏/取消隐藏更新 {0} 时出错：{1}</value>
+  </data>
+  <data name="Log_SearchFailed" xml:space="preserve">
+    <value>搜索更新失败</value>
+  </data>
+  <data name="Log_SearchIncomplete" xml:space="preserve">
+    <value>搜索更新未正常完成</value>
+  </data>
+  <data name="Log_FoundPending" xml:space="preserve">
+    <value>找到 {0} 个待安装更新。</value>
+  </data>
+  <data name="Log_DownloadUpdatesFailed" xml:space="preserve">
+    <value>下载更新失败</value>
+  </data>
+  <data name="Log_DownloadedToWindir" xml:space="preserve">
+    <value>更新已下载到 %windir%\SoftwareDistribution\Download</value>
+  </data>
+  <data name="Log_InstallUninstallFailed2" xml:space="preserve">
+    <value>安装/卸载更新失败</value>
+  </data>
+  <data name="Log_InstallUninstallWithErrors" xml:space="preserve">
+    <value>更新已安装/卸载，但存在错误</value>
+  </data>
+  <data name="Log_FailedToInstallUpdate" xml:space="preserve">
+    <value>安装/卸载失败：{0}</value>
+  </data>
+  <data name="Log_InstallResultReadFailed" xml:space="preserve">
+    <value>读取第 {0} 个更新的安装结果时出错：{1}</value>
+  </data>
+  <data name="Log_GenericError" xml:space="preserve">
+    <value>错误：{0}</value>
+  </data>
+  <data name="Log_StoreUpdateListFailed" xml:space="preserve">
+    <value>保存更新列表时出错：{0}</value>
+  </data>
+  <data name="Log_DateParseError" xml:space="preserve">
+    <value>解析更新 {0} 已保存的日期时出错：{1}</value>
+  </data>
+  <data name="Log_SearchingUpdates" xml:space="preserve">
+    <value>正在搜索更新</value>
+  </data>
+  <data name="Log_UpdateDetailsError" xml:space="preserve">
+    <value>读取更新 {0} 的详细信息时出错：{1}</value>
+  </data>
+  <data name="Log_HistoryDetailsError" xml:space="preserve">
+    <value>读取更新历史记录 {0} 的详细信息时出错：{1}</value>
+  </data>
+  <data name="Log_CancelInstallerError" xml:space="preserve">
+    <value>取消正在运行的安装进程时出错：{0}</value>
+  </data>
+  <data name="Log_NoFilesToInstall" xml:space="preserve">
+    <value>没有可安装的已下载文件</value>
+  </data>
+  <data name="Log_UnpackError" xml:space="preserve">
+    <value>解包更新 {0} 时出错：{1}</value>
+  </data>
+  <data name="Log_InstallingFile" xml:space="preserve">
+    <value>正在安装：{0}</value>
+  </data>
+  <data name="Log_RebootInitiated" xml:space="preserve">
+    <value>错误，已触发重启：{0}</value>
+  </data>
+  <data name="Log_AlreadyInstalled" xml:space="preserve">
+    <value>已安装：{0}</value>
+  </data>
+  <data name="Log_NotApplicable" xml:space="preserve">
+    <value>该更新不适用于本系统：{0}</value>
+  </data>
+  <data name="Log_InstallerExitCode" xml:space="preserve">
+    <value>安装程序退出码 0x{0:X8}：{1}</value>
+  </data>
+  <data name="Log_InstallError" xml:space="preserve">
+    <value>安装更新时出错：{0}</value>
+  </data>
+  <data name="Log_UnknownFileType" xml:space="preserve">
+    <value>无法确定更新文件 {0} 的类型</value>
+  </data>
+  <data name="Log_DismError" xml:space="preserve">
+    <value>Dism 出错：{0}</value>
+  </data>
+  <data name="Log_Uninstalling" xml:space="preserve">
+    <value>正在卸载：{0}</value>
+  </data>
+  <data name="Log_NoKbForUninstall" xml:space="preserve">
+    <value>无法卸载没有 KB 编号的更新：{0}</value>
+  </data>
+  <data name="Log_NotInstalled" xml:space="preserve">
+    <value>该更新未安装：{0}</value>
+  </data>
+  <data name="Log_ExitCode" xml:space="preserve">
+    <value>错误，退出码：0x{0:X8}</value>
+  </data>
+  <data name="Log_RemoveError" xml:space="preserve">
+    <value>移除更新时出错：{0}</value>
+  </data>
+  <data name="Err_RefuseInstall" xml:space="preserve">
+    <value>拒绝安装 {0}：{1}</value>
+  </data>
+  <data name="Err_UnknownFormat" xml:space="preserve">
+    <value>未知的更新格式：</value>
+  </data>
+  <data name="Err_NoSupportedFileInZip" xml:space="preserve">
+    <value>压缩包中未找到受支持的更新文件</value>
+  </data>
+  <data name="Log_DownloadFailedItem" xml:space="preserve">
+    <value>下载失败：{0}</value>
+  </data>
+  <data name="Log_OlderVersionUsed" xml:space="preserve">
+    <value>已存在较旧版本，将直接使用。</value>
+  </data>
+  <data name="Err_InvalidSignature" xml:space="preserve">
+    <value>数字签名无效或缺失 (0x{0:X8})</value>
+  </data>
+  <data name="Err_NotMicrosoftSigned" xml:space="preserve">
+    <value>文件未经 Microsoft 签名（{0}）</value>
+  </data>
+  <data name="Err_CannotReadCertificate" xml:space="preserve">
+    <value>无法读取签名证书：{0}</value>
+  </data>
+  <data name="Log_ConfigAuError" xml:space="preserve">
+    <value>配置自动更新设置时出错：{0}</value>
+  </data>
+  <data name="Log_ConfigDriverAuError" xml:space="preserve">
+    <value>配置驱动程序自动更新设置时出错：{0}</value>
+  </data>
+  <data name="Log_ReadDriverAuError" xml:space="preserve">
+    <value>读取驱动程序自动更新设置时出错：{0}</value>
+  </data>
+  <data name="Log_ConfigUpdatePageError" xml:space="preserve">
+    <value>配置 Windows 更新设置页可见性时出错：{0}</value>
+  </data>
+  <data name="Log_ReadUpdatePageError" xml:space="preserve">
+    <value>读取 Windows 更新设置页可见性时出错：{0}</value>
+  </data>
+  <data name="Log_ConfigMsBlockError" xml:space="preserve">
+    <value>配置 Microsoft Update 服务器阻止策略时出错：{0}</value>
+  </data>
+  <data name="Log_ReadMsBlockError" xml:space="preserve">
+    <value>读取 Microsoft Update 服务器阻止状态时出错：{0}</value>
+  </data>
+  <data name="Log_ConfigStoreAuError" xml:space="preserve">
+    <value>配置应用商店自动更新设置时出错：{0}</value>
+  </data>
+  <data name="Log_ReadStoreAuError" xml:space="preserve">
+    <value>读取应用商店自动更新设置时出错：{0}</value>
+  </data>
+  <data name="Log_ConfigAuEnableError" xml:space="preserve">
+    <value>禁用/启用自动更新时出错：{0}</value>
+  </data>
+  <data name="Log_StopServiceError" xml:space="preserve">
+    <value>停止服务 {0} 时出错：{1}</value>
+  </data>
+  <data name="Log_ServiceMissing" xml:space="preserve">
+    <value>服务 {0} 不存在</value>
+  </data>
+  <data name="Log_ServicePermError" xml:space="preserve">
+    <value>更新服务 {0} 的权限时出错：{1}</value>
+  </data>
+  <data name="Log_ServiceStateError" xml:space="preserve">
+    <value>读取服务 {0} 状态时出错：{1}</value>
+  </data>
+  <data name="Log_GpoRespectError" xml:space="preserve">
+    <value>判断组策略遵循级别时出错：{0}</value>
+  </data>
+  <data name="Log_WinVersionError" xml:space="preserve">
+    <value>判断 Windows 版本时出错：{0}</value>
+  </data>
+  <data name="Err_00240001" xml:space="preserve">
+    <value>Windows 更新代理已成功停止。</value>
+  </data>
+  <data name="Err_00240002" xml:space="preserve">
+    <value>Windows 更新代理已自我更新。</value>
+  </data>
+  <data name="Err_00240003" xml:space="preserve">
+    <value>操作已成功完成，但应用更新时出现错误。</value>
+  </data>
+  <data name="Err_00240004" xml:space="preserve">
+    <value>某个回调被标记为稍后断开，因为断开操作的请求是在回调执行期间发出的。</value>
+  </data>
+  <data name="Err_00240005" xml:space="preserve">
+    <value>必须重启系统才能完成该更新的安装。</value>
+  </data>
+  <data name="Err_00240006" xml:space="preserve">
+    <value>待安装的更新已在系统上安装。</value>
+  </data>
+  <data name="Err_00240007" xml:space="preserve">
+    <value>待移除的更新未在系统上安装。</value>
+  </data>
+  <data name="Err_00240008" xml:space="preserve">
+    <value>待下载的更新已下载完成。</value>
+  </data>
+  <data name="Err_00240009" xml:space="preserve">
+    <value>操作已成功完成，但因系统使用电池供电，部分更新被跳过。</value>
+  </data>
+  <data name="Err_00242015" xml:space="preserve">
+    <value>该更新的安装操作仍在进行中。</value>
+  </data>
+  <data name="Err_00245001" xml:space="preserve">
+    <value>服务器发起的修复响应未要求执行任何操作。</value>
+  </data>
+  <data name="Err_00246001" xml:space="preserve">
+    <value>待下载的更新正在下载中。</value>
+  </data>
+  <data name="Err_80240001" xml:space="preserve">
+    <value>Windows 更新代理无法提供服务。</value>
+  </data>
+  <data name="Err_80240002" xml:space="preserve">
+    <value>已超出服务的最大容量。</value>
+  </data>
+  <data name="Err_80240003" xml:space="preserve">
+    <value>找不到 ID。</value>
+  </data>
+  <data name="Err_80240004" xml:space="preserve">
+    <value>对象无法初始化。</value>
+  </data>
+  <data name="Err_80240005" xml:space="preserve">
+    <value>更新处理程序请求的字节范围与先前请求的范围重叠。</value>
+  </data>
+  <data name="Err_80240006" xml:space="preserve">
+    <value>请求的字节范围数超出最大值 (2^31 - 1)。</value>
+  </data>
+  <data name="Err_80240007" xml:space="preserve">
+    <value>集合索引无效。</value>
+  </data>
+  <data name="Err_80240008" xml:space="preserve">
+    <value>找不到所查询项的键。</value>
+  </data>
+  <data name="Err_80240009" xml:space="preserve">
+    <value>另一个冲突操作正在进行。某些操作（如安装）不能同时进行两次。</value>
+  </data>
+  <data name="Err_8024000A" xml:space="preserve">
+    <value>不允许取消该操作。</value>
+  </data>
+  <data name="Err_8024000B" xml:space="preserve">
+    <value>操作已取消。</value>
+  </data>
+  <data name="Err_8024000C" xml:space="preserve">
+    <value>无需执行任何操作。</value>
+  </data>
+  <data name="Err_8024000D" xml:space="preserve">
+    <value>Windows 更新代理在更新的 XML 数据中找不到必需的信息。</value>
+  </data>
+  <data name="Err_8024000E" xml:space="preserve">
+    <value>Windows 更新代理在更新的 XML 数据中发现无效信息。</value>
+  </data>
+  <data name="Err_8024000F" xml:space="preserve">
+    <value>在元数据中检测到循环的更新依赖关系。</value>
+  </data>
+  <data name="Err_80240010" xml:space="preserve">
+    <value>评估了嵌套过深而无法计算的更新依赖关系。</value>
+  </data>
+  <data name="Err_80240011" xml:space="preserve">
+    <value>检测到无效的更新依赖关系。</value>
+  </data>
+  <data name="Err_80240012" xml:space="preserve">
+    <value>读取到无效的注册表值。</value>
+  </data>
+  <data name="Err_80240013" xml:space="preserve">
+    <value>操作试图向列表中添加重复项。</value>
+  </data>
+  <data name="Err_80240014" xml:space="preserve">
+    <value>请求安装的更新无法由调用方安装。</value>
+  </data>
+  <data name="Err_80240016" xml:space="preserve">
+    <value>操作试图在另一个安装进行中、或系统在等待强制重启时进行安装。</value>
+  </data>
+  <data name="Err_80240017" xml:space="preserve">
+    <value>由于没有适用的更新，未执行该操作。</value>
+  </data>
+  <data name="Err_80240018" xml:space="preserve">
+    <value>操作失败，因为缺少所需的用户令牌。</value>
+  </data>
+  <data name="Err_80240019" xml:space="preserve">
+    <value>独占更新不能与其他更新同时安装。</value>
+  </data>
+  <data name="Err_8024001A" xml:space="preserve">
+    <value>未设置策略值。</value>
+  </data>
+  <data name="Err_8024001B" xml:space="preserve">
+    <value>操作无法执行，因为 Windows 更新代理正在自我更新。</value>
+  </data>
+  <data name="Err_8024001D" xml:space="preserve">
+    <value>某个更新包含无效的元数据。</value>
+  </data>
+  <data name="Err_8024001E" xml:space="preserve">
+    <value>操作未完成，因为服务或系统正在关闭。</value>
+  </data>
+  <data name="Err_8024001F" xml:space="preserve">
+    <value>操作未完成，因为网络连接不可用。</value>
+  </data>
+  <data name="Err_80240020" xml:space="preserve">
+    <value>操作未完成，因为没有已登录的交互式用户。</value>
+  </data>
+  <data name="Err_80240021" xml:space="preserve">
+    <value>操作未完成，因为已超时。</value>
+  </data>
+  <data name="Err_80240022" xml:space="preserve">
+    <value>所有更新的操作均失败。</value>
+  </data>
+  <data name="Err_80240023" xml:space="preserve">
+    <value>所有更新的许可条款均被拒绝。</value>
+  </data>
+  <data name="Err_80240024" xml:space="preserve">
+    <value>没有任何更新。</value>
+  </data>
+  <data name="Err_80240025" xml:space="preserve">
+    <value>组策略设置阻止了访问 Windows 更新。</value>
+  </data>
+  <data name="Err_80240026" xml:space="preserve">
+    <value>更新类型无效。</value>
+  </data>
+  <data name="Err_80240027" xml:space="preserve">
+    <value>URL 超出最大长度。</value>
+  </data>
+  <data name="Err_80240028" xml:space="preserve">
+    <value>更新无法卸载，因为该请求并非来自 WSUS 服务器。</value>
+  </data>
+  <data name="Err_80240029" xml:space="preserve">
+    <value>由于系统上存在未经许可的应用程序，搜索可能遗漏了部分更新。</value>
+  </data>
+  <data name="Err_8024002A" xml:space="preserve">
+    <value>缺少检测适用更新所需的组件。</value>
+  </data>
+  <data name="Err_8024002B" xml:space="preserve">
+    <value>操作未完成，因为它需要更新版本的服务器。</value>
+  </data>
+  <data name="Err_8024002C" xml:space="preserve">
+    <value>增量压缩更新无法安装，因为需要源数据。</value>
+  </data>
+  <data name="Err_8024002D" xml:space="preserve">
+    <value>完整文件更新无法安装，因为需要源数据。</value>
+  </data>
+  <data name="Err_8024002E" xml:space="preserve">
+    <value>不允许访问未受管理的服务器。</value>
+  </data>
+  <data name="Err_8024002F" xml:space="preserve">
+    <value>操作未完成，因为已设置 DisableWindowsUpdateAccess 策略。</value>
+  </data>
+  <data name="Err_80240030" xml:space="preserve">
+    <value>代理列表格式无效。</value>
+  </data>
+  <data name="Err_80240031" xml:space="preserve">
+    <value>文件格式错误。</value>
+  </data>
+  <data name="Err_80240032" xml:space="preserve">
+    <value>搜索条件字符串无效。</value>
+  </data>
+  <data name="Err_80240033" xml:space="preserve">
+    <value>无法下载许可条款。</value>
+  </data>
+  <data name="Err_80240034" xml:space="preserve">
+    <value>更新下载失败。</value>
+  </data>
+  <data name="Err_80240035" xml:space="preserve">
+    <value>该更新未被处理。</value>
+  </data>
+  <data name="Err_80240036" xml:space="preserve">
+    <value>对象的当前状态不允许执行该操作。</value>
+  </data>
+  <data name="Err_80240037" xml:space="preserve">
+    <value>不支持该操作所需的功能。</value>
+  </data>
+  <data name="Err_80240038" xml:space="preserve">
+    <value>下载的文件内容类型异常。</value>
+  </data>
+  <data name="Err_80240039" xml:space="preserve">
+    <value>服务器要求代理重新同步的次数过多。</value>
+  </data>
+  <data name="Err_80240040" xml:space="preserve">
+    <value>WUA API 方法无法在 Server Core 安装上运行。</value>
+  </data>
+  <data name="Err_80240041" xml:space="preserve">
+    <value>sysprep 运行期间服务不可用。</value>
+  </data>
+  <data name="Err_80240042" xml:space="preserve">
+    <value>该更新服务已不再向自动更新注册。</value>
+  </data>
+  <data name="Err_80240043" xml:space="preserve">
+    <value>不支持 WUA 用户界面。</value>
+  </data>
+  <data name="Err_80240044" xml:space="preserve">
+    <value>只有管理员可以对基于计算机的更新执行此操作。</value>
+  </data>
+  <data name="Err_80240045" xml:space="preserve">
+    <value>尝试使用当前不受此搜索类型支持的范围进行搜索。</value>
+  </data>
+  <data name="Err_80240046" xml:space="preserve">
+    <value>该 URL 未指向文件。</value>
+  </data>
+  <data name="Err_80240047" xml:space="preserve">
+    <value>不支持所请求的操作。</value>
+  </data>
+  <data name="Err_80240048" xml:space="preserve">
+    <value>服务器返回的推荐更新通知信息无效。</value>
+  </data>
+  <data name="Err_80240049" xml:space="preserve">
+    <value>数据超出范围。</value>
+  </data>
+  <data name="Err_8024004A" xml:space="preserve">
+    <value>操作系统安装程序运行期间，Windows 更新代理操作不可用。</value>
+  </data>
+  <data name="Err_8024004B" xml:space="preserve">
+    <value>发现一个没有活动调用方的孤立下载作业。</value>
+  </data>
+  <data name="Err_8024004C" xml:space="preserve">
+    <value>更新无法安装，因为系统电池电量过低。</value>
+  </data>
+  <data name="Err_8024004D" xml:space="preserve">
+    <value>下载的基础结构文件格式不正确。</value>
+  </data>
+  <data name="Err_8024004E" xml:space="preserve">
+    <value>必须使用强 SSL 下载基础结构文件。</value>
+  </data>
+  <data name="Err_8024004F" xml:space="preserve">
+    <value>空闲计时器关闭时，某个发现调用导致操作计数非零。</value>
+  </data>
+  <data name="Err_80240050" xml:space="preserve">
+    <value>空闲计时器关闭时，某个搜索调用导致操作计数非零。</value>
+  </data>
+  <data name="Err_80240051" xml:space="preserve">
+    <value>空闲计时器关闭时，某个下载调用导致操作计数非零。</value>
+  </data>
+  <data name="Err_80240052" xml:space="preserve">
+    <value>空闲计时器关闭时，某个安装调用导致操作计数非零。</value>
+  </data>
+  <data name="Err_80240053" xml:space="preserve">
+    <value>空闲计时器关闭时，某个未指定的调用导致操作计数非零。</value>
+  </data>
+  <data name="Err_80240054" xml:space="preserve">
+    <value>交互式用户取消了从 Windows 更新代理界面启动的此操作。</value>
+  </data>
+  <data name="Err_80240055" xml:space="preserve">
+    <value>自动更新取消了此操作，因为它所涉及的更新已不再适用于此计算机。</value>
+  </data>
+  <data name="Err_80240056" xml:space="preserve">
+    <value>此操作系统版本或版本类型不支持所需的功能。</value>
+  </data>
+  <data name="Err_80240057" xml:space="preserve">
+    <value>此代理插件未提供所请求的更新下载/安装处理程序，或更新适用性表达式评估器。</value>
+  </data>
+  <data name="Err_80240058" xml:space="preserve">
+    <value>不支持所请求的序列化版本。</value>
+  </data>
+  <data name="Err_80240059" xml:space="preserve">
+    <value>当前网络费用不满足网络费用策略设定的条件。</value>
+  </data>
+  <data name="Err_8024005A" xml:space="preserve">
+    <value>调用已取消，因为它涉及的更新已被隐藏（不再适用于此计算机）。</value>
+  </data>
+  <data name="Err_8024005B" xml:space="preserve">
+    <value>调用已取消，因为它涉及的更新已失效（不再适用于此计算机）。</value>
+  </data>
+  <data name="Err_8024005C" xml:space="preserve">
+    <value>指定的卷 ID 无效。</value>
+  </data>
+  <data name="Err_8024005D" xml:space="preserve">
+    <value>系统无法识别指定的卷 ID。</value>
+  </data>
+  <data name="Err_8024005E" xml:space="preserve">
+    <value>未指定安装的扩展错误代码。</value>
+  </data>
+  <data name="Err_8024005F" xml:space="preserve">
+    <value>安装的扩展错误代码被设为一般性失败。</value>
+  </data>
+  <data name="Err_80240FFF" xml:space="preserve">
+    <value>操作因未被其他错误代码涵盖的原因而失败。</value>
+  </data>
+  <data name="Err_80241001" xml:space="preserve">
+    <value>由于 Windows Installer 版本低于 3.1，搜索可能遗漏了部分更新。</value>
+  </data>
+  <data name="Err_80241002" xml:space="preserve">
+    <value>由于 Windows Installer 未配置，搜索可能遗漏了部分更新。</value>
+  </data>
+  <data name="Err_80241003" xml:space="preserve">
+    <value>由于策略禁用了 Windows Installer 修补，搜索可能遗漏了部分更新。</value>
+  </data>
+  <data name="Err_80241004" xml:space="preserve">
+    <value>更新无法应用，因为该应用程序是按用户安装的。</value>
+  </data>
+  <data name="Err_80241005" xml:space="preserve">
+    <value>由于 Windows Installer 版本低于 3.1，搜索可能遗漏了部分更新。</value>
+  </data>
+  <data name="Err_80241FFF" xml:space="preserve">
+    <value>由于 Windows Installer 发生故障，搜索可能遗漏了部分更新。</value>
+  </data>
+  <data name="Err_80244000" xml:space="preserve">
+    <value>WU_E_PT_SOAPCLIENT_* 错误代码映射到 ATL 服务器库的 SOAPCLIENT_ERROR 枚举。</value>
+  </data>
+  <data name="Err_80244001" xml:space="preserve">
+    <value>同 SOAPCLIENT_INITIALIZE_ERROR：SOAP 客户端初始化失败，可能由 MSXML 安装失败导致。</value>
+  </data>
+  <data name="Err_80244002" xml:space="preserve">
+    <value>同 SOAPCLIENT_OUTOFMEMORY：SOAP 客户端因内存耗尽而失败。</value>
+  </data>
+  <data name="Err_80244003" xml:space="preserve">
+    <value>同 SOAPCLIENT_GENERATE_ERROR：SOAP 客户端生成请求失败。</value>
+  </data>
+  <data name="Err_80244004" xml:space="preserve">
+    <value>同 SOAPCLIENT_CONNECT_ERROR：SOAP 客户端连接服务器失败。</value>
+  </data>
+  <data name="Err_80244005" xml:space="preserve">
+    <value>同 SOAPCLIENT_SEND_ERROR：SOAP 客户端因 WU_E_WINHTTP_* 错误而发送消息失败。</value>
+  </data>
+  <data name="Err_80244006" xml:space="preserve">
+    <value>同 SOAPCLIENT_SERVER_ERROR：SOAP 客户端因服务器错误而失败。</value>
+  </data>
+  <data name="Err_80244007" xml:space="preserve">
+    <value>同 SOAPCLIENT_SOAPFAULT：SOAP 客户端因 WU_E_PT_SOAP_* 错误产生 SOAP 错误而失败。</value>
+  </data>
+  <data name="Err_80244008" xml:space="preserve">
+    <value>同 SOAPCLIENT_PARSEFAULT_ERROR：SOAP 客户端解析 SOAP 错误失败。</value>
+  </data>
+  <data name="Err_80244009" xml:space="preserve">
+    <value>同 SOAPCLIENT_READ_ERROR：SOAP 客户端读取服务器响应时失败。</value>
+  </data>
+  <data name="Err_8024400A" xml:space="preserve">
+    <value>同 SOAPCLIENT_PARSE_ERROR：SOAP 客户端解析服务器响应失败。</value>
+  </data>
+  <data name="Err_8024400B" xml:space="preserve">
+    <value>同 SOAP_E_VERSION_MISMATCH：SOAP 客户端发现 SOAP 信封的命名空间无法识别。</value>
+  </data>
+  <data name="Err_8024400C" xml:space="preserve">
+    <value>同 SOAP_E_MUST_UNDERSTAND：SOAP 客户端无法理解某个标头。</value>
+  </data>
+  <data name="Err_8024400D" xml:space="preserve">
+    <value>同 SOAP_E_CLIENT：SOAP 客户端发现消息格式有误，修正后再重新发送。</value>
+  </data>
+  <data name="Err_8024400E" xml:space="preserve">
+    <value>同 SOAP_E_SERVER：SOAP 消息因服务器错误无法处理，请稍后重发。</value>
+  </data>
+  <data name="Err_8024400F" xml:space="preserve">
+    <value>发生了未指明的 Windows 管理规范 (WMI) 错误。</value>
+  </data>
+  <data name="Err_80244010" xml:space="preserve">
+    <value>与服务器的往返次数超出最大限制。</value>
+  </data>
+  <data name="Err_80244011" xml:space="preserve">
+    <value>注册表中缺少 WUServer 策略值。</value>
+  </data>
+  <data name="Err_80244012" xml:space="preserve">
+    <value>初始化失败，因为该对象已初始化。</value>
+  </data>
+  <data name="Err_80244013" xml:space="preserve">
+    <value>无法确定计算机名。</value>
+  </data>
+  <data name="Err_80244015" xml:space="preserve">
+    <value>服务器回复表明服务器已更改或 Cookie 无效；请刷新内部缓存状态并重试。</value>
+  </data>
+  <data name="Err_80244016" xml:space="preserve">
+    <value>同 HTTP 状态 400：服务器因语法无效而无法处理请求。</value>
+  </data>
+  <data name="Err_80244017" xml:space="preserve">
+    <value>同 HTTP 状态 401：请求的资源需要用户身份验证。</value>
+  </data>
+  <data name="Err_80244018" xml:space="preserve">
+    <value>同 HTTP 状态 403：服务器已理解请求，但拒绝执行。</value>
+  </data>
+  <data name="Err_80244019" xml:space="preserve">
+    <value>同 HTTP 状态 404：服务器找不到请求的 URI（统一资源标识符）。</value>
+  </data>
+  <data name="Err_8024401A" xml:space="preserve">
+    <value>同 HTTP 状态 405：不允许使用该 HTTP 方法。</value>
+  </data>
+  <data name="Err_8024401B" xml:space="preserve">
+    <value>同 HTTP 状态 407：需要进行代理身份验证。</value>
+  </data>
+  <data name="Err_8024401C" xml:space="preserve">
+    <value>同 HTTP 状态 408：服务器等待请求超时。</value>
+  </data>
+  <data name="Err_8024401D" xml:space="preserve">
+    <value>同 HTTP 状态 409：由于与资源当前状态冲突，请求未完成。</value>
+  </data>
+  <data name="Err_8024401E" xml:space="preserve">
+    <value>同 HTTP 状态 410：请求的资源在服务器上已不再可用。</value>
+  </data>
+  <data name="Err_8024401F" xml:space="preserve">
+    <value>同 HTTP 状态 500：服务器内部错误导致无法完成请求。</value>
+  </data>
+  <data name="Err_80244020" xml:space="preserve">
+    <value>同 HTTP 状态 500：服务器不支持完成请求所需的功能。</value>
+  </data>
+  <data name="Err_80244021" xml:space="preserve">
+    <value>同 HTTP 状态 502：服务器作为网关或代理时，从其访问的上游服务器收到了无效响应。</value>
+  </data>
+  <data name="Err_80244022" xml:space="preserve">
+    <value>同 HTTP 状态 503：服务暂时过载。</value>
+  </data>
+  <data name="Err_80244023" xml:space="preserve">
+    <value>同 HTTP 状态 503：请求等待网关超时。</value>
+  </data>
+  <data name="Err_80244024" xml:space="preserve">
+    <value>同 HTTP 状态 505：服务器不支持请求所使用的 HTTP 协议版本。</value>
+  </data>
+  <data name="Err_80244025" xml:space="preserve">
+    <value>操作因文件位置变更而失败；请刷新内部状态并重新发送。</value>
+  </data>
+  <data name="Err_80244026" xml:space="preserve">
+    <value>操作失败，因为 Windows 更新代理不支持向非 WSUS 服务器注册。</value>
+  </data>
+  <data name="Err_80244027" xml:space="preserve">
+    <value>服务器返回的身份验证信息列表为空。</value>
+  </data>
+  <data name="Err_80244028" xml:space="preserve">
+    <value>Windows 更新代理无法创建任何有效的身份验证 Cookie。</value>
+  </data>
+  <data name="Err_80244029" xml:space="preserve">
+    <value>某个配置属性值错误。</value>
+  </data>
+  <data name="Err_8024402A" xml:space="preserve">
+    <value>缺少某个配置属性值。</value>
+  </data>
+  <data name="Err_8024402B" xml:space="preserve">
+    <value>HTTP 请求无法完成，且原因与任何 WU_E_PT_HTTP_* 错误代码都不对应。</value>
+  </data>
+  <data name="Err_8024402C" xml:space="preserve">
+    <value>同 ERROR_WINHTTP_NAME_NOT_RESOLVED：无法解析代理服务器或目标服务器的名称。</value>
+  </data>
+  <data name="Err_8024502D" xml:space="preserve">
+    <value>恢复期间，Windows 更新代理未能从服务器下载带有新 redirectorId 值的重定向器 cabinet 文件。</value>
+  </data>
+  <data name="Err_8024502E" xml:space="preserve">
+    <value>重定向器恢复操作未完成，因为该服务器受管理。</value>
+  </data>
+  <data name="Err_8024402F" xml:space="preserve">
+    <value>外部 cab 文件处理完成，但存在部分错误。</value>
+  </data>
+  <data name="Err_80244030" xml:space="preserve">
+    <value>外部 cab 处理器初始化未完成。</value>
+  </data>
+  <data name="Err_80244031" xml:space="preserve">
+    <value>元数据文件格式无效。</value>
+  </data>
+  <data name="Err_80244032" xml:space="preserve">
+    <value>外部 cab 处理器发现无效的元数据。</value>
+  </data>
+  <data name="Err_80244033" xml:space="preserve">
+    <value>无法从外部 cab 文件中提取文件摘要。</value>
+  </data>
+  <data name="Err_80244034" xml:space="preserve">
+    <value>外部 cab 文件无法解压。</value>
+  </data>
+  <data name="Err_80244035" xml:space="preserve">
+    <value>外部 cab 处理器无法获取文件位置。</value>
+  </data>
+  <data name="Err_80240436" xml:space="preserve">
+    <value>服务器不支持按类别搜索；需改为执行完整目录搜索。</value>
+  </data>
+  <data name="Err_80240437" xml:space="preserve">
+    <value>向服务进行授权时出现问题。</value>
+  </data>
+  <data name="Err_80240438" xml:space="preserve">
+    <value>到终结点没有路由或网络连接。</value>
+  </data>
+  <data name="Err_80240439" xml:space="preserve">
+    <value>收到的数据不符合数据协定要求。</value>
+  </data>
+  <data name="Err_8024043A" xml:space="preserve">
+    <value>URL 无效。</value>
+  </data>
+  <data name="Err_8024043B" xml:space="preserve">
+    <value>无法加载 NWS 运行时。</value>
+  </data>
+  <data name="Err_8024043C" xml:space="preserve">
+    <value>不支持该代理身份验证方案。</value>
+  </data>
+  <data name="Err_8024043D" xml:space="preserve">
+    <value>所请求的服务属性不可用。</value>
+  </data>
+  <data name="Err_8024043E" xml:space="preserve">
+    <value>终结点提供程序插件需要联机刷新。</value>
+  </data>
+  <data name="Err_8024043F" xml:space="preserve">
+    <value>所请求服务终结点的 URL 不可用。</value>
+  </data>
+  <data name="Err_80240440" xml:space="preserve">
+    <value>与服务终结点的连接中断。</value>
+  </data>
+  <data name="Err_80240441" xml:space="preserve">
+    <value>操作无效，因为协议通信组件处于不适当的状态。</value>
+  </data>
+  <data name="Err_80240442" xml:space="preserve">
+    <value>对象因先前的错误而处于故障状态。</value>
+  </data>
+  <data name="Err_80240443" xml:space="preserve">
+    <value>该操作会导致数值溢出。</value>
+  </data>
+  <data name="Err_80240444" xml:space="preserve">
+    <value>操作已中止。</value>
+  </data>
+  <data name="Err_80240445" xml:space="preserve">
+    <value>操作已被放弃。</value>
+  </data>
+  <data name="Err_80240446" xml:space="preserve">
+    <value>已超出配额。</value>
+  </data>
+  <data name="Err_80240447" xml:space="preserve">
+    <value>指定语言下没有该信息。</value>
+  </data>
+  <data name="Err_80240448" xml:space="preserve">
+    <value>该地址已被使用。</value>
+  </data>
+  <data name="Err_80240449" xml:space="preserve">
+    <value>该地址在此上下文中无效。</value>
+  </data>
+  <data name="Err_8024044A" xml:space="preserve">
+    <value>Windows Web 服务框架中发生无法识别的错误。</value>
+  </data>
+  <data name="Err_8024044B" xml:space="preserve">
+    <value>Windows Web 服务框架中的安全操作失败。</value>
+  </data>
+  <data name="Err_80244FFF" xml:space="preserve">
+    <value>未被其他 WU_E_PT_* 错误代码涵盖的通信错误。</value>
+  </data>
+  <data name="Err_80245001" xml:space="preserve">
+    <value>重定向器 XML 文档无法加载到 DOM 类中。</value>
+  </data>
+  <data name="Err_80245002" xml:space="preserve">
+    <value>重定向器 XML 文档缺少部分必需信息。</value>
+  </data>
+  <data name="Err_80245003" xml:space="preserve">
+    <value>下载的重定向器 cab 中的 redirectorId 小于已缓存的 cab。</value>
+  </data>
+  <data name="Err_80245004" xml:space="preserve">
+    <value>服务环境中不支持该服务 ID。</value>
+  </data>
+  <data name="Err_80245005" xml:space="preserve">
+    <value>重定向器服务器的响应使用了不受支持的内容类型。</value>
+  </data>
+  <data name="Err_80245006" xml:space="preserve">
+    <value>重定向器服务器的响应状态为错误或无效。</value>
+  </data>
+  <data name="Err_80245008" xml:space="preserve">
+    <value>属性提供程序提供的名称/值对数超出最大值。</value>
+  </data>
+  <data name="Err_80245009" xml:space="preserve">
+    <value>从属性提供程序收到的名称无效。</value>
+  </data>
+  <data name="Err_8024500A" xml:space="preserve">
+    <value>从属性提供程序收到的值无效。</value>
+  </data>
+  <data name="Err_8024500B" xml:space="preserve">
+    <value>连接服务定位器服务的重定向器服务器、或解析其响应时出错。</value>
+  </data>
+  <data name="Err_8024500C" xml:space="preserve">
+    <value>受管理策略禁止连接到重定向器服务器。</value>
+  </data>
+  <data name="Err_8024500D" xml:space="preserve">
+    <value>重定向器将转为联机，但调用方配置不允许。</value>
+  </data>
+  <data name="Err_802450FF" xml:space="preserve">
+    <value>重定向器因未被其他 WU_E_REDIRECTOR_* 错误代码涵盖的原因而失败。</value>
+  </data>
+  <data name="Err_80245101" xml:space="preserve">
+    <value>服务引擎包的验证失败。</value>
+  </data>
+  <data name="Err_80245102" xml:space="preserve">
+    <value>服务包的验证失败。</value>
+  </data>
+  <data name="Err_80245103" xml:space="preserve">
+    <value>已暂存引擎的验证失败。</value>
+  </data>
+  <data name="Err_80245104" xml:space="preserve">
+    <value>已暂存负载的验证失败。</value>
+  </data>
+  <data name="Err_80245105" xml:space="preserve">
+    <value>发生内部错误：找不到服务操作。</value>
+  </data>
+  <data name="Err_80245106" xml:space="preserve">
+    <value>服务环境响应存在解析错误。</value>
+  </data>
+  <data name="Err_80245107" xml:space="preserve">
+    <value>下载的文件未通过完整性检查。</value>
+  </data>
+  <data name="Err_80245108" xml:space="preserve">
+    <value>服务器发起的修复响应未提供引擎。</value>
+  </data>
+  <data name="Err_802451FF" xml:space="preserve">
+    <value>因未被其他 WU_E_SIH_* 错误代码涵盖的原因而失败。</value>
+  </data>
+  <data name="Err_8024C001" xml:space="preserve">
+    <value>已跳过某个驱动程序。</value>
+  </data>
+  <data name="Err_8024C002" xml:space="preserve">
+    <value>找不到该驱动程序的属性。它可能不符合必需的规范。</value>
+  </data>
+  <data name="Err_8024C003" xml:space="preserve">
+    <value>读取到的驱动程序注册表类型与预期类型不匹配。</value>
+  </data>
+  <data name="Err_8024C004" xml:space="preserve">
+    <value>该驱动程序更新缺少元数据。</value>
+  </data>
+  <data name="Err_8024C005" xml:space="preserve">
+    <value>该驱动程序更新缺少必需的属性。</value>
+  </data>
+  <data name="Err_8024C006" xml:space="preserve">
+    <value>驱动程序同步失败。</value>
+  </data>
+  <data name="Err_8024C007" xml:space="preserve">
+    <value>缺少同步适用打印机所需的信息。</value>
+  </data>
+  <data name="Err_8024C008" xml:space="preserve">
+    <value>安装驱动程序更新后，更新后的设备报告了问题。</value>
+  </data>
+  <data name="Err_8024CFFF" xml:space="preserve">
+    <value>未被其他 WU_E_DRV_* 代码涵盖的驱动程序错误。</value>
+  </data>
+  <data name="Err_80248000" xml:space="preserve">
+    <value>操作失败，因为 Windows 更新代理正在关闭。</value>
+  </data>
+  <data name="Err_80248001" xml:space="preserve">
+    <value>操作失败，因为数据存储正在使用中。</value>
+  </data>
+  <data name="Err_80248002" xml:space="preserve">
+    <value>数据存储的当前状态与预期状态不匹配。</value>
+  </data>
+  <data name="Err_80248003" xml:space="preserve">
+    <value>数据存储缺少一个表。</value>
+  </data>
+  <data name="Err_80248004" xml:space="preserve">
+    <value>数据存储中的某个表含有意外的列。</value>
+  </data>
+  <data name="Err_80248005" xml:space="preserve">
+    <value>无法打开表，因为数据存储中不存在该表。</value>
+  </data>
+  <data name="Err_80248006" xml:space="preserve">
+    <value>数据存储的当前版本与预期版本不匹配。</value>
+  </data>
+  <data name="Err_80248007" xml:space="preserve">
+    <value>所请求的信息不在数据存储中。</value>
+  </data>
+  <data name="Err_80248008" xml:space="preserve">
+    <value>数据存储缺少必需信息，或某个不允许为空的列中存在 NULL。</value>
+  </data>
+  <data name="Err_80248009" xml:space="preserve">
+    <value>数据存储缺少必需信息，或引用了缺失的许可条款、文件、本地化属性或链接行。</value>
+  </data>
+  <data name="Err_8024800A" xml:space="preserve">
+    <value>更新未被处理，因为无法识别其更新处理程序。</value>
+  </data>
+  <data name="Err_8024800B" xml:space="preserve">
+    <value>更新未被删除，因为它仍被一个或多个服务引用。</value>
+  </data>
+  <data name="Err_8024800C" xml:space="preserve">
+    <value>数据存储分区未能在规定时间内被锁定。</value>
+  </data>
+  <data name="Err_8024800D" xml:space="preserve">
+    <value>类别未被添加，因为它不含父类别，且自身也不是顶级类别。</value>
+  </data>
+  <data name="Err_8024800E" xml:space="preserve">
+    <value>行未被添加，因为已存在具有相同主键的行。</value>
+  </data>
+  <data name="Err_8024800F" xml:space="preserve">
+    <value>数据存储无法初始化，因为它被另一个进程锁定。</value>
+  </data>
+  <data name="Err_80248010" xml:space="preserve">
+    <value>当前进程中不允许向 COM 注册数据存储。</value>
+  </data>
+  <data name="Err_80248011" xml:space="preserve">
+    <value>无法在另一个进程中创建数据存储对象。</value>
+  </data>
+  <data name="Err_80248013" xml:space="preserve">
+    <value>服务器以两个不同的修订 ID 向客户端发送了同一个更新。</value>
+  </data>
+  <data name="Err_80248014" xml:space="preserve">
+    <value>操作未完成，因为该服务不在数据存储中。</value>
+  </data>
+  <data name="Err_80248015" xml:space="preserve">
+    <value>操作未完成，因为该服务的注册已过期。</value>
+  </data>
+  <data name="Err_80248016" xml:space="preserve">
+    <value>隐藏更新的请求被拒绝，因为它是必需更新，或因为它带有部署截止时间。</value>
+  </data>
+  <data name="Err_80248017" xml:space="preserve">
+    <value>表未关闭，因为它与该会话无关联。</value>
+  </data>
+  <data name="Err_80248018" xml:space="preserve">
+    <value>表未关闭，因为它与该会话无关联。</value>
+  </data>
+  <data name="Err_80248019" xml:space="preserve">
+    <value>移除 Windows 更新服务、或将其从自动更新注销的请求被拒绝，因为它是内置服务，且/或自动更新无法回退到另一个服务。</value>
+  </data>
+  <data name="Err_8024801A" xml:space="preserve">
+    <value>请求被拒绝，因为不允许该操作。</value>
+  </data>
+  <data name="Err_8024801B" xml:space="preserve">
+    <value>当前数据存储的架构与备份 XML 文档中某个表的架构不匹配。</value>
+  </data>
+  <data name="Err_8024801C" xml:space="preserve">
+    <value>数据存储需要重置会话；请释放会话并使用新会话重试。</value>
+  </data>
+  <data name="Err_8024801D" xml:space="preserve">
+    <value>数据存储操作未完成，因为它是以模拟身份请求的。</value>
+  </data>
+  <data name="Err_80248FFF" xml:space="preserve">
+    <value>未被其他 WU_E_DS_* 代码涵盖的数据存储错误。</value>
+  </data>
+  <data name="Err_80249001" xml:space="preserve">
+    <value>规则文件解析失败。</value>
+  </data>
+  <data name="Err_80249002" xml:space="preserve">
+    <value>从服务器获取所请求的清单类型失败。</value>
+  </data>
+  <data name="Err_80249003" xml:space="preserve">
+    <value>向服务器上传清单结果失败。</value>
+  </data>
+  <data name="Err_80249004" xml:space="preserve">
+    <value>发生了未被其他错误代码涵盖的清单错误。</value>
+  </data>
+  <data name="Err_80249005" xml:space="preserve">
+    <value>枚举特定类的实例时发生 WMI 错误。</value>
+  </data>
+  <data name="Err_8024A000" xml:space="preserve">
+    <value>自动更新无法处理传入的请求。</value>
+  </data>
+  <data name="Err_8024A002" xml:space="preserve">
+    <value>旧版自动更新客户端已停止，因为 WSUS 服务器已升级。</value>
+  </data>
+  <data name="Err_8024A003" xml:space="preserve">
+    <value>旧版自动更新客户端已被禁用。</value>
+  </data>
+  <data name="Err_8024A004" xml:space="preserve">
+    <value>自动更新无法处理传入的请求，因为它已暂停。</value>
+  </data>
+  <data name="Err_8024A005" xml:space="preserve">
+    <value>没有向自动更新注册的非受管服务。</value>
+  </data>
+  <data name="Err_8024A006" xml:space="preserve">
+    <value>向自动更新注册的默认服务在搜索期间发生更改。</value>
+  </data>
+  <data name="Err_8024A007" xml:space="preserve">
+    <value>正在进行重启。</value>
+  </data>
+  <data name="Err_8024A008" xml:space="preserve">
+    <value>Windows 欢迎界面运行期间，自动更新无法处理传入的请求。</value>
+  </data>
+  <data name="Err_8024AFFF" xml:space="preserve">
+    <value>未被其他 WU_E_AU* 代码涵盖的自动更新错误。</value>
+  </data>
+  <data name="Err_80242000" xml:space="preserve">
+    <value>远程更新处理程序的请求无法完成，因为没有可用的远程进程。</value>
+  </data>
+  <data name="Err_80242001" xml:space="preserve">
+    <value>远程更新处理程序的请求无法完成，因为该处理程序仅限本地。</value>
+  </data>
+  <data name="Err_80242002" xml:space="preserve">
+    <value>更新处理程序的请求无法完成，因为无法识别该处理程序。</value>
+  </data>
+  <data name="Err_80242003" xml:space="preserve">
+    <value>无法创建远程更新处理程序，因为已存在一个。</value>
+  </data>
+  <data name="Err_80242004" xml:space="preserve">
+    <value>请求处理程序安装（卸载）更新无法完成，因为该更新不支持安装（卸载）。</value>
+  </data>
+  <data name="Err_80242005" xml:space="preserve">
+    <value>操作未完成，因为指定了错误的处理程序。</value>
+  </data>
+  <data name="Err_80242006" xml:space="preserve">
+    <value>处理程序操作无法完成，因为该更新包含无效的元数据。</value>
+  </data>
+  <data name="Err_80242007" xml:space="preserve">
+    <value>操作无法完成，因为安装程序超出了时间限制。</value>
+  </data>
+  <data name="Err_80242008" xml:space="preserve">
+    <value>更新处理程序正在执行的操作已被取消。</value>
+  </data>
+  <data name="Err_80242009" xml:space="preserve">
+    <value>操作无法完成，因为处理程序专用元数据无效。</value>
+  </data>
+  <data name="Err_8024200A" xml:space="preserve">
+    <value>请求处理程序安装更新无法完成，因为该更新需要用户输入。</value>
+  </data>
+  <data name="Err_8024200B" xml:space="preserve">
+    <value>安装程序未能安装（卸载）一个或多个更新。</value>
+  </data>
+  <data name="Err_8024200C" xml:space="preserve">
+    <value>更新处理程序应下载该更新的自包含内容，而非增量压缩内容。</value>
+  </data>
+  <data name="Err_8024200D" xml:space="preserve">
+    <value>更新处理程序未安装该更新，因为需要重新下载。</value>
+  </data>
+  <data name="Err_8024200E" xml:space="preserve">
+    <value>更新处理程序未能发送安装（卸载）操作状态的通知。</value>
+  </data>
+  <data name="Err_8024200F" xml:space="preserve">
+    <value>更新元数据与更新包中包含的文件名不一致。</value>
+  </data>
+  <data name="Err_80242010" xml:space="preserve">
+    <value>更新处理程序未能回退到自包含内容。</value>
+  </data>
+  <data name="Err_80242011" xml:space="preserve">
+    <value>更新处理程序已超出最大下载请求数。</value>
+  </data>
+  <data name="Err_80242012" xml:space="preserve">
+    <value>更新处理程序收到来自 CBS 的意外响应。</value>
+  </data>
+  <data name="Err_80242013" xml:space="preserve">
+    <value>更新元数据包含无效的 CBS 包标识符。</value>
+  </data>
+  <data name="Err_80242014" xml:space="preserve">
+    <value>该更新的重启后操作仍在进行中。</value>
+  </data>
+  <data name="Err_80242015" xml:space="preserve">
+    <value>无法确定该更新重启后操作的结果。</value>
+  </data>
+  <data name="Err_80242016" xml:space="preserve">
+    <value>该更新重启后操作完成时的状态异常。</value>
+  </data>
+  <data name="Err_80242017" xml:space="preserve">
+    <value>在下载或安装此更新前，必须先更新操作系统的服务堆栈。</value>
+  </data>
+  <data name="Err_80242018" xml:space="preserve">
+    <value>回调安装程序返回了错误。</value>
+  </data>
+  <data name="Err_80242019" xml:space="preserve">
+    <value>自定义安装程序的签名与该更新要求的签名不匹配。</value>
+  </data>
+  <data name="Err_8024201A" xml:space="preserve">
+    <value>安装程序不支持该安装配置。</value>
+  </data>
+  <data name="Err_8024201B" xml:space="preserve">
+    <value>安装的目标会话无效。</value>
+  </data>
+  <data name="Err_8024201C" xml:space="preserve">
+    <value>处理程序解密更新文件失败。</value>
+  </data>
+  <data name="Err_8024201D" xml:space="preserve">
+    <value>更新处理程序在系统重启前处于禁用状态。</value>
+  </data>
+  <data name="Err_8024201E" xml:space="preserve">
+    <value>系统上不存在 AppX 基础结构。</value>
+  </data>
+  <data name="Err_8024201F" xml:space="preserve">
+    <value>更新无法提交，因为它此前未安装或未暂存。</value>
+  </data>
+  <data name="Err_80242020" xml:space="preserve">
+    <value>指定的卷不是有效的 AppX 包卷。</value>
+  </data>
+  <data name="Err_80242021" xml:space="preserve">
+    <value>配置的默认存储卷不可用。</value>
+  </data>
+  <data name="Err_80242022" xml:space="preserve">
+    <value>安装该应用程序的卷不可用。</value>
+  </data>
+  <data name="Err_80242023" xml:space="preserve">
+    <value>系统上不存在指定的包系列。</value>
+  </data>
+  <data name="Err_80242024" xml:space="preserve">
+    <value>找不到标记为系统的包卷。</value>
+  </data>
+  <data name="Err_80242FFF" xml:space="preserve">
+    <value>未被其他 WU_E_UH_* 代码涵盖的更新处理程序错误。</value>
+  </data>
+  <data name="Err_80246001" xml:space="preserve">
+    <value>下载管理器操作无法完成，因为所请求的文件没有 URL。</value>
+  </data>
+  <data name="Err_80246002" xml:space="preserve">
+    <value>下载管理器操作无法完成，因为无法识别文件摘要。</value>
+  </data>
+  <data name="Err_80246003" xml:space="preserve">
+    <value>下载管理器操作无法完成，因为文件元数据请求了无法识别的哈希算法。</value>
+  </data>
+  <data name="Err_80246004" xml:space="preserve">
+    <value>操作无法完成，因为需要从下载处理程序发出下载请求。</value>
+  </data>
+  <data name="Err_80246005" xml:space="preserve">
+    <value>下载管理器操作无法完成，因为网络连接不可用。</value>
+  </data>
+  <data name="Err_80246006" xml:space="preserve">
+    <value>下载管理器操作无法完成，因为后台智能传输服务 (BITS) 版本不兼容。</value>
+  </data>
+  <data name="Err_80246007" xml:space="preserve">
+    <value>该更新尚未下载。</value>
+  </data>
+  <data name="Err_80246008" xml:space="preserve">
+    <value>下载管理器操作失败，因为无法连接到后台智能传输服务 (BITS)。</value>
+  </data>
+  <data name="Err_80246009" xml:space="preserve">
+    <value>下载管理器操作失败，因为发生了未指明的后台智能传输服务 (BITS) 传输错误。</value>
+  </data>
+  <data name="Err_8024600A" xml:space="preserve">
+    <value>下载必须重新开始，因为下载源的位置已更改。</value>
+  </data>
+  <data name="Err_8024600B" xml:space="preserve">
+    <value>下载必须重新开始，因为更新内容在新修订版中发生了更改。</value>
+  </data>
+  <data name="Err_8024600C" xml:space="preserve">
+    <value>下载失败，因为当前网络对该更新服务的下载大小进行了限制。</value>
+  </data>
+  <data name="Err_8024600E" xml:space="preserve">
+    <value>下载失败，因为客户端被拒绝下载该内容的授权。</value>
+  </data>
+  <data name="Err_8024600F" xml:space="preserve">
+    <value>下载失败，因为与 BITS 作业关联的用户令牌已不存在。</value>
+  </data>
+  <data name="Err_80246010" xml:space="preserve">
+    <value>找不到已下载更新的沙盒目录。</value>
+  </data>
+  <data name="Err_80246011" xml:space="preserve">
+    <value>已下载的更新具有未知的文件路径。</value>
+  </data>
+  <data name="Err_80246012" xml:space="preserve">
+    <value>已下载更新的一个或多个文件缺失。</value>
+  </data>
+  <data name="Err_80246013" xml:space="preserve">
+    <value>试图访问一个已被移除的已下载更新。</value>
+  </data>
+  <data name="Err_80246014" xml:space="preserve">
+    <value>Windows 更新找不到已下载更新文件中所需的部分。</value>
+  </data>
+  <data name="Err_80246016" xml:space="preserve">
+    <value>下载失败，因为没有用户登录，客户端被拒绝下载该内容的授权。</value>
+  </data>
+  <data name="Err_80246017" xml:space="preserve">
+    <value>下载失败，因为本地用户被拒绝下载该内容的授权。</value>
+  </data>
+  <data name="Err_80246018" xml:space="preserve">
+    <value>下载失败，因为域用户被拒绝下载该内容的授权。</value>
+  </data>
+  <data name="Err_80246019" xml:space="preserve">
+    <value>下载失败，因为与该用户关联的 MSA 帐户被拒绝下载该内容的授权。</value>
+  </data>
+  <data name="Err_8024601A" xml:space="preserve">
+    <value>将通过回退到 BITS 继续下载该内容。</value>
+  </data>
+  <data name="Err_8024601B" xml:space="preserve">
+    <value>另一个调用方已请求下载到其他卷。</value>
+  </data>
+  <data name="Err_8024601C" xml:space="preserve">
+    <value>更新沙盒的哈希值与预期值不匹配。</value>
+  </data>
+  <data name="Err_80246FFF" xml:space="preserve">
+    <value>发生了未被其他 WU_E_DM_* 错误代码涵盖的下载管理器错误。</value>
+  </data>
+  <data name="Err_8024D001" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为某个 INF 文件包含无效信息。</value>
+  </data>
+  <data name="Err_8024D002" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为 wuident.cab 文件包含无效信息。</value>
+  </data>
+  <data name="Err_8024D003" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为内部错误导致安装初始化执行了两次。</value>
+  </data>
+  <data name="Err_8024D004" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为安装初始化始终未成功完成。</value>
+  </data>
+  <data name="Err_8024D005" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为 INF 中指定的版本与实际的源文件版本不匹配。</value>
+  </data>
+  <data name="Err_8024D006" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为目标系统上的某个 WUA 文件比相应的源文件更新。</value>
+  </data>
+  <data name="Err_8024D007" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为 regsvr32.exe 返回了错误。</value>
+  </data>
+  <data name="Err_8024D008" xml:space="preserve">
+    <value>已跳过 Windows 更新代理的更新，因为先前的更新尝试失败。</value>
+  </data>
+  <data name="Err_8024D009" xml:space="preserve">
+    <value>因 wuident.cab 文件中的指令，已跳过 Windows 更新代理的更新。</value>
+  </data>
+  <data name="Err_8024D00A" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为不支持当前的系统配置。</value>
+  </data>
+  <data name="Err_8024D00B" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为系统配置为阻止该更新。</value>
+  </data>
+  <data name="Err_8024D00C" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为需要重启系统。</value>
+  </data>
+  <data name="Err_8024D00D" xml:space="preserve">
+    <value>Windows 更新代理安装程序已在运行。</value>
+  </data>
+  <data name="Err_8024D00E" xml:space="preserve">
+    <value>Windows 更新代理安装包需要重启才能完成安装。</value>
+  </data>
+  <data name="Err_8024D00F" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为安装处理程序在执行期间失败。</value>
+  </data>
+  <data name="Err_8024D010" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为注册表中包含无效信息。</value>
+  </data>
+  <data name="Err_8024D011" xml:space="preserve">
+    <value>必须先更新 Windows 更新代理，才能继续搜索。</value>
+  </data>
+  <data name="Err_8024D012" xml:space="preserve">
+    <value>必须先更新 Windows 更新代理，才能继续搜索。此操作需要管理员执行。</value>
+  </data>
+  <data name="Err_8024D013" xml:space="preserve">
+    <value>Windows 更新代理无法更新，因为服务器不包含此版本的更新信息。</value>
+  </data>
+  <data name="Err_8024D014" xml:space="preserve">
+    <value>Windows 更新代理已成功更新，但需要重启才能完成安装。</value>
+  </data>
+  <data name="Err_8024D015" xml:space="preserve">
+    <value>Windows 更新代理已成功更新，但需要重启才能完成安装。</value>
+  </data>
+  <data name="Err_8024D016" xml:space="preserve">
+    <value>Windows 更新代理因未知错误而无法更新。</value>
+  </data>
+  <data name="Err_8024DFFF" xml:space="preserve">
+    <value>Windows 更新代理因未被其他 WU_E_SETUP_* 错误代码涵盖的错误而无法更新。</value>
+  </data>
+  <data name="Err_8024E001" xml:space="preserve">
+    <value>表达式评估器操作无法完成，因为某个表达式无法识别。</value>
+  </data>
+  <data name="Err_8024E002" xml:space="preserve">
+    <value>表达式评估器操作无法完成，因为某个表达式无效。</value>
+  </data>
+  <data name="Err_8024E003" xml:space="preserve">
+    <value>表达式评估器操作无法完成，因为某个表达式包含的元数据节点数不正确。</value>
+  </data>
+  <data name="Err_8024E004" xml:space="preserve">
+    <value>表达式评估器操作无法完成，因为序列化表达式数据的版本无效。</value>
+  </data>
+  <data name="Err_8024E005" xml:space="preserve">
+    <value>表达式评估器无法初始化。</value>
+  </data>
+  <data name="Err_8024E006" xml:space="preserve">
+    <value>表达式评估器操作无法完成，因为存在无效的属性。</value>
+  </data>
+  <data name="Err_8024E007" xml:space="preserve">
+    <value>表达式评估器操作无法完成，因为无法确定计算机的群集状态。</value>
+  </data>
+  <data name="Err_8024EFFF" xml:space="preserve">
+    <value>发生了未被其他 WU_E_EE_* 错误代码涵盖的表达式评估器错误。</value>
+  </data>
+  <data name="Err_80243001" xml:space="preserve">
+    <value>由于数据格式版本无法识别，无法从注册表读取下载和安装结果。</value>
+  </data>
+  <data name="Err_80243002" xml:space="preserve">
+    <value>由于数据格式无效，无法从注册表读取下载和安装结果。</value>
+  </data>
+  <data name="Err_80243003" xml:space="preserve">
+    <value>下载和安装结果不可用；该操作可能未能启动。</value>
+  </data>
+  <data name="Err_80243004" xml:space="preserve">
+    <value>尝试在任务栏通知区域创建图标时失败。</value>
+  </data>
+  <data name="Err_80243FFD" xml:space="preserve">
+    <value>处于非界面模式时无法显示界面；可能未安装 WU 客户端界面模块。</value>
+  </data>
+  <data name="Err_80243FFE" xml:space="preserve">
+    <value>WU 客户端界面导出函数的版本不受支持。</value>
+  </data>
+  <data name="Err_80243FFF" xml:space="preserve">
+    <value>发生了未被其他 WU_E_AUCLIENT_* 错误代码涵盖的用户界面错误。</value>
+  </data>
+  <data name="Err_8024F001" xml:space="preserve">
+    <value>事件缓存文件已损坏。</value>
+  </data>
+  <data name="Err_8024F002" xml:space="preserve">
+    <value>事件命名空间描述符中的 XML 无法解析。</value>
+  </data>
+  <data name="Err_8024F003" xml:space="preserve">
+    <value>事件命名空间描述符中的 XML 无法解析。</value>
+  </data>
+  <data name="Err_8024F004" xml:space="preserve">
+    <value>服务器因过于繁忙而拒绝了某个事件。</value>
+  </data>
+  <data name="Err_8024F005" xml:space="preserve">
+    <value>找不到指定的回调 Cookie。</value>
+  </data>
+  <data name="Err_8024FFFF" xml:space="preserve">
+    <value>发生了未被其他错误代码涵盖的报告程序错误。</value>
+  </data>
+  <data name="Err_80247001" xml:space="preserve">
+    <value>操作无法完成，因为扫描包无效。</value>
+  </data>
+  <data name="Err_80247002" xml:space="preserve">
+    <value>操作无法完成，因为扫描包需要更高版本的 Windows 更新代理。</value>
+  </data>
+  <data name="Err_80247003" xml:space="preserve">
+    <value>指定的事件负载无效。</value>
+  </data>
+  <data name="Err_80247004" xml:space="preserve">
+    <value>提交的事件负载大小无效。</value>
+  </data>
+  <data name="Err_80247005" xml:space="preserve">
+    <value>该服务未注册。</value>
+  </data>
+  <data name="Err_80247FFF" xml:space="preserve">
+    <value>使用扫描包进行的搜索失败。</value>
+  </data>
+  <data name="Err_8024B001" xml:space="preserve">
+    <value>任务正在进行中。</value>
+  </data>
+  <data name="Err_8024B002" xml:space="preserve">
+    <value>操作无法完成，因为任务当前处于禁用状态。</value>
+  </data>
+  <data name="Err_8024B003" xml:space="preserve">
+    <value>操作无法完成，因为任务尚未启动。</value>
+  </data>
+  <data name="Err_8024B004" xml:space="preserve">
+    <value>任务已停止，需要重新运行才能完成。</value>
+  </data>
+  <data name="Err_8024B005" xml:space="preserve">
+    <value>无法取消非计划的安装。</value>
+  </data>
+  <data name="Err_8024B101" xml:space="preserve">
+    <value>与服务同步后未找到硬件能力元数据。</value>
+  </data>
+  <data name="Err_8024B102" xml:space="preserve">
+    <value>硬件能力元数据格式有误且/或解析失败。</value>
+  </data>
+  <data name="Err_Unknown" xml:space="preserve">
+    <value>未知错误：</value>
+  </data>
+</root>

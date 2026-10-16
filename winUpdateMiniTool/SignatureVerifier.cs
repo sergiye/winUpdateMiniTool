@@ -1,4 +1,5 @@
-﻿using System;
+﻿using winUpdateMiniTool.Properties;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
@@ -57,7 +58,7 @@ internal static class SignatureVerifier {
   public static bool IsMicrosoftSigned(string fileName, out string error) {
     var result = VerifyTrust(fileName);
     if (result != 0) {
-      error = $"invalid or missing digital signature (0x{result:X8})";
+      error = string.Format(Strings.Err_InvalidSignature, result);
       return false;
     }
 
@@ -69,12 +70,12 @@ internal static class SignatureVerifier {
       var rdns = subject.Decode(X500DistinguishedNameFlags.UseNewLines)
           .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
       if (!rdns.Any(rdn => rdn.Trim().Equals(MicrosoftOrganization, StringComparison.Ordinal))) {
-        error = $"file is not signed by Microsoft ({subject.Name})";
+        error = string.Format(Strings.Err_NotMicrosoftSigned, subject.Name);
         return false;
       }
     }
     catch (Exception e) {
-      error = $"cannot read the signing certificate: {e.Message}";
+      error = string.Format(Strings.Err_CannotReadCertificate, e.Message);
       return false;
     }
 

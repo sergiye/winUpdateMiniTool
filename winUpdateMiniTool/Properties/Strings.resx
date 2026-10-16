@@ -1,0 +1,2044 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Menu_CleanCache" xml:space="preserve">
+    <value>Clean cache</value>
+  </data>
+  <data name="Menu_OptimizeKernel" xml:space="preserve">
+    <value>Optimize kernel size</value>
+  </data>
+  <data name="Menu_RestoreDefaults" xml:space="preserve">
+    <value>Restore default settings</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Menu_Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Menu_Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="Menu_AutoRun" xml:space="preserve">
+    <value>Run at Windows startup (in tray)</value>
+  </data>
+  <data name="Menu_AutoUpdateApp" xml:space="preserve">
+    <value>Auto-update application</value>
+  </data>
+  <data name="Menu_AlwaysAdmin" xml:space="preserve">
+    <value>Always run as Administrator</value>
+  </data>
+  <data name="Menu_RestoreLists" xml:space="preserve">
+    <value>Restore update lists on start</value>
+  </data>
+  <data name="Menu_Themes" xml:space="preserve">
+    <value>Themes</value>
+  </data>
+  <data name="Menu_SelectFont" xml:space="preserve">
+    <value>Select UI font</value>
+  </data>
+  <data name="Menu_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Menu_Site" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Menu_CheckUpdates" xml:space="preserve">
+    <value>Check for new version</value>
+  </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Menu_WuService" xml:space="preserve">
+    <value>Windows Update Service</value>
+  </data>
+  <data name="Menu_Refresh" xml:space="preserve">
+    <value>&amp;Refresh</value>
+  </data>
+  <data name="Menu_ShowHide" xml:space="preserve">
+    <value>Show/Hide</value>
+  </data>
+  <data name="Menu_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Lang_Auto" xml:space="preserve">
+    <value>Auto (follow system)</value>
+  </data>
+  <data name="Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Lang_ChineseSimplified" xml:space="preserve">
+    <value>Chinese (Simplified)</value>
+  </data>
+  <data name="Group_Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Group_AutoUpdate" xml:space="preserve">
+    <value>Auto Update</value>
+  </data>
+  <data name="Group_BackgroundTasks" xml:space="preserve">
+    <value>Background tasks</value>
+  </data>
+  <data name="Label_SearchFilter" xml:space="preserve">
+    <value>Search Filter:</value>
+  </data>
+  <data name="Link_SupportUrl" xml:space="preserve">
+    <value>Support URL</value>
+  </data>
+  <data name="Check_GroupUpdates" xml:space="preserve">
+    <value>Group Updates</value>
+  </data>
+  <data name="Check_SelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="Count_WindowsUpdates" xml:space="preserve">
+    <value>Windows Updates ({0})</value>
+  </data>
+  <data name="Count_InstalledUpdates" xml:space="preserve">
+    <value>Installed Updates ({0})</value>
+  </data>
+  <data name="Count_HiddenUpdates" xml:space="preserve">
+    <value>Hidden Updates ({0})</value>
+  </data>
+  <data name="Count_UpdateHistory" xml:space="preserve">
+    <value>Update History ({0})</value>
+  </data>
+  <data name="Col_Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Col_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Col_KbArticle" xml:space="preserve">
+    <value>KB Article</value>
+  </data>
+  <data name="Col_ApplicationId" xml:space="preserve">
+    <value>Application ID</value>
+  </data>
+  <data name="Col_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Col_Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Col_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Opt_OfflineMode" xml:space="preserve">
+    <value>Offline Mode</value>
+  </data>
+  <data name="Opt_DownloadCab" xml:space="preserve">
+    <value>Download wsusscn2.cab</value>
+  </data>
+  <data name="Opt_ManualDownloadInstall" xml:space="preserve">
+    <value>'Manual' Download/Install</value>
+  </data>
+  <data name="Opt_IncludeSuperseded" xml:space="preserve">
+    <value>Include superseded</value>
+  </data>
+  <data name="Opt_RegisterMicrosoftUpdate" xml:space="preserve">
+    <value>Register Microsoft Update</value>
+  </data>
+  <data name="Opt_AutoRestart" xml:space="preserve">
+    <value>Restart automatically after install</value>
+  </data>
+  <data name="Opt_BlockWuServers" xml:space="preserve">
+    <value>Block Access to WU Servers</value>
+  </data>
+  <data name="Opt_IncludeDrivers" xml:space="preserve">
+    <value>Include Drivers</value>
+  </data>
+  <data name="Opt_DisableStoreAutoUpdate" xml:space="preserve">
+    <value>Disable Store Auto Update</value>
+  </data>
+  <data name="Opt_HideWuSettingsPage" xml:space="preserve">
+    <value>Hide WU Settings Page</value>
+  </data>
+  <data name="Opt_DisableFacilitators" xml:space="preserve">
+    <value>Disable Update Facilitators</value>
+  </data>
+  <data name="Radio_AutoDefault" xml:space="preserve">
+    <value>Automatic Update (default)</value>
+  </data>
+  <data name="Radio_DisableAuto" xml:space="preserve">
+    <value>Disable Automatic Update</value>
+  </data>
+  <data name="Radio_NotifyOnly" xml:space="preserve">
+    <value>Notification Only</value>
+  </data>
+  <data name="Radio_DownloadOnly" xml:space="preserve">
+    <value>Download Only</value>
+  </data>
+  <data name="Radio_ScheduledInstall" xml:space="preserve">
+    <value>Scheduled &amp; Installation</value>
+  </data>
+  <data name="AutoCheck_None" xml:space="preserve">
+    <value>No auto search for updates</value>
+  </data>
+  <data name="AutoCheck_Daily" xml:space="preserve">
+    <value>Search for updates every day</value>
+  </data>
+  <data name="AutoCheck_Weekly" xml:space="preserve">
+    <value>Search for updates once a week</value>
+  </data>
+  <data name="AutoCheck_Monthly" xml:space="preserve">
+    <value>Search for updates every month</value>
+  </data>
+  <data name="Day_Daily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="Day_Sunday" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="Day_Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Day_Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="Day_Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="Day_Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="Day_Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="Day_Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="RestartDelay_Immediately" xml:space="preserve">
+    <value>Immediately</value>
+  </data>
+  <data name="RestartDelay_1Min" xml:space="preserve">
+    <value>After 1 minute</value>
+  </data>
+  <data name="RestartDelay_2Min" xml:space="preserve">
+    <value>After 2 minutes</value>
+  </data>
+  <data name="RestartDelay_5Min" xml:space="preserve">
+    <value>After 5 minutes</value>
+  </data>
+  <data name="RestartDelay_10Min" xml:space="preserve">
+    <value>After 10 minutes</value>
+  </data>
+  <data name="RestartDelay_15Min" xml:space="preserve">
+    <value>After 15 minutes</value>
+  </data>
+  <data name="RestartDelay_30Min" xml:space="preserve">
+    <value>After 30 minutes</value>
+  </data>
+  <data name="RestartDelay_60Min" xml:space="preserve">
+    <value>After 60 minutes</value>
+  </data>
+  <data name="Tip_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Tip_Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="Tip_Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Tip_Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="Tip_GetLinks" xml:space="preserve">
+    <value>Get Links</value>
+  </data>
+  <data name="Tip_Uninstall" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="Tip_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="State_NotStarted" xml:space="preserve">
+    <value>Not Started</value>
+  </data>
+  <data name="State_InProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="State_Succeeded" xml:space="preserve">
+    <value>Succeeded</value>
+  </data>
+  <data name="State_SucceededWithErrors" xml:space="preserve">
+    <value>Succeeded with Errors</value>
+  </data>
+  <data name="State_Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="State_Aborted" xml:space="preserve">
+    <value>Aborted</value>
+  </data>
+  <data name="State_Beta" xml:space="preserve">
+    <value>Beta </value>
+  </data>
+  <data name="State_Installed" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="State_Removable" xml:space="preserve">
+    <value> Removable</value>
+  </data>
+  <data name="State_Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="State_Downloaded" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+  <data name="State_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="State_Mandatory" xml:space="preserve">
+    <value> Mandatory</value>
+  </data>
+  <data name="State_Exclusive" xml:space="preserve">
+    <value>, Exclusive</value>
+  </data>
+  <data name="State_NeedsReboot" xml:space="preserve">
+    <value>, Needs Reboot</value>
+  </data>
+  <data name="State_AutoSelect" xml:space="preserve">
+    <value> (!)</value>
+  </data>
+  <data name="Op_CheckingUpdates" xml:space="preserve">
+    <value>Checking for Updates</value>
+  </data>
+  <data name="Op_PreparingCheck" xml:space="preserve">
+    <value>Preparing Check</value>
+  </data>
+  <data name="Op_DownloadingUpdates" xml:space="preserve">
+    <value>Downloading Updates</value>
+  </data>
+  <data name="Op_InstallingUpdates" xml:space="preserve">
+    <value>Installing Updates</value>
+  </data>
+  <data name="Op_RemovingUpdates" xml:space="preserve">
+    <value>Removing Updates</value>
+  </data>
+  <data name="Op_CancelingOperation" xml:space="preserve">
+    <value>Cancelling Operation</value>
+  </data>
+  <data name="Op_Unknown" xml:space="preserve">
+    <value>Unknown Operation</value>
+  </data>
+  <data name="Result_AccessError" xml:space="preserve">
+    <value>Required privileges are not available</value>
+  </data>
+  <data name="Result_Busy" xml:space="preserve">
+    <value>Another operation is already in progress</value>
+  </data>
+  <data name="Result_DownloadFailed" xml:space="preserve">
+    <value>Download failed</value>
+  </data>
+  <data name="Result_InstallFailed" xml:space="preserve">
+    <value>Installation failed</value>
+  </data>
+  <data name="Result_NoUpdates" xml:space="preserve">
+    <value>No selected updates or no updates eligible for the operation</value>
+  </data>
+  <data name="Result_InternalError" xml:space="preserve">
+    <value>Internal error</value>
+  </data>
+  <data name="Result_FileNotFound" xml:space="preserve">
+    <value>Required file(s) could not be found</value>
+  </data>
+  <data name="Msg_WuServiceUnavailable" xml:space="preserve">
+    <value>The Windows Update Service is not available. Do you want to start it?</value>
+  </data>
+  <data name="Log_WuServiceUnavailableHint" xml:space="preserve">
+    <value>The Windows Update Service is not available. It can be started from Options &gt; Tools &gt; Windows Update Service.</value>
+  </data>
+  <data name="Log_UnknownEdition" xml:space="preserve">
+    <value>Unrecognized Windows Edition, respect for GPO settings is unknown.</value>
+  </data>
+  <data name="Msg_CacheCleanupRunning" xml:space="preserve">
+    <value>Cache cleanup or system optimization is still running and cannot be cancelled. Exiting now may leave the Windows Update service stopped. Exit anyway?</value>
+  </data>
+  <data name="Msg_OperationInProgressExit" xml:space="preserve">
+    <value>An operation is still in progress. Cancel it and exit?</value>
+  </data>
+  <data name="Msg_AdminRequiredCleanCache" xml:space="preserve">
+    <value>Administrator privileges are required to clean the Windows Update cache.</value>
+  </data>
+  <data name="Msg_OptimizeConfirm" xml:space="preserve">
+    <value>This will disable reserved storage, remove superseded component versions and compress the Windows system files. These changes cannot be easily undone.&#xD;&#xA;&#xD;&#xA;Continue?</value>
+  </data>
+  <data name="Msg_RestoreDefaultsConfirm" xml:space="preserve">
+    <value>This will reset all options and Windows Update policy settings changed by this tool to their defaults. Continue?</value>
+  </data>
+  <data name="Msg_DefaultsRestored" xml:space="preserve">
+    <value>Default settings restored.</value>
+  </data>
+  <data name="Msg_WaitForOperation" xml:space="preserve">
+    <value>Wait for the current operation to finish or cancel it first.</value>
+  </data>
+  <data name="Log_LanguageSwitchFailed" xml:space="preserve">
+    <value>Failed to switch the language: {0}</value>
+  </data>
+  <data name="Msg_LanguageSwitchFailed" xml:space="preserve">
+    <value>The language could not be switched. The previous language was restored.</value>
+  </data>
+  <data name="Msg_AdminRequiredDownload" xml:space="preserve">
+    <value>Administrator privileges are required to download updates using Windows Update services. Use 'Manual' download instead.</value>
+  </data>
+  <data name="Msg_AdminRequiredInstall" xml:space="preserve">
+    <value>Administrator privileges are required to install updates.</value>
+  </data>
+  <data name="Msg_AdminRequiredRemove" xml:space="preserve">
+    <value>Administrator privileges are required to remove updates.</value>
+  </data>
+  <data name="Msg_ManualDownloadDone" xml:space="preserve">
+    <value>Updates were downloaded to {0} and are ready to be installed manually.</value>
+  </data>
+  <data name="Msg_ManualDownloadPartial" xml:space="preserve">
+    <value>Updates were downloaded to {0}, but some updates failed to download.</value>
+  </data>
+  <data name="Msg_RebootScheduled" xml:space="preserve">
+    <value>Updates successfully installed. The computer will restart at {0}.</value>
+  </data>
+  <data name="Msg_RebootRequired" xml:space="preserve">
+    <value>Updates were installed successfully, but a reboot is required.</value>
+  </data>
+  <data name="Msg_InstallFailedReboot" xml:space="preserve">
+    <value>Installation of some updates failed, and a reboot is required.</value>
+  </data>
+  <data name="Msg_ToolElevatedConfirm" xml:space="preserve">
+    <value>The application folder can be modified without administrator rights, so this tool definition may have been changed by another program. The following command will run with administrator rights:&#xD;&#xA;&#xD;&#xA;{0}&#xD;&#xA;&#xD;&#xA;Run it?</value>
+  </data>
+  <data name="Msg_ToolStartFailed" xml:space="preserve">
+    <value>Failed to start the tool.</value>
+  </data>
+  <data name="Msg_RebootNeededForConfig" xml:space="preserve">
+    <value>For the new configuration to fully take effect, a reboot is required.</value>
+  </data>
+  <data name="Msg_GpoNotRespected" xml:space="preserve">
+    <value>Your version of Windows does not respect the standard GPOs. To keep automatic Windows updates blocked, update facilitation services must also be disabled.</value>
+  </data>
+  <data name="Msg_ConfirmElevatedStart" xml:space="preserve">
+    <value>The application folder can be modified without administrator rights. With {0} enabled, any program running under your account could replace this tool or its Tools settings and run code with administrator rights without a UAC prompt.&#xD;&#xA;&#xD;&#xA;Move the tool to a protected folder such as Program Files to avoid this. Enable {0} anyway?</value>
+  </data>
+  <data name="Msg_AutoStartFailed" xml:space="preserve">
+    <value>Auto-start could not be changed. See the log for details.</value>
+  </data>
+  <data name="Msg_MsUpdateServiceFailed" xml:space="preserve">
+    <value>The Microsoft Update service could not be changed. See the log for details.</value>
+  </data>
+  <data name="Msg_AutoRestartScheduleFailed" xml:space="preserve">
+    <value>Automatic restart could not be scheduled: {0}</value>
+  </data>
+  <data name="Msg_AutoRestartCancelFailed" xml:space="preserve">
+    <value>Automatic restart could not be cancelled: {0}</value>
+  </data>
+  <data name="Msg_DebuggerWait" xml:space="preserve">
+    <value>Waiting for debugger. (Press OK once attached.)</value>
+  </data>
+  <data name="Msg_AlreadyRunning" xml:space="preserve">
+    <value>{0} is already running.</value>
+  </data>
+  <data name="Msg_WorkingDirNotWritable" xml:space="preserve">
+    <value>Cannot write to working directory: {0}</value>
+  </data>
+  <data name="Log_LastChecked" xml:space="preserve">
+    <value>Last Checked for updates: {0}</value>
+  </data>
+  <data name="Log_AutoSearchStart" xml:space="preserve">
+    <value>Starting automatic search for updates.</value>
+  </data>
+  <data name="Balloon_CheckUpdatesTitle" xml:space="preserve">
+    <value>Please Check for Updates</value>
+  </data>
+  <data name="Balloon_Overdue" xml:space="preserve">
+    <value>{0} has not been able to check for updates for {1} days. Please check for updates manually and resolve any issues.</value>
+  </data>
+  <data name="Balloon_NewUpdatesTitle" xml:space="preserve">
+    <value>New Updates Found</value>
+  </data>
+  <data name="Balloon_NewUpdates" xml:space="preserve">
+    <value>{0} has found {1} new update(s):&#xA;{2}&#xA;&#xA;Please review and install them.</value>
+  </data>
+  <data name="Log_LinksCopied" xml:space="preserve">
+    <value>Update Download Links copied to clipboard</value>
+  </data>
+  <data name="Log_NoUpdatesSelected" xml:space="preserve">
+    <value>No updates selected</value>
+  </data>
+  <data name="Log_AutoOperationFailed" xml:space="preserve">
+    <value>Automatic {0} failed: {1}.</value>
+  </data>
+  <data name="Msg_OperationFailed" xml:space="preserve">
+    <value>{0} failed: {1}.</value>
+  </data>
+  <data name="Log_CleaningCache" xml:space="preserve">
+    <value>Cleaning Windows Update cache...</value>
+  </data>
+  <data name="Log_KernelOptimization" xml:space="preserve">
+    <value>Windows kernel optimization...</value>
+  </data>
+  <data name="Log_CacheCleanError" xml:space="preserve">
+    <value>Error cleaning updates cache: {0}</value>
+  </data>
+  <data name="Log_WuServiceRestartError" xml:space="preserve">
+    <value>Error restarting the Windows Update service: {0}</value>
+  </data>
+  <data name="Log_CacheCleaned" xml:space="preserve">
+    <value>Windows Update cache cleaned, freed {0}</value>
+  </data>
+  <data name="Log_CachePartiallyCleaned" xml:space="preserve">
+    <value>Windows Update cache partially cleaned, freed {0}, {1} file(s) could not be deleted</value>
+  </data>
+  <data name="Log_OptimizeError" xml:space="preserve">
+    <value>Error optimizing kernel: {0}</value>
+  </data>
+  <data name="Log_OptimizeFinished" xml:space="preserve">
+    <value>Windows kernel optimization finished.</value>
+  </data>
+  <data name="Log_RestartCancelled" xml:space="preserve">
+    <value>Automatic restart cancellation requested.</value>
+  </data>
+  <data name="Log_RestartScheduled" xml:space="preserve">
+    <value>Automatic restart scheduled in {0} minute(s).</value>
+  </data>
+  <data name="Log_FontRestoreError" xml:space="preserve">
+    <value>Error restoring saved UI font: {0}</value>
+  </data>
+  <data name="Word_Cancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="Word_Schedule" xml:space="preserve">
+    <value>schedule</value>
+  </data>
+  <data name="Word_Enable" xml:space="preserve">
+    <value>enable</value>
+  </data>
+  <data name="Word_Disable" xml:space="preserve">
+    <value>disable</value>
+  </data>
+  <data name="Word_Register" xml:space="preserve">
+    <value>register</value>
+  </data>
+  <data name="Word_Remove" xml:space="preserve">
+    <value>remove</value>
+  </data>
+  <data name="Word_AutoStart" xml:space="preserve">
+    <value>auto-start</value>
+  </data>
+  <data name="Word_FeatureUacTask" xml:space="preserve">
+    <value>the UAC skip task</value>
+  </data>
+  <data name="Log_AppVersion" xml:space="preserve">
+    <value>{0}, Version v{1}</value>
+  </data>
+  <data name="Log_License" xml:space="preserve">
+    <value>This tool is open source under the GNU General Public License, Version 3.&#xD;&#xA;</value>
+  </data>
+  <data name="Log_AdminRequiredForUpdates" xml:space="preserve">
+    <value>Administrator privileges are required to install updates.</value>
+  </data>
+  <data name="Log_WorkingDirectory" xml:space="preserve">
+    <value>Working Directory: {0}</value>
+  </data>
+  <data name="Log_SkippedToolsCommand" xml:space="preserve">
+    <value>Skipped the Tools.ini {0} command because the application folder can be modified without administrator rights: {1}</value>
+  </data>
+  <data name="Log_AutoStartUnavailable" xml:space="preserve">
+    <value>Auto-start is not available</value>
+  </data>
+  <data name="Log_AutoStartDisableAdminRequired" xml:space="preserve">
+    <value>Administrator rights are required to disable auto-start.</value>
+  </data>
+  <data name="Log_AutoStartFailed" xml:space="preserve">
+    <value>Failed to {0} auto-start: {1}</value>
+  </data>
+  <data name="Log_AutoStartStateFailed" xml:space="preserve">
+    <value>Failed to read the auto-start state: {0}</value>
+  </data>
+  <data name="Log_AutoStartEntryUpdate" xml:space="preserve">
+    <value>Updating the auto-start entry: {0}</value>
+  </data>
+  <data name="Log_AutoStartEntryUpdateFailed" xml:space="preserve">
+    <value>Failed to update the auto-start entry: {0}</value>
+  </data>
+  <data name="Log_AutoStartEntryRestoreFailed" xml:space="preserve">
+    <value>Failed to restore the auto-start entry: {0}</value>
+  </data>
+  <data name="Log_AutoStartTaskUpdate" xml:space="preserve">
+    <value>Updating the outdated auto-start task: {0}</value>
+  </data>
+  <data name="Log_AutoStartTaskUpdateFailed" xml:space="preserve">
+    <value>Failed to update the auto-start task: {0}</value>
+  </data>
+  <data name="Log_SkipUacTaskUpdate" xml:space="preserve">
+    <value>Updating the outdated UAC skip task: {0}</value>
+  </data>
+  <data name="Log_SkipUacEnableError" xml:space="preserve">
+    <value>Enable SkipUAC Error {0}</value>
+  </data>
+  <data name="Log_AppDirPermCheckFailed" xml:space="preserve">
+    <value>Failed to check application directory permissions: {0}</value>
+  </data>
+  <data name="Log_TryingSkipUac" xml:space="preserve">
+    <value>Trying to SkipUAC ...</value>
+  </data>
+  <data name="Log_SkipUacError" xml:space="preserve">
+    <value>SkipUAC Error {0}</value>
+  </data>
+  <data name="Log_UacTaskFailed" xml:space="preserve">
+    <value>Failed to {0} the UAC skip task.</value>
+  </data>
+  <data name="Log_RestartFailed" xml:space="preserve">
+    <value>Failed to {0} automatic restart.</value>
+  </data>
+  <data name="Log_RestartFailedDetails" xml:space="preserve">
+    <value>Failed to {0} automatic restart: {1}</value>
+  </data>
+  <data name="Help_Title" xml:space="preserve">
+    <value>Available command line options&#xD;&#xA;</value>
+  </data>
+  <data name="Help_Tray" xml:space="preserve">
+    <value>-tray&#x9;&#x9;Start in Tray</value>
+  </data>
+  <data name="Help_OnClose" xml:space="preserve">
+    <value>-onclose [cmd]&#x9;Execute commands when closing</value>
+  </data>
+  <data name="Help_Update" xml:space="preserve">
+    <value>-update&#x9;&#x9;Search for updates on start</value>
+  </data>
+  <data name="Help_Console" xml:space="preserve">
+    <value>-console&#x9;&#x9;Show console (for debugging)</value>
+  </data>
+  <data name="Help_Help" xml:space="preserve">
+    <value>-help&#x9;&#x9;Show this help message</value>
+  </data>
+  <data name="Log_WuAgentVersion" xml:space="preserve">
+    <value>Windows Update Agent Version: {0}</value>
+  </data>
+  <data name="Log_RemoveEmptyFolderFailed" xml:space="preserve">
+    <value>Failed to remove the empty folder {0}: {1}</value>
+  </data>
+  <data name="Log_ErrorRemovingService" xml:space="preserve">
+    <value>Error removing update service {0}: {1}</value>
+  </data>
+  <data name="Log_ErrorCode" xml:space="preserve">
+    <value>Error 0x{0}: {1}</value>
+  </data>
+  <data name="Log_ServiceChangeFailed" xml:space="preserve">
+    <value>Failed to {0} update service {1}</value>
+  </data>
+  <data name="Log_HistoryReadFailed" xml:space="preserve">
+    <value>Failed to read the update history</value>
+  </data>
+  <data name="Log_SetupOffline" xml:space="preserve">
+    <value>Setting up 'Offline Sync Service'</value>
+  </data>
+  <data name="Log_DownloadingCab" xml:space="preserve">
+    <value>Downloading wsusscn2.cab...</value>
+  </data>
+  <data name="Log_NoDownloadUrls" xml:space="preserve">
+    <value>Error: No download URLs found for update {0}</value>
+  </data>
+  <data name="Log_CannotUninstall" xml:space="preserve">
+    <value>Update cannot be uninstalled: {0}</value>
+  </data>
+  <data name="Log_NoUpdatesForUninstall" xml:space="preserve">
+    <value>No updates selected or eligible for uninstallation</value>
+  </data>
+  <data name="Log_CabDownloaded" xml:space="preserve">
+    <value>wsusscn2.cab downloaded</value>
+  </data>
+  <data name="Log_DownloadedCount" xml:space="preserve">
+    <value>Downloaded {0} out of {1} to {2}</value>
+  </data>
+  <data name="Log_InstallUninstallOk" xml:space="preserve">
+    <value>Updates (Un)Installed successfully</value>
+  </data>
+  <data name="Log_InstallUninstallFailed" xml:space="preserve">
+    <value>Updates failed to (Un)Install</value>
+  </data>
+  <data name="Log_RebootRequired" xml:space="preserve">
+    <value>Reboot is required for one or more updates</value>
+  </data>
+  <data name="Log_NoUpdatesForDownload" xml:space="preserve">
+    <value>No updates selected for download</value>
+  </data>
+  <data name="Log_DownloadingUpdates" xml:space="preserve">
+    <value>Downloading Updates... This may take several minutes.</value>
+  </data>
+  <data name="Log_NoUpdatesForInstall" xml:space="preserve">
+    <value>No updates selected for installation</value>
+  </data>
+  <data name="Log_InstallingUpdates" xml:space="preserve">
+    <value>Installing Updates... This may take several minutes.</value>
+  </data>
+  <data name="Log_HideError" xml:space="preserve">
+    <value>Error hiding/unhiding update {0}: {1}</value>
+  </data>
+  <data name="Log_SearchFailed" xml:space="preserve">
+    <value>Search for updates failed</value>
+  </data>
+  <data name="Log_SearchIncomplete" xml:space="preserve">
+    <value>Search for updates did not complete</value>
+  </data>
+  <data name="Log_FoundPending" xml:space="preserve">
+    <value>Found {0} pending updates.</value>
+  </data>
+  <data name="Log_DownloadUpdatesFailed" xml:space="preserve">
+    <value>Downloading updates failed</value>
+  </data>
+  <data name="Log_DownloadedToWindir" xml:space="preserve">
+    <value>Updates downloaded to %windir%\SoftwareDistribution\Download</value>
+  </data>
+  <data name="Log_InstallUninstallFailed2" xml:space="preserve">
+    <value>(Un)Installing updates failed</value>
+  </data>
+  <data name="Log_InstallUninstallWithErrors" xml:space="preserve">
+    <value>Updates (Un)Installed with errors</value>
+  </data>
+  <data name="Log_FailedToInstallUpdate" xml:space="preserve">
+    <value>Failed to (un)install: {0}</value>
+  </data>
+  <data name="Log_InstallResultReadFailed" xml:space="preserve">
+    <value>Failed to read the installation result of update #{0}: {1}</value>
+  </data>
+  <data name="Log_GenericError" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="Log_StoreUpdateListFailed" xml:space="preserve">
+    <value>Failed to store the update list: {0}</value>
+  </data>
+  <data name="Log_DateParseError" xml:space="preserve">
+    <value>Error parsing stored date for update {0}: {1}</value>
+  </data>
+  <data name="Log_SearchingUpdates" xml:space="preserve">
+    <value>Searching for updates</value>
+  </data>
+  <data name="Log_UpdateDetailsError" xml:space="preserve">
+    <value>Error reading update details for {0}: {1}</value>
+  </data>
+  <data name="Log_HistoryDetailsError" xml:space="preserve">
+    <value>Error reading update history entry details for {0}: {1}</value>
+  </data>
+  <data name="Log_CancelInstallerError" xml:space="preserve">
+    <value>Error cancelling the running installer process: {0}</value>
+  </data>
+  <data name="Log_NoFilesToInstall" xml:space="preserve">
+    <value>No downloaded files to install</value>
+  </data>
+  <data name="Log_UnpackError" xml:space="preserve">
+    <value>Error unpacking update {0}: {1}</value>
+  </data>
+  <data name="Log_InstallingFile" xml:space="preserve">
+    <value>Installing: {0}</value>
+  </data>
+  <data name="Log_RebootInitiated" xml:space="preserve">
+    <value>Error, reboot got initiated: {0}</value>
+  </data>
+  <data name="Log_AlreadyInstalled" xml:space="preserve">
+    <value>Already installed: {0}</value>
+  </data>
+  <data name="Log_NotApplicable" xml:space="preserve">
+    <value>Update is not applicable to this system: {0}</value>
+  </data>
+  <data name="Log_InstallerExitCode" xml:space="preserve">
+    <value>Installer exit code 0x{0:X8}: {1}</value>
+  </data>
+  <data name="Log_InstallError" xml:space="preserve">
+    <value>Error installing update: {0}</value>
+  </data>
+  <data name="Log_UnknownFileType" xml:space="preserve">
+    <value>Cannot determine the type of update file {0}</value>
+  </data>
+  <data name="Log_DismError" xml:space="preserve">
+    <value>Dism error: {0}</value>
+  </data>
+  <data name="Log_Uninstalling" xml:space="preserve">
+    <value>Uninstalling: {0}</value>
+  </data>
+  <data name="Log_NoKbForUninstall" xml:space="preserve">
+    <value>Cannot uninstall update with no known KB article: {0}</value>
+  </data>
+  <data name="Log_NotInstalled" xml:space="preserve">
+    <value>Update is not installed: {0}</value>
+  </data>
+  <data name="Log_ExitCode" xml:space="preserve">
+    <value>Error, exit code: 0x{0:X8}</value>
+  </data>
+  <data name="Log_RemoveError" xml:space="preserve">
+    <value>Error removing update: {0}</value>
+  </data>
+  <data name="Err_RefuseInstall" xml:space="preserve">
+    <value>Refusing to install {0}: {1}</value>
+  </data>
+  <data name="Err_UnknownFormat" xml:space="preserve">
+    <value>Unknown update format: </value>
+  </data>
+  <data name="Err_NoSupportedFileInZip" xml:space="preserve">
+    <value>No supported update file found in the zip archive</value>
+  </data>
+  <data name="Log_DownloadFailedItem" xml:space="preserve">
+    <value>Download failed: {0}</value>
+  </data>
+  <data name="Log_OlderVersionUsed" xml:space="preserve">
+    <value>An older version is present and will be used.</value>
+  </data>
+  <data name="Err_InvalidSignature" xml:space="preserve">
+    <value>invalid or missing digital signature (0x{0:X8})</value>
+  </data>
+  <data name="Err_NotMicrosoftSigned" xml:space="preserve">
+    <value>file is not signed by Microsoft ({0})</value>
+  </data>
+  <data name="Err_CannotReadCertificate" xml:space="preserve">
+    <value>cannot read the signing certificate: {0}</value>
+  </data>
+  <data name="Log_ConfigAuError" xml:space="preserve">
+    <value>Error configuring Automatic Update settings: {0}</value>
+  </data>
+  <data name="Log_ConfigDriverAuError" xml:space="preserve">
+    <value>Error configuring driver Automatic Update settings: {0}</value>
+  </data>
+  <data name="Log_ReadDriverAuError" xml:space="preserve">
+    <value>Error reading driver Automatic Update settings: {0}</value>
+  </data>
+  <data name="Log_ConfigUpdatePageError" xml:space="preserve">
+    <value>Error configuring the Windows Update settings page visibility: {0}</value>
+  </data>
+  <data name="Log_ReadUpdatePageError" xml:space="preserve">
+    <value>Error reading the Windows Update settings page visibility: {0}</value>
+  </data>
+  <data name="Log_ConfigMsBlockError" xml:space="preserve">
+    <value>Error configuring Microsoft Update server blocking: {0}</value>
+  </data>
+  <data name="Log_ReadMsBlockError" xml:space="preserve">
+    <value>Error reading Microsoft Update server blocking status: {0}</value>
+  </data>
+  <data name="Log_ConfigStoreAuError" xml:space="preserve">
+    <value>Error configuring Windows Store Automatic Update settings: {0}</value>
+  </data>
+  <data name="Log_ReadStoreAuError" xml:space="preserve">
+    <value>Error reading Windows Store Automatic Update settings: {0}</value>
+  </data>
+  <data name="Log_ConfigAuEnableError" xml:space="preserve">
+    <value>Error disabling/enabling Automatic Updates: {0}</value>
+  </data>
+  <data name="Log_StopServiceError" xml:space="preserve">
+    <value>Error stopping service {0}: {1}</value>
+  </data>
+  <data name="Log_ServiceMissing" xml:space="preserve">
+    <value>Service {0} does not exist</value>
+  </data>
+  <data name="Log_ServicePermError" xml:space="preserve">
+    <value>Error updating permissions for service {0}: {1}</value>
+  </data>
+  <data name="Log_ServiceStateError" xml:space="preserve">
+    <value>Error reading service {0} state: {1}</value>
+  </data>
+  <data name="Log_GpoRespectError" xml:space="preserve">
+    <value>Error determining GPO respect level: {0}</value>
+  </data>
+  <data name="Log_WinVersionError" xml:space="preserve">
+    <value>Error determining Windows version: {0}</value>
+  </data>
+  <data name="Err_00240001" xml:space="preserve">
+    <value>Windows Update Agent was stopped successfully.</value>
+  </data>
+  <data name="Err_00240002" xml:space="preserve">
+    <value>Windows Update Agent updated itself.</value>
+  </data>
+  <data name="Err_00240003" xml:space="preserve">
+    <value>Operation completed successfully but there were errors applying the updates.</value>
+  </data>
+  <data name="Err_00240004" xml:space="preserve">
+    <value>A callback was marked to be disconnected later because the request to disconnect the operation came while a callback was executing.</value>
+  </data>
+  <data name="Err_00240005" xml:space="preserve">
+    <value>The system must be restarted to complete installation of the update.</value>
+  </data>
+  <data name="Err_00240006" xml:space="preserve">
+    <value>The update to be installed is already installed on the system.</value>
+  </data>
+  <data name="Err_00240007" xml:space="preserve">
+    <value>The update to be removed is not installed on the system.</value>
+  </data>
+  <data name="Err_00240008" xml:space="preserve">
+    <value>The update to be downloaded has already been downloaded.</value>
+  </data>
+  <data name="Err_00240009" xml:space="preserve">
+    <value>The operation completed successfully, but some updates were skipped because the system is running on batteries.</value>
+  </data>
+  <data name="Err_00242015" xml:space="preserve">
+    <value>The installation operation for the update is still in progress.</value>
+  </data>
+  <data name="Err_00245001" xml:space="preserve">
+    <value>No operation was required by the server-initiated healing server response.</value>
+  </data>
+  <data name="Err_00246001" xml:space="preserve">
+    <value>The update to be downloaded is already being downloaded.</value>
+  </data>
+  <data name="Err_80240001" xml:space="preserve">
+    <value>Windows Update Agent was unable to provide the service.</value>
+  </data>
+  <data name="Err_80240002" xml:space="preserve">
+    <value>The maximum capacity of the service was exceeded.</value>
+  </data>
+  <data name="Err_80240003" xml:space="preserve">
+    <value>An ID cannot be found.</value>
+  </data>
+  <data name="Err_80240004" xml:space="preserve">
+    <value>The object could not be initialized.</value>
+  </data>
+  <data name="Err_80240005" xml:space="preserve">
+    <value>The update handler requested a byte range overlapping a previously requested range.</value>
+  </data>
+  <data name="Err_80240006" xml:space="preserve">
+    <value>The requested number of byte ranges exceeds the maximum number (2^31 - 1).</value>
+  </data>
+  <data name="Err_80240007" xml:space="preserve">
+    <value>The index to a collection was invalid.</value>
+  </data>
+  <data name="Err_80240008" xml:space="preserve">
+    <value>The key for the item queried could not be found.</value>
+  </data>
+  <data name="Err_80240009" xml:space="preserve">
+    <value>Another conflicting operation was in progress. Some operations such as installation cannot be performed twice simultaneously.</value>
+  </data>
+  <data name="Err_8024000A" xml:space="preserve">
+    <value>Cancellation of the operation was not allowed.</value>
+  </data>
+  <data name="Err_8024000B" xml:space="preserve">
+    <value>Operation was cancelled.</value>
+  </data>
+  <data name="Err_8024000C" xml:space="preserve">
+    <value>No operation was required.</value>
+  </data>
+  <data name="Err_8024000D" xml:space="preserve">
+    <value>Windows Update Agent could not find required information in the update's XML data.</value>
+  </data>
+  <data name="Err_8024000E" xml:space="preserve">
+    <value>Windows Update Agent found invalid information in the update's XML data.</value>
+  </data>
+  <data name="Err_8024000F" xml:space="preserve">
+    <value>Circular update relationships were detected in the metadata.</value>
+  </data>
+  <data name="Err_80240010" xml:space="preserve">
+    <value>Update relationships too deep to evaluate were evaluated.</value>
+  </data>
+  <data name="Err_80240011" xml:space="preserve">
+    <value>An invalid update relationship was detected.</value>
+  </data>
+  <data name="Err_80240012" xml:space="preserve">
+    <value>An invalid registry value was read.</value>
+  </data>
+  <data name="Err_80240013" xml:space="preserve">
+    <value>Operation tried to add a duplicate item to a list.</value>
+  </data>
+  <data name="Err_80240014" xml:space="preserve">
+    <value>Updates requested for install are not installable by caller.</value>
+  </data>
+  <data name="Err_80240016" xml:space="preserve">
+    <value>Operation tried to install while another installation was in progress or the system was pending a mandatory restart.</value>
+  </data>
+  <data name="Err_80240017" xml:space="preserve">
+    <value>Operation was not performed because there are no applicable updates.</value>
+  </data>
+  <data name="Err_80240018" xml:space="preserve">
+    <value>Operation failed because a required user token is missing.</value>
+  </data>
+  <data name="Err_80240019" xml:space="preserve">
+    <value>An exclusive update cannot be installed with other updates at the same time.</value>
+  </data>
+  <data name="Err_8024001A" xml:space="preserve">
+    <value>A policy value was not set.</value>
+  </data>
+  <data name="Err_8024001B" xml:space="preserve">
+    <value>The operation could not be performed because the Windows Update Agent is self-updating.</value>
+  </data>
+  <data name="Err_8024001D" xml:space="preserve">
+    <value>An update contains invalid metadata.</value>
+  </data>
+  <data name="Err_8024001E" xml:space="preserve">
+    <value>Operation did not complete because the service or system was being shut down.</value>
+  </data>
+  <data name="Err_8024001F" xml:space="preserve">
+    <value>Operation did not complete because the network connection was unavailable.</value>
+  </data>
+  <data name="Err_80240020" xml:space="preserve">
+    <value>Operation did not complete because there is no logged-on interactive user.</value>
+  </data>
+  <data name="Err_80240021" xml:space="preserve">
+    <value>Operation did not complete because it timed out.</value>
+  </data>
+  <data name="Err_80240022" xml:space="preserve">
+    <value>Operation failed for all the updates.</value>
+  </data>
+  <data name="Err_80240023" xml:space="preserve">
+    <value>The license terms for all updates were declined.</value>
+  </data>
+  <data name="Err_80240024" xml:space="preserve">
+    <value>There are no updates.</value>
+  </data>
+  <data name="Err_80240025" xml:space="preserve">
+    <value>Group Policy settings prevented access to Windows Update.</value>
+  </data>
+  <data name="Err_80240026" xml:space="preserve">
+    <value>The type of update is invalid.</value>
+  </data>
+  <data name="Err_80240027" xml:space="preserve">
+    <value>The URL exceeded the maximum length.</value>
+  </data>
+  <data name="Err_80240028" xml:space="preserve">
+    <value>The update could not be uninstalled because the request did not originate from a WSUS server.</value>
+  </data>
+  <data name="Err_80240029" xml:space="preserve">
+    <value>Search may have missed some updates before there is an unlicensed application on the system.</value>
+  </data>
+  <data name="Err_8024002A" xml:space="preserve">
+    <value>A component required to detect applicable updates was missing.</value>
+  </data>
+  <data name="Err_8024002B" xml:space="preserve">
+    <value>An operation did not complete because it requires a newer version of server.</value>
+  </data>
+  <data name="Err_8024002C" xml:space="preserve">
+    <value>A delta-compressed update could not be installed because it required the source.</value>
+  </data>
+  <data name="Err_8024002D" xml:space="preserve">
+    <value>A full-file update could not be installed because it required the source.</value>
+  </data>
+  <data name="Err_8024002E" xml:space="preserve">
+    <value>Access to an unmanaged server is not allowed.</value>
+  </data>
+  <data name="Err_8024002F" xml:space="preserve">
+    <value>Operation did not complete because the DisableWindowsUpdateAccess policy was set.</value>
+  </data>
+  <data name="Err_80240030" xml:space="preserve">
+    <value>The format of the proxy list was invalid.</value>
+  </data>
+  <data name="Err_80240031" xml:space="preserve">
+    <value>The file is in the wrong format.</value>
+  </data>
+  <data name="Err_80240032" xml:space="preserve">
+    <value>The search criteria string was invalid.</value>
+  </data>
+  <data name="Err_80240033" xml:space="preserve">
+    <value>License terms could not be downloaded.</value>
+  </data>
+  <data name="Err_80240034" xml:space="preserve">
+    <value>Update failed to download.</value>
+  </data>
+  <data name="Err_80240035" xml:space="preserve">
+    <value>The update was not processed.</value>
+  </data>
+  <data name="Err_80240036" xml:space="preserve">
+    <value>The object's current state did not allow the operation.</value>
+  </data>
+  <data name="Err_80240037" xml:space="preserve">
+    <value>The functionality for the operation is not supported.</value>
+  </data>
+  <data name="Err_80240038" xml:space="preserve">
+    <value>The downloaded file has an unexpected content type.</value>
+  </data>
+  <data name="Err_80240039" xml:space="preserve">
+    <value>Agent is asked by server to resync too many times.</value>
+  </data>
+  <data name="Err_80240040" xml:space="preserve">
+    <value>WUA API method does not run on Server Core installation.</value>
+  </data>
+  <data name="Err_80240041" xml:space="preserve">
+    <value>Service is not available while sysprep is running.</value>
+  </data>
+  <data name="Err_80240042" xml:space="preserve">
+    <value>The update service is no longer registered with AU.</value>
+  </data>
+  <data name="Err_80240043" xml:space="preserve">
+    <value>There is no support for WUA UI.</value>
+  </data>
+  <data name="Err_80240044" xml:space="preserve">
+    <value>Only administrators can perform this operation on per-machine updates.</value>
+  </data>
+  <data name="Err_80240045" xml:space="preserve">
+    <value>A search was attempted with a scope that is not currently supported for this type of search.</value>
+  </data>
+  <data name="Err_80240046" xml:space="preserve">
+    <value>The URL does not point to a file.</value>
+  </data>
+  <data name="Err_80240047" xml:space="preserve">
+    <value>The operation requested is not supported.</value>
+  </data>
+  <data name="Err_80240048" xml:space="preserve">
+    <value>The featured update notification info returned by the server is invalid.</value>
+  </data>
+  <data name="Err_80240049" xml:space="preserve">
+    <value>The data is out of range.</value>
+  </data>
+  <data name="Err_8024004A" xml:space="preserve">
+    <value>Windows Update agent operations are not available while OS setup is running.</value>
+  </data>
+  <data name="Err_8024004B" xml:space="preserve">
+    <value>An orphaned downloadjob was found with no active callers.</value>
+  </data>
+  <data name="Err_8024004C" xml:space="preserve">
+    <value>An update could not be installed because the system battery power level is too low.</value>
+  </data>
+  <data name="Err_8024004D" xml:space="preserve">
+    <value>The downloaded infrastructure file is incorrectly formatted.</value>
+  </data>
+  <data name="Err_8024004E" xml:space="preserve">
+    <value>The infrastructure file must be downloaded using strong SSL.</value>
+  </data>
+  <data name="Err_8024004F" xml:space="preserve">
+    <value>A discovery call contributed to a non-zero operation count at idle timer shutdown.</value>
+  </data>
+  <data name="Err_80240050" xml:space="preserve">
+    <value>A search call contributed to a non-zero operation count at idle timer shutdown.</value>
+  </data>
+  <data name="Err_80240051" xml:space="preserve">
+    <value>A download call contributed to a non-zero operation count at idle timer shutdown.</value>
+  </data>
+  <data name="Err_80240052" xml:space="preserve">
+    <value>An install call contributed to a non-zero operation count at idle timer shutdown.</value>
+  </data>
+  <data name="Err_80240053" xml:space="preserve">
+    <value>An unspecified call contributed to a non-zero operation count at idle timer shutdown.</value>
+  </data>
+  <data name="Err_80240054" xml:space="preserve">
+    <value>An interactive user cancelled this operation, which was started from the Windows Update Agent UI.</value>
+  </data>
+  <data name="Err_80240055" xml:space="preserve">
+    <value>Automatic Updates cancelled this operation because it applies to an update that is no longer applicable to this computer.</value>
+  </data>
+  <data name="Err_80240056" xml:space="preserve">
+    <value>This version or edition of the operating system doesn't support the needed functionality.</value>
+  </data>
+  <data name="Err_80240057" xml:space="preserve">
+    <value>The requested update download or install handler, or update applicability expression evaluator, is not provided by this Agent plugin.</value>
+  </data>
+  <data name="Err_80240058" xml:space="preserve">
+    <value>The requested serialization version is not supported.</value>
+  </data>
+  <data name="Err_80240059" xml:space="preserve">
+    <value>The current network cost does not meet the conditions set by the network cost policy.</value>
+  </data>
+  <data name="Err_8024005A" xml:space="preserve">
+    <value>The call is cancelled because it applies to an update that is hidden (no longer applicable to this computer).</value>
+  </data>
+  <data name="Err_8024005B" xml:space="preserve">
+    <value>The call is cancelled because it applies to an update that is invalid (no longer applicable to this computer).</value>
+  </data>
+  <data name="Err_8024005C" xml:space="preserve">
+    <value>The specified volume id is invalid.</value>
+  </data>
+  <data name="Err_8024005D" xml:space="preserve">
+    <value>The specified volume id is unrecognized by the system.</value>
+  </data>
+  <data name="Err_8024005E" xml:space="preserve">
+    <value>The installation extended error code is not specified.</value>
+  </data>
+  <data name="Err_8024005F" xml:space="preserve">
+    <value>The installation extended error code is set to general fail.</value>
+  </data>
+  <data name="Err_80240FFF" xml:space="preserve">
+    <value>An operation failed due to reasons not covered by another error code.</value>
+  </data>
+  <data name="Err_80241001" xml:space="preserve">
+    <value>Search may have missed some updates because the Windows Installer is less than version 3.1.</value>
+  </data>
+  <data name="Err_80241002" xml:space="preserve">
+    <value>Search may have missed some updates because the Windows Installer is not configured.</value>
+  </data>
+  <data name="Err_80241003" xml:space="preserve">
+    <value>Search may have missed some updates because policy has disabled Windows Installer patching.</value>
+  </data>
+  <data name="Err_80241004" xml:space="preserve">
+    <value>An update could not be applied because the application is installed per-user.</value>
+  </data>
+  <data name="Err_80241005" xml:space="preserve">
+    <value>Search may have missed some updates because the Windows Installer is less than version 3.1.</value>
+  </data>
+  <data name="Err_80241FFF" xml:space="preserve">
+    <value>Search may have missed some updates because there was a failure of the Windows Installer.</value>
+  </data>
+  <data name="Err_80244000" xml:space="preserve">
+    <value>WU_E_PT_SOAPCLIENT_* error codes map to the SOAPCLIENT_ERROR enum of the ATL Server Library.</value>
+  </data>
+  <data name="Err_80244001" xml:space="preserve">
+    <value>Same as SOAPCLIENT_INITIALIZE_ERROR - initialization of the SOAP client failed, possibly because of an MSXML installation failure.</value>
+  </data>
+  <data name="Err_80244002" xml:space="preserve">
+    <value>Same as SOAPCLIENT_OUTOFMEMORY - SOAP client failed because it ran out of memory.</value>
+  </data>
+  <data name="Err_80244003" xml:space="preserve">
+    <value>Same as SOAPCLIENT_GENERATE_ERROR - SOAP client failed to generate the request.</value>
+  </data>
+  <data name="Err_80244004" xml:space="preserve">
+    <value>Same as SOAPCLIENT_CONNECT_ERROR - SOAP client failed to connect to the server.</value>
+  </data>
+  <data name="Err_80244005" xml:space="preserve">
+    <value>Same as SOAPCLIENT_SEND_ERROR - SOAP client failed to send a message for reasons of WU_E_WINHTTP_* error codes.</value>
+  </data>
+  <data name="Err_80244006" xml:space="preserve">
+    <value>Same as SOAPCLIENT_SERVER_ERROR - SOAP client failed because there was a server error.</value>
+  </data>
+  <data name="Err_80244007" xml:space="preserve">
+    <value>Same as SOAPCLIENT_SOAPFAULT - SOAP client failed because there was a SOAP fault for reasons of WU_E_PT_SOAP_* error codes.</value>
+  </data>
+  <data name="Err_80244008" xml:space="preserve">
+    <value>Same as SOAPCLIENT_PARSEFAULT_ERROR - SOAP client failed to parse a SOAP fault.</value>
+  </data>
+  <data name="Err_80244009" xml:space="preserve">
+    <value>Same as SOAPCLIENT_READ_ERROR - SOAP client failed while reading the response from the server.</value>
+  </data>
+  <data name="Err_8024400A" xml:space="preserve">
+    <value>Same as SOAPCLIENT_PARSE_ERROR - SOAP client failed to parse the response from the server.</value>
+  </data>
+  <data name="Err_8024400B" xml:space="preserve">
+    <value>Same as SOAP_E_VERSION_MISMATCH - SOAP client found an unrecognizable namespace for the SOAP envelope.</value>
+  </data>
+  <data name="Err_8024400C" xml:space="preserve">
+    <value>Same as SOAP_E_MUST_UNDERSTAND - SOAP client was unable to understand a header.</value>
+  </data>
+  <data name="Err_8024400D" xml:space="preserve">
+    <value>Same as SOAP_E_CLIENT - SOAP client found the message was malformed; fix before resending.</value>
+  </data>
+  <data name="Err_8024400E" xml:space="preserve">
+    <value>Same as SOAP_E_SERVER - The SOAP message could not be processed due to a server error; resend later.</value>
+  </data>
+  <data name="Err_8024400F" xml:space="preserve">
+    <value>There was an unspecified Windows Management Instrumentation (WMI) error.</value>
+  </data>
+  <data name="Err_80244010" xml:space="preserve">
+    <value>The number of round trips to the server exceeded the maximum limit.</value>
+  </data>
+  <data name="Err_80244011" xml:space="preserve">
+    <value>WUServer policy value is missing in the registry.</value>
+  </data>
+  <data name="Err_80244012" xml:space="preserve">
+    <value>Initialization failed because the object was already initialized.</value>
+  </data>
+  <data name="Err_80244013" xml:space="preserve">
+    <value>The computer name could not be determined.</value>
+  </data>
+  <data name="Err_80244015" xml:space="preserve">
+    <value>The reply from the server indicates that the server was changed or the cookie was invalid; refresh the state of the internal cache and retry.</value>
+  </data>
+  <data name="Err_80244016" xml:space="preserve">
+    <value>Same as HTTP status 400 - the server could not process the request due to invalid syntax.</value>
+  </data>
+  <data name="Err_80244017" xml:space="preserve">
+    <value>Same as HTTP status 401 - the requested resource requires user authentication.</value>
+  </data>
+  <data name="Err_80244018" xml:space="preserve">
+    <value>Same as HTTP status 403 - server understood the request, but declined to fulfill it.</value>
+  </data>
+  <data name="Err_80244019" xml:space="preserve">
+    <value>Same as HTTP status 404 - the server cannot find the requested URI (Uniform Resource Identifier).</value>
+  </data>
+  <data name="Err_8024401A" xml:space="preserve">
+    <value>Same as HTTP status 405 - the HTTP method is not allowed.</value>
+  </data>
+  <data name="Err_8024401B" xml:space="preserve">
+    <value>Same as HTTP status 407 - proxy authentication is required.</value>
+  </data>
+  <data name="Err_8024401C" xml:space="preserve">
+    <value>Same as HTTP status 408 - the server timed out waiting for the request.</value>
+  </data>
+  <data name="Err_8024401D" xml:space="preserve">
+    <value>Same as HTTP status 409 - the request was not completed due to a conflict with the current state of the resource.</value>
+  </data>
+  <data name="Err_8024401E" xml:space="preserve">
+    <value>Same as HTTP status 410 - requested resource is no longer available at the server.</value>
+  </data>
+  <data name="Err_8024401F" xml:space="preserve">
+    <value>Same as HTTP status 500 - an error internal to the server prevented fulfilling the request.</value>
+  </data>
+  <data name="Err_80244020" xml:space="preserve">
+    <value>Same as HTTP status 500 - server does not support the functionality required to fulfill the request.</value>
+  </data>
+  <data name="Err_80244021" xml:space="preserve">
+    <value>Same as HTTP status 502 - the server, while acting as a gateway or proxy, received an invalid response from the upstream server it accessed in attempting to fulfill the request.</value>
+  </data>
+  <data name="Err_80244022" xml:space="preserve">
+    <value>Same as HTTP status 503 - the service is temporarily overloaded.</value>
+  </data>
+  <data name="Err_80244023" xml:space="preserve">
+    <value>Same as HTTP status 503 - the request was timed out waiting for a gateway.</value>
+  </data>
+  <data name="Err_80244024" xml:space="preserve">
+    <value>Same as HTTP status 505 - the server does not support the HTTP protocol version used for the request.</value>
+  </data>
+  <data name="Err_80244025" xml:space="preserve">
+    <value>Operation failed due to a changed file location; refresh internal state and resend.</value>
+  </data>
+  <data name="Err_80244026" xml:space="preserve">
+    <value>Operation failed because Windows Update Agent does not support registration with a non-WSUS server.</value>
+  </data>
+  <data name="Err_80244027" xml:space="preserve">
+    <value>The server returned an empty authentication information list.</value>
+  </data>
+  <data name="Err_80244028" xml:space="preserve">
+    <value>Windows Update Agent was unable to create any valid authentication cookies.</value>
+  </data>
+  <data name="Err_80244029" xml:space="preserve">
+    <value>A configuration property value was wrong.</value>
+  </data>
+  <data name="Err_8024402A" xml:space="preserve">
+    <value>A configuration property value was missing.</value>
+  </data>
+  <data name="Err_8024402B" xml:space="preserve">
+    <value>The HTTP request could not be completed and the reason did not correspond to any of the WU_E_PT_HTTP_* error codes.</value>
+  </data>
+  <data name="Err_8024402C" xml:space="preserve">
+    <value>Same as ERROR_WINHTTP_NAME_NOT_RESOLVED - the proxy server or target server name cannot be resolved.</value>
+  </data>
+  <data name="Err_8024502D" xml:space="preserve">
+    <value>Windows Update Agent failed to download a redirector cabinet file with a new redirectorId value from the server during the recovery.</value>
+  </data>
+  <data name="Err_8024502E" xml:space="preserve">
+    <value>A redirector recovery action did not complete because the server is managed.</value>
+  </data>
+  <data name="Err_8024402F" xml:space="preserve">
+    <value>External cab file processing completed with some errors.</value>
+  </data>
+  <data name="Err_80244030" xml:space="preserve">
+    <value>The external cab processor initialization did not complete.</value>
+  </data>
+  <data name="Err_80244031" xml:space="preserve">
+    <value>The format of a metadata file was invalid.</value>
+  </data>
+  <data name="Err_80244032" xml:space="preserve">
+    <value>External cab processor found invalid metadata.</value>
+  </data>
+  <data name="Err_80244033" xml:space="preserve">
+    <value>The file digest could not be extracted from an external cab file.</value>
+  </data>
+  <data name="Err_80244034" xml:space="preserve">
+    <value>An external cab file could not be decompressed.</value>
+  </data>
+  <data name="Err_80244035" xml:space="preserve">
+    <value>External cab processor was unable to get file locations.</value>
+  </data>
+  <data name="Err_80240436" xml:space="preserve">
+    <value>The server does not support category-specific search; Full catalog search has to be issued instead.</value>
+  </data>
+  <data name="Err_80240437" xml:space="preserve">
+    <value>There was a problem authorizing with the service.</value>
+  </data>
+  <data name="Err_80240438" xml:space="preserve">
+    <value>There is no route or network connectivity to the endpoint.</value>
+  </data>
+  <data name="Err_80240439" xml:space="preserve">
+    <value>The data received does not meet the data contract expectations.</value>
+  </data>
+  <data name="Err_8024043A" xml:space="preserve">
+    <value>The url is invalid.</value>
+  </data>
+  <data name="Err_8024043B" xml:space="preserve">
+    <value>Unable to load NWS runtime.</value>
+  </data>
+  <data name="Err_8024043C" xml:space="preserve">
+    <value>The proxy auth scheme is not supported.</value>
+  </data>
+  <data name="Err_8024043D" xml:space="preserve">
+    <value>The requested service property is not available.</value>
+  </data>
+  <data name="Err_8024043E" xml:space="preserve">
+    <value>The endpoint provider plugin requires online refresh.</value>
+  </data>
+  <data name="Err_8024043F" xml:space="preserve">
+    <value>A URL for the requested service endpoint is not available.</value>
+  </data>
+  <data name="Err_80240440" xml:space="preserve">
+    <value>The connection to the service endpoint died.</value>
+  </data>
+  <data name="Err_80240441" xml:space="preserve">
+    <value>The operation is invalid because protocol talker is in an inappropriate state.</value>
+  </data>
+  <data name="Err_80240442" xml:space="preserve">
+    <value>The object is in a faulted state due to a previous error.</value>
+  </data>
+  <data name="Err_80240443" xml:space="preserve">
+    <value>The operation would lead to numeric overflow.</value>
+  </data>
+  <data name="Err_80240444" xml:space="preserve">
+    <value>The operation was aborted.</value>
+  </data>
+  <data name="Err_80240445" xml:space="preserve">
+    <value>The operation was abandoned.</value>
+  </data>
+  <data name="Err_80240446" xml:space="preserve">
+    <value>A quota was exceeded.</value>
+  </data>
+  <data name="Err_80240447" xml:space="preserve">
+    <value>The information was not available in the specified language.</value>
+  </data>
+  <data name="Err_80240448" xml:space="preserve">
+    <value>The address is already being used.</value>
+  </data>
+  <data name="Err_80240449" xml:space="preserve">
+    <value>The address is not valid for this context.</value>
+  </data>
+  <data name="Err_8024044A" xml:space="preserve">
+    <value>Unrecognized error occurred in the Windows Web Services framework.</value>
+  </data>
+  <data name="Err_8024044B" xml:space="preserve">
+    <value>A security operation failed in the Windows Web Services framework.</value>
+  </data>
+  <data name="Err_80244FFF" xml:space="preserve">
+    <value>A communication error not covered by another WU_E_PT_* error code.</value>
+  </data>
+  <data name="Err_80245001" xml:space="preserve">
+    <value>The redirector XML document could not be loaded into the DOM class.</value>
+  </data>
+  <data name="Err_80245002" xml:space="preserve">
+    <value>The redirector XML document is missing some required information.</value>
+  </data>
+  <data name="Err_80245003" xml:space="preserve">
+    <value>The redirectorId in the downloaded redirector cab is less than in the cached cab.</value>
+  </data>
+  <data name="Err_80245004" xml:space="preserve">
+    <value>The service ID is not supported in the service environment.</value>
+  </data>
+  <data name="Err_80245005" xml:space="preserve">
+    <value>The response from the redirector server had an unsupported content type.</value>
+  </data>
+  <data name="Err_80245006" xml:space="preserve">
+    <value>The response from the redirector server had an error status or was invalid.</value>
+  </data>
+  <data name="Err_80245008" xml:space="preserve">
+    <value>The maximum number of name value pairs was exceeded by the attribute provider.</value>
+  </data>
+  <data name="Err_80245009" xml:space="preserve">
+    <value>The name received from the attribute provider was invalid.</value>
+  </data>
+  <data name="Err_8024500A" xml:space="preserve">
+    <value>The value received from the attribute provider was invalid.</value>
+  </data>
+  <data name="Err_8024500B" xml:space="preserve">
+    <value>There was an error in connecting to or parsing the response from the Service Locator Service redirector server.</value>
+  </data>
+  <data name="Err_8024500C" xml:space="preserve">
+    <value>Connections to the redirector server are disallowed by managed policy.</value>
+  </data>
+  <data name="Err_8024500D" xml:space="preserve">
+    <value>The redirector would go online but is disallowed by caller configuration.</value>
+  </data>
+  <data name="Err_802450FF" xml:space="preserve">
+    <value>The redirector failed for reasons not covered by another WU_E_REDIRECTOR_* error code.</value>
+  </data>
+  <data name="Err_80245101" xml:space="preserve">
+    <value>Verification of the servicing engine package failed.</value>
+  </data>
+  <data name="Err_80245102" xml:space="preserve">
+    <value>Verification of a servicing package failed.</value>
+  </data>
+  <data name="Err_80245103" xml:space="preserve">
+    <value>Verification of the staged engine failed.</value>
+  </data>
+  <data name="Err_80245104" xml:space="preserve">
+    <value>Verification of a staged payload failed.</value>
+  </data>
+  <data name="Err_80245105" xml:space="preserve">
+    <value>An internal error occurred where the servicing action was not found.</value>
+  </data>
+  <data name="Err_80245106" xml:space="preserve">
+    <value>There was a parse error in the service environment response.</value>
+  </data>
+  <data name="Err_80245107" xml:space="preserve">
+    <value>A downloaded file failed an integrity check.</value>
+  </data>
+  <data name="Err_80245108" xml:space="preserve">
+    <value>No engine was provided by the server-initiated healing server response.</value>
+  </data>
+  <data name="Err_802451FF" xml:space="preserve">
+    <value>There was a failure for reasons not covered by another WU_E_SIH_* error code.</value>
+  </data>
+  <data name="Err_8024C001" xml:space="preserve">
+    <value>A driver was skipped.</value>
+  </data>
+  <data name="Err_8024C002" xml:space="preserve">
+    <value>A property for the driver could not be found. It may not conform with required specifications.</value>
+  </data>
+  <data name="Err_8024C003" xml:space="preserve">
+    <value>The registry type read for the driver does not match the expected type.</value>
+  </data>
+  <data name="Err_8024C004" xml:space="preserve">
+    <value>The driver update is missing metadata.</value>
+  </data>
+  <data name="Err_8024C005" xml:space="preserve">
+    <value>The driver update is missing a required attribute.</value>
+  </data>
+  <data name="Err_8024C006" xml:space="preserve">
+    <value>Driver synchronization failed.</value>
+  </data>
+  <data name="Err_8024C007" xml:space="preserve">
+    <value>Information required for the synchronization of applicable printers is missing.</value>
+  </data>
+  <data name="Err_8024C008" xml:space="preserve">
+    <value>After installing a driver update, the updated device has reported a problem.</value>
+  </data>
+  <data name="Err_8024CFFF" xml:space="preserve">
+    <value>A driver error not covered by another WU_E_DRV_* code.</value>
+  </data>
+  <data name="Err_80248000" xml:space="preserve">
+    <value>An operation failed because Windows Update Agent is shutting down.</value>
+  </data>
+  <data name="Err_80248001" xml:space="preserve">
+    <value>An operation failed because the data store was in use.</value>
+  </data>
+  <data name="Err_80248002" xml:space="preserve">
+    <value>The current and expected states of the data store do not match.</value>
+  </data>
+  <data name="Err_80248003" xml:space="preserve">
+    <value>The data store is missing a table.</value>
+  </data>
+  <data name="Err_80248004" xml:space="preserve">
+    <value>The data store contains a table with unexpected columns.</value>
+  </data>
+  <data name="Err_80248005" xml:space="preserve">
+    <value>A table could not be opened because the table is not in the data store.</value>
+  </data>
+  <data name="Err_80248006" xml:space="preserve">
+    <value>The current and expected versions of the data store do not match.</value>
+  </data>
+  <data name="Err_80248007" xml:space="preserve">
+    <value>The information requested is not in the data store.</value>
+  </data>
+  <data name="Err_80248008" xml:space="preserve">
+    <value>The data store is missing required information or has a NULL in a table column that requires a non-null value.</value>
+  </data>
+  <data name="Err_80248009" xml:space="preserve">
+    <value>The data store is missing required information or has a reference to missing license terms, file, localized property or linked row.</value>
+  </data>
+  <data name="Err_8024800A" xml:space="preserve">
+    <value>The update was not processed because its update handler could not be recognized.</value>
+  </data>
+  <data name="Err_8024800B" xml:space="preserve">
+    <value>The update was not deleted because it is still referenced by one or more services.</value>
+  </data>
+  <data name="Err_8024800C" xml:space="preserve">
+    <value>The data store section could not be locked within the allotted time.</value>
+  </data>
+  <data name="Err_8024800D" xml:space="preserve">
+    <value>The category was not added because it contains no parent categories and is not a top-level category itself.</value>
+  </data>
+  <data name="Err_8024800E" xml:space="preserve">
+    <value>The row was not added because an existing row has the same primary key.</value>
+  </data>
+  <data name="Err_8024800F" xml:space="preserve">
+    <value>The data store could not be initialized because it was locked by another process.</value>
+  </data>
+  <data name="Err_80248010" xml:space="preserve">
+    <value>The data store is not allowed to be registered with COM in the current process.</value>
+  </data>
+  <data name="Err_80248011" xml:space="preserve">
+    <value>Could not create a data store object in another process.</value>
+  </data>
+  <data name="Err_80248013" xml:space="preserve">
+    <value>The server sent the same update to the client with two different revision IDs.</value>
+  </data>
+  <data name="Err_80248014" xml:space="preserve">
+    <value>An operation did not complete because the service is not in the data store.</value>
+  </data>
+  <data name="Err_80248015" xml:space="preserve">
+    <value>An operation did not complete because the registration of the service has expired.</value>
+  </data>
+  <data name="Err_80248016" xml:space="preserve">
+    <value>A request to hide an update was declined because it is a mandatory update or because it was deployed with a deadline.</value>
+  </data>
+  <data name="Err_80248017" xml:space="preserve">
+    <value>A table was not closed because it is not associated with the session.</value>
+  </data>
+  <data name="Err_80248018" xml:space="preserve">
+    <value>A table was not closed because it is not associated with the session.</value>
+  </data>
+  <data name="Err_80248019" xml:space="preserve">
+    <value>A request to remove the Windows Update service or to unregister it with Automatic Updates was declined because it is a built-in service and/or Automatic Updates cannot fall back to another service.</value>
+  </data>
+  <data name="Err_8024801A" xml:space="preserve">
+    <value>A request was declined because the operation is not allowed.</value>
+  </data>
+  <data name="Err_8024801B" xml:space="preserve">
+    <value>The schema of the current data store and the schema of a table in a backup XML document do not match.</value>
+  </data>
+  <data name="Err_8024801C" xml:space="preserve">
+    <value>The data store requires a session reset; release the session and retry with a new session.</value>
+  </data>
+  <data name="Err_8024801D" xml:space="preserve">
+    <value>A data store operation did not complete because it was requested with an impersonated identity.</value>
+  </data>
+  <data name="Err_80248FFF" xml:space="preserve">
+    <value>A data store error not covered by another WU_E_DS_* code.</value>
+  </data>
+  <data name="Err_80249001" xml:space="preserve">
+    <value>Parsing of the rule file failed.</value>
+  </data>
+  <data name="Err_80249002" xml:space="preserve">
+    <value>Failed to get the requested inventory type from the server.</value>
+  </data>
+  <data name="Err_80249003" xml:space="preserve">
+    <value>Failed to upload inventory result to the server.</value>
+  </data>
+  <data name="Err_80249004" xml:space="preserve">
+    <value>There was an inventory error not covered by another error code.</value>
+  </data>
+  <data name="Err_80249005" xml:space="preserve">
+    <value>A WMI error occurred when enumerating the instances for a particular class.</value>
+  </data>
+  <data name="Err_8024A000" xml:space="preserve">
+    <value>Automatic Updates was unable to service incoming requests.</value>
+  </data>
+  <data name="Err_8024A002" xml:space="preserve">
+    <value>The old version of the Automatic Updates client has stopped because the WSUS server has been upgraded.</value>
+  </data>
+  <data name="Err_8024A003" xml:space="preserve">
+    <value>The old version of the Automatic Updates client was disabled.</value>
+  </data>
+  <data name="Err_8024A004" xml:space="preserve">
+    <value>Automatic Updates was unable to process incoming requests because it was paused.</value>
+  </data>
+  <data name="Err_8024A005" xml:space="preserve">
+    <value>No unmanaged service is registered with AU.</value>
+  </data>
+  <data name="Err_8024A006" xml:space="preserve">
+    <value>The default service registered with AU changed during the search.</value>
+  </data>
+  <data name="Err_8024A007" xml:space="preserve">
+    <value>A reboot is in progress.</value>
+  </data>
+  <data name="Err_8024A008" xml:space="preserve">
+    <value>Automatic Updates can't process incoming requests while Windows Welcome is running.</value>
+  </data>
+  <data name="Err_8024AFFF" xml:space="preserve">
+    <value>An Automatic Updates error not covered by another WU_E_AU * code.</value>
+  </data>
+  <data name="Err_80242000" xml:space="preserve">
+    <value>A request for a remote update handler could not be completed because no remote process is available.</value>
+  </data>
+  <data name="Err_80242001" xml:space="preserve">
+    <value>A request for a remote update handler could not be completed because the handler is local only.</value>
+  </data>
+  <data name="Err_80242002" xml:space="preserve">
+    <value>A request for an update handler could not be completed because the handler could not be recognized.</value>
+  </data>
+  <data name="Err_80242003" xml:space="preserve">
+    <value>A remote update handler could not be created because one already exists.</value>
+  </data>
+  <data name="Err_80242004" xml:space="preserve">
+    <value>A request for the handler to install (uninstall) an update could not be completed because the update does not support install (uninstall).</value>
+  </data>
+  <data name="Err_80242005" xml:space="preserve">
+    <value>An operation did not complete because the wrong handler was specified.</value>
+  </data>
+  <data name="Err_80242006" xml:space="preserve">
+    <value>A handler operation could not be completed because the update contains invalid metadata.</value>
+  </data>
+  <data name="Err_80242007" xml:space="preserve">
+    <value>An operation could not be completed because the installer exceeded the time limit.</value>
+  </data>
+  <data name="Err_80242008" xml:space="preserve">
+    <value>An operation being done by the update handler was cancelled.</value>
+  </data>
+  <data name="Err_80242009" xml:space="preserve">
+    <value>An operation could not be completed because the handler-specific metadata is invalid.</value>
+  </data>
+  <data name="Err_8024200A" xml:space="preserve">
+    <value>A request to the handler to install an update could not be completed because the update requires user input.</value>
+  </data>
+  <data name="Err_8024200B" xml:space="preserve">
+    <value>The installer failed to install (uninstall) one or more updates.</value>
+  </data>
+  <data name="Err_8024200C" xml:space="preserve">
+    <value>The update handler should download self-contained content rather than delta-compressed content for the update.</value>
+  </data>
+  <data name="Err_8024200D" xml:space="preserve">
+    <value>The update handler did not install the update because it needs to be downloaded again.</value>
+  </data>
+  <data name="Err_8024200E" xml:space="preserve">
+    <value>The update handler failed to send notification of the status of the install (uninstall) operation.</value>
+  </data>
+  <data name="Err_8024200F" xml:space="preserve">
+    <value>The file names contained in the update metadata and in the update package are inconsistent.</value>
+  </data>
+  <data name="Err_80242010" xml:space="preserve">
+    <value>The update handler failed to fall back to the self-contained content.</value>
+  </data>
+  <data name="Err_80242011" xml:space="preserve">
+    <value>The update handler has exceeded the maximum number of download requests.</value>
+  </data>
+  <data name="Err_80242012" xml:space="preserve">
+    <value>The update handler has received an unexpected response from CBS.</value>
+  </data>
+  <data name="Err_80242013" xml:space="preserve">
+    <value>The update metadata contains an invalid CBS package identifier.</value>
+  </data>
+  <data name="Err_80242014" xml:space="preserve">
+    <value>The post-reboot operation for the update is still in progress.</value>
+  </data>
+  <data name="Err_80242015" xml:space="preserve">
+    <value>The result of the post-reboot operation for the update could not be determined.</value>
+  </data>
+  <data name="Err_80242016" xml:space="preserve">
+    <value>The state of the update after its post-reboot operation has completed is unexpected.</value>
+  </data>
+  <data name="Err_80242017" xml:space="preserve">
+    <value>The OS servicing stack must be updated before this update is downloaded or installed.</value>
+  </data>
+  <data name="Err_80242018" xml:space="preserve">
+    <value>A callback installer called back with an error.</value>
+  </data>
+  <data name="Err_80242019" xml:space="preserve">
+    <value>The custom installer signature did not match the signature required by the update.</value>
+  </data>
+  <data name="Err_8024201A" xml:space="preserve">
+    <value>The installer does not support the installation configuration.</value>
+  </data>
+  <data name="Err_8024201B" xml:space="preserve">
+    <value>The targeted session for install is invalid.</value>
+  </data>
+  <data name="Err_8024201C" xml:space="preserve">
+    <value>The handler failed to decrypt the update files.</value>
+  </data>
+  <data name="Err_8024201D" xml:space="preserve">
+    <value>The update handler is disabled until the system reboots.</value>
+  </data>
+  <data name="Err_8024201E" xml:space="preserve">
+    <value>The AppX infrastructure is not present on the system.</value>
+  </data>
+  <data name="Err_8024201F" xml:space="preserve">
+    <value>The update cannot be committed because it has not been previously installed or staged.</value>
+  </data>
+  <data name="Err_80242020" xml:space="preserve">
+    <value>The specified volume is not a valid AppX package volume.</value>
+  </data>
+  <data name="Err_80242021" xml:space="preserve">
+    <value>The configured default storage volume is unavailable.</value>
+  </data>
+  <data name="Err_80242022" xml:space="preserve">
+    <value>The volume on which the application is installed is unavailable.</value>
+  </data>
+  <data name="Err_80242023" xml:space="preserve">
+    <value>The specified package family is not present on the system.</value>
+  </data>
+  <data name="Err_80242024" xml:space="preserve">
+    <value>Unable to find a package volume marked as system.</value>
+  </data>
+  <data name="Err_80242FFF" xml:space="preserve">
+    <value>An update handler error not covered by another WU_E_UH_* code.</value>
+  </data>
+  <data name="Err_80246001" xml:space="preserve">
+    <value>A download manager operation could not be completed because the requested file does not have a URL.</value>
+  </data>
+  <data name="Err_80246002" xml:space="preserve">
+    <value>A download manager operation could not be completed because the file digest was not recognized.</value>
+  </data>
+  <data name="Err_80246003" xml:space="preserve">
+    <value>A download manager operation could not be completed because the file metadata requested an unrecognized hash algorithm.</value>
+  </data>
+  <data name="Err_80246004" xml:space="preserve">
+    <value>An operation could not be completed because a download request is required from the download handler.</value>
+  </data>
+  <data name="Err_80246005" xml:space="preserve">
+    <value>A download manager operation could not be completed because the network connection was unavailable.</value>
+  </data>
+  <data name="Err_80246006" xml:space="preserve">
+    <value>A download manager operation could not be completed because the version of Background Intelligent Transfer Service (BITS) is incompatible.</value>
+  </data>
+  <data name="Err_80246007" xml:space="preserve">
+    <value>The update has not been downloaded.</value>
+  </data>
+  <data name="Err_80246008" xml:space="preserve">
+    <value>A download manager operation failed because the download manager was unable to connect the Background Intelligent Transfer Service (BITS).</value>
+  </data>
+  <data name="Err_80246009" xml:space="preserve">
+    <value>A download manager operation failed because there was an unspecified Background Intelligent Transfer Service (BITS) transfer error.</value>
+  </data>
+  <data name="Err_8024600A" xml:space="preserve">
+    <value>A download must be restarted because the location of the source of the download has changed.</value>
+  </data>
+  <data name="Err_8024600B" xml:space="preserve">
+    <value>A download must be restarted because the update content changed in a new revision.</value>
+  </data>
+  <data name="Err_8024600C" xml:space="preserve">
+    <value>A download failed because the current network limits downloads by update size for the update service.</value>
+  </data>
+  <data name="Err_8024600E" xml:space="preserve">
+    <value>The download failed because the client was denied authorization to download the content.</value>
+  </data>
+  <data name="Err_8024600F" xml:space="preserve">
+    <value>The download failed because the user token associated with the BITS job no longer exists.</value>
+  </data>
+  <data name="Err_80246010" xml:space="preserve">
+    <value>The sandbox directory for the downloaded update was not found.</value>
+  </data>
+  <data name="Err_80246011" xml:space="preserve">
+    <value>The downloaded update has an unknown file path.</value>
+  </data>
+  <data name="Err_80246012" xml:space="preserve">
+    <value>One or more of the files for the downloaded update is missing.</value>
+  </data>
+  <data name="Err_80246013" xml:space="preserve">
+    <value>An attempt was made to access a downloaded update that has already been removed.</value>
+  </data>
+  <data name="Err_80246014" xml:space="preserve">
+    <value>Windows Update couldn't find a needed portion of a downloaded update's file.</value>
+  </data>
+  <data name="Err_80246016" xml:space="preserve">
+    <value>The download failed because the client was denied authorization to download the content due to no user logged on.</value>
+  </data>
+  <data name="Err_80246017" xml:space="preserve">
+    <value>The download failed because the local user was denied authorization to download the content.</value>
+  </data>
+  <data name="Err_80246018" xml:space="preserve">
+    <value>The download failed because the domain user was denied authorization to download the content.</value>
+  </data>
+  <data name="Err_80246019" xml:space="preserve">
+    <value>The download failed because the MSA account associated with the user was denied authorization to download the content.</value>
+  </data>
+  <data name="Err_8024601A" xml:space="preserve">
+    <value>The download will be continued by falling back to BITS to download the content.</value>
+  </data>
+  <data name="Err_8024601B" xml:space="preserve">
+    <value>Another caller has requested download to a different volume.</value>
+  </data>
+  <data name="Err_8024601C" xml:space="preserve">
+    <value>The hash of the update's sandbox does not match the expected value.</value>
+  </data>
+  <data name="Err_80246FFF" xml:space="preserve">
+    <value>There was a download manager error not covered by another WU_E_DM_* error code.</value>
+  </data>
+  <data name="Err_8024D001" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because an INF file contains invalid information.</value>
+  </data>
+  <data name="Err_8024D002" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the wuident.cab file contains invalid information.</value>
+  </data>
+  <data name="Err_8024D003" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because of an internal error that caused setup initialization to be performed twice.</value>
+  </data>
+  <data name="Err_8024D004" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because setup initialization never completed successfully.</value>
+  </data>
+  <data name="Err_8024D005" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the versions specified in the INF do not match the actual source file versions.</value>
+  </data>
+  <data name="Err_8024D006" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because a WUA file on the target system is newer than the corresponding source file.</value>
+  </data>
+  <data name="Err_8024D007" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because regsvr32.exe returned an error.</value>
+  </data>
+  <data name="Err_8024D008" xml:space="preserve">
+    <value>An update to the Windows Update Agent was skipped because previous attempts to update have failed.</value>
+  </data>
+  <data name="Err_8024D009" xml:space="preserve">
+    <value>An update to the Windows Update Agent was skipped due to a directive in the wuident.cab file.</value>
+  </data>
+  <data name="Err_8024D00A" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the current system configuration is not supported.</value>
+  </data>
+  <data name="Err_8024D00B" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the system is configured to block the update.</value>
+  </data>
+  <data name="Err_8024D00C" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because a restart of the system is required.</value>
+  </data>
+  <data name="Err_8024D00D" xml:space="preserve">
+    <value>Windows Update Agent setup is already running.</value>
+  </data>
+  <data name="Err_8024D00E" xml:space="preserve">
+    <value>Windows Update Agent setup package requires a reboot to complete installation.</value>
+  </data>
+  <data name="Err_8024D00F" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the setup handler failed during execution.</value>
+  </data>
+  <data name="Err_8024D010" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the registry contains invalid information.</value>
+  </data>
+  <data name="Err_8024D011" xml:space="preserve">
+    <value>Windows Update Agent must be updated before search can continue.</value>
+  </data>
+  <data name="Err_8024D012" xml:space="preserve">
+    <value>Windows Update Agent must be updated before search can continue. An administrator is required to perform the operation.</value>
+  </data>
+  <data name="Err_8024D013" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because the server does not contain update information for this version.</value>
+  </data>
+  <data name="Err_8024D014" xml:space="preserve">
+    <value>Windows Update Agent is successfully updated, but a reboot is required to complete the setup.</value>
+  </data>
+  <data name="Err_8024D015" xml:space="preserve">
+    <value>Windows Update Agent is successfully updated, but a reboot is required to complete the setup.</value>
+  </data>
+  <data name="Err_8024D016" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because of an unknown error.</value>
+  </data>
+  <data name="Err_8024DFFF" xml:space="preserve">
+    <value>Windows Update Agent could not be updated because of an error not covered by another WU_E_SETUP_* error code.</value>
+  </data>
+  <data name="Err_8024E001" xml:space="preserve">
+    <value>An expression evaluator operation could not be completed because an expression was unrecognized.</value>
+  </data>
+  <data name="Err_8024E002" xml:space="preserve">
+    <value>An expression evaluator operation could not be completed because an expression was invalid.</value>
+  </data>
+  <data name="Err_8024E003" xml:space="preserve">
+    <value>An expression evaluator operation could not be completed because an expression contains an incorrect number of metadata nodes.</value>
+  </data>
+  <data name="Err_8024E004" xml:space="preserve">
+    <value>An expression evaluator operation could not be completed because the version of the serialized expression data is invalid.</value>
+  </data>
+  <data name="Err_8024E005" xml:space="preserve">
+    <value>The expression evaluator could not be initialized.</value>
+  </data>
+  <data name="Err_8024E006" xml:space="preserve">
+    <value>An expression evaluator operation could not be completed because there was an invalid attribute.</value>
+  </data>
+  <data name="Err_8024E007" xml:space="preserve">
+    <value>An expression evaluator operation could not be completed because the cluster state of the computer could not be determined.</value>
+  </data>
+  <data name="Err_8024EFFF" xml:space="preserve">
+    <value>There was an expression evaluator error not covered by another WU_E_EE_* error code.</value>
+  </data>
+  <data name="Err_80243001" xml:space="preserve">
+    <value>The results of download and installation could not be read from the registry due to an unrecognized data format version.</value>
+  </data>
+  <data name="Err_80243002" xml:space="preserve">
+    <value>The results of download and installation could not be read from the registry due to an invalid data format.</value>
+  </data>
+  <data name="Err_80243003" xml:space="preserve">
+    <value>The results of download and installation are not available; the operation may have failed to start.</value>
+  </data>
+  <data name="Err_80243004" xml:space="preserve">
+    <value>A failure occurred when trying to create an icon in the taskbar notification area.</value>
+  </data>
+  <data name="Err_80243FFD" xml:space="preserve">
+    <value>Unable to show UI when in non-UI mode; WU client UI modules may not be installed.</value>
+  </data>
+  <data name="Err_80243FFE" xml:space="preserve">
+    <value>Unsupported version of WU client UI exported functions.</value>
+  </data>
+  <data name="Err_80243FFF" xml:space="preserve">
+    <value>There was a user interface error not covered by another WU_E_AUCLIENT_* error code.</value>
+  </data>
+  <data name="Err_8024F001" xml:space="preserve">
+    <value>The event cache file was defective.</value>
+  </data>
+  <data name="Err_8024F002" xml:space="preserve">
+    <value>The XML in the event namespace descriptor could not be parsed.</value>
+  </data>
+  <data name="Err_8024F003" xml:space="preserve">
+    <value>The XML in the event namespace descriptor could not be parsed.</value>
+  </data>
+  <data name="Err_8024F004" xml:space="preserve">
+    <value>The server rejected an event because the server was too busy.</value>
+  </data>
+  <data name="Err_8024F005" xml:space="preserve">
+    <value>The specified callback cookie is not found.</value>
+  </data>
+  <data name="Err_8024FFFF" xml:space="preserve">
+    <value>There was a reporter error not covered by another error code.</value>
+  </data>
+  <data name="Err_80247001" xml:space="preserve">
+    <value>An operation could not be completed because the scan package was invalid.</value>
+  </data>
+  <data name="Err_80247002" xml:space="preserve">
+    <value>An operation could not be completed because the scan package requires a greater version of the Windows Update Agent.</value>
+  </data>
+  <data name="Err_80247003" xml:space="preserve">
+    <value>An invalid event payload was specified.</value>
+  </data>
+  <data name="Err_80247004" xml:space="preserve">
+    <value>The size of the event payload submitted is invalid.</value>
+  </data>
+  <data name="Err_80247005" xml:space="preserve">
+    <value>The service is not registered.</value>
+  </data>
+  <data name="Err_80247FFF" xml:space="preserve">
+    <value>Search using the scan package failed.</value>
+  </data>
+  <data name="Err_8024B001" xml:space="preserve">
+    <value>The task is currently in progress.</value>
+  </data>
+  <data name="Err_8024B002" xml:space="preserve">
+    <value>The operation cannot be completed since the task status is currently disabled.</value>
+  </data>
+  <data name="Err_8024B003" xml:space="preserve">
+    <value>The operation cannot be completed since the task is not yet started.</value>
+  </data>
+  <data name="Err_8024B004" xml:space="preserve">
+    <value>The task was stopped and needs to be run again to complete.</value>
+  </data>
+  <data name="Err_8024B005" xml:space="preserve">
+    <value>Cannot cancel a non-scheduled install.</value>
+  </data>
+  <data name="Err_8024B101" xml:space="preserve">
+    <value>Hardware capability meta data was not found after a sync with the service.</value>
+  </data>
+  <data name="Err_8024B102" xml:space="preserve">
+    <value>Hardware capability meta data was malformed and/or failed to parse.</value>
+  </data>
+  <data name="Err_Unknown" xml:space="preserve">
+    <value>Unknown Error: </value>
+  </data>
+</root>

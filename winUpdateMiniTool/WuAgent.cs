@@ -1,4 +1,5 @@
-﻿using System;
+﻿using winUpdateMiniTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -88,7 +89,7 @@ internal class WuAgent {
 
     WindowsUpdateAgentInfo info = new();
     var currentVersion = $"{info.GetInfo("ApiMajorVersion").ToString().Trim()}.{info.GetInfo("ApiMinorVersion").ToString().Trim()} ({info.GetInfo("ProductVersionString").ToString().Trim()})";
-    AppLog.Line("Windows Update Agent Version: {0}", currentVersion);
+    AppLog.Line(Strings.Log_WuAgentVersion, currentVersion);
 
     mUpdateSession = new UpdateSession {
       ClientApplicationID = Updater.ApplicationTitle
@@ -129,7 +130,7 @@ internal class WuAgent {
         Directory.Delete(DlPath);
     }
     catch (Exception err) {
-      AppLog.Line("Failed to remove the empty folder {0}: {1}", DlPath, err.Message);
+      AppLog.Line(Strings.Log_RemoveEmptyFolderFailed, DlPath, err.Message);
     }
   }
 
@@ -189,13 +190,13 @@ internal class WuAgent {
       mUpdateServiceManager.RemoveService(serviceId);
     }
     catch (Exception e) {
-      AppLog.Line("Error removing update service {0}: {1}", serviceId, e.Message);
+      AppLog.Line(Strings.Log_ErrorRemovingService, serviceId, e.Message);
     }
   }
 
   private static void LogError(Exception error) {
     var errCode = (uint)error.HResult;
-    AppLog.Line("Error 0x{0}: {1}", errCode.ToString("X").PadLeft(8, '0'), UpdateErrors.GetErrorStr(errCode));
+    AppLog.Line(Strings.Log_ErrorCode, errCode.ToString("X").PadLeft(8, '0'), UpdateErrors.GetErrorStr(errCode));
   }
 
   /// <returns>True if the service was added or removed.</returns>
@@ -208,7 +209,7 @@ internal class WuAgent {
       return true;
     }
     catch (Exception err) {
-      AppLog.Line("Failed to {0} update service {1}", enable ? "register" : "remove", guid);
+      AppLog.Line(Strings.Log_ServiceChangeFailed, enable ? Strings.Word_Register : Strings.Word_Remove, guid);
       LogError(err);
       return false;
     }
@@ -263,7 +264,7 @@ internal class WuAgent {
       }
     }
     catch (Exception err) {
-      AppLog.Line("Failed to read the update history");
+      AppLog.Line(Strings.Log_HistoryReadFailed);
       LogError(err);
     }
   }
@@ -271,7 +272,7 @@ internal class WuAgent {
   private RetCodes SetupOffline() {
     try {
       if (mOfflineService == null) {
-        AppLog.Line("Setting up 'Offline Sync Service'");
+        AppLog.Line(Strings.Log_SetupOffline);
         mOfflineService =
             mUpdateServiceManager.AddScanPackageService(MMyOfflineSvc, DlPath + @"\wsusscn2.cab");
       }
@@ -358,7 +359,7 @@ internal class WuAgent {
       mCurOperation = AgentOperation.PreparingCheck;
       OnProgress(-1, 0, 0, 0);
 
-      AppLog.Line("Downloading wsusscn2.cab...");
+      AppLog.Line(Strings.Log_DownloadingCab);
 
       List<UpdateDownloader.Task> downloads = [];
       downloads.Add(new  UpdateDownloader.Task {
@@ -398,7 +399,7 @@ internal class WuAgent {
 
     mCallback = new UpdateCallback(this);
 
-    AppLog.Line("Searching for updates");
+    AppLog.Line(Strings.Log_SearchingUpdates);
     //for the above search criteria refer to
     // http://msdn.microsoft.com/en-us/library/windows/desktop/aa386526(v=VS.85).aspx
     try {
@@ -444,7 +445,7 @@ internal class WuAgent {
     List<UpdateDownloader.Task> downloads = [];
     foreach (var update in updates) {
       if (update.Downloads.Count == 0) {
-        AppLog.Line("Error: No download URLs found for update {0}", update.Title);
+        AppLog.Line(Strings.Log_NoDownloadUrls, update.Title);
         continue;
       }
 
@@ -487,7 +488,7 @@ internal class WuAgent {
     List<MsUpdate> filteredUpdates = [];
     foreach (var update in updates) {
       if ((update.Attributes & (int)MsUpdate.UpdateAttr.Uninstallable) == 0) {
-        AppLog.Line("Update cannot be uninstalled: {0}", update.Title);
+        AppLog.Line(Strings.Log_CannotUninstall, update.Title);
         continue;
       }
 
@@ -495,7 +496,7 @@ internal class WuAgent {
     }
 
     if (filteredUpdates.Count == 0) {
-      AppLog.Line("No updates selected or eligible for uninstallation");
+      AppLog.Line(Strings.Log_NoUpdatesForUninstall);
       return RetCodes.NoUpdated;
     }
 
@@ -517,7 +518,7 @@ internal class WuAgent {
     }
 
     if (mCurOperation == AgentOperation.PreparingCheck) {
-      AppLog.Line("wsusscn2.cab downloaded");
+      AppLog.Line(Strings.Log_CabDownloaded);
 
       var ret = ClearOffline();
       if (ret == RetCodes.Success)
@@ -547,7 +548,7 @@ internal class WuAgent {
           Program.IniWriteValue(KB, "Files", Files, INIPath);
       }*/
 
-      AppLog.Line("Downloaded {0} out of {1} to {2}", allFiles.GetCount(), args.Downloads.Count, DlPath);
+      AppLog.Line(Strings.Log_DownloadedCount, allFiles.GetCount(), args.Downloads.Count, DlPath);
 
       if (mCurOperation == AgentOperation.PreparingUpdates) {
         var ret = InstallUpdatesManually(args.Updates, allFiles);
@@ -569,7 +570,7 @@ internal class WuAgent {
 
   private void InstallFinished(object sender, UpdateInstaller.FinishedEventArgs args) // "manual" mode
   {
-    AppLog.Line(args.Success ? "Updates (Un)Installed successfully" : "Updates failed to (Un)Install");
+    AppLog.Line(args.Success ? Strings.Log_InstallUninstallOk : Strings.Log_InstallUninstallFailed);
 
     // mCurOperation is overwritten on cancel, so the operation kind is tracked separately.
     var operation = mManualInstallOperation;
@@ -595,7 +596,7 @@ internal class WuAgent {
       }
 
     if (args.Reboot)
-      AppLog.Line("Reboot is required for one or more updates");
+      AppLog.Line(Strings.Log_RebootRequired);
 
     OnUpdatesChanged();
 
@@ -622,7 +623,7 @@ internal class WuAgent {
     }
 
     if (mDownloader.Updates.Count == 0) {
-      AppLog.Line("No updates selected for download");
+      AppLog.Line(Strings.Log_NoUpdatesForDownload);
       return RetCodes.NoUpdated;
     }
 
@@ -631,7 +632,7 @@ internal class WuAgent {
 
     mCallback = new UpdateCallback(this);
 
-    AppLog.Line("Downloading Updates... This may take several minutes.");
+    AppLog.Line(Strings.Log_DownloadingUpdates);
     try {
       mDownloadJob = mDownloader.BeginDownload(mCallback, mCallback, updates);
     }
@@ -660,7 +661,7 @@ internal class WuAgent {
     }
 
     if (mInstaller.Updates.Count == 0) {
-      AppLog.Line("No updates selected for installation");
+      AppLog.Line(Strings.Log_NoUpdatesForInstall);
       return RetCodes.NoUpdated;
     }
 
@@ -670,7 +671,7 @@ internal class WuAgent {
 
     mCallback = new UpdateCallback(this);
 
-    AppLog.Line("Installing Updates... This may take several minutes.");
+    AppLog.Line(Strings.Log_InstallingUpdates);
     try {
       mInstalationJob = mInstaller.BeginInstall(mCallback, mCallback, added);
     }
@@ -699,14 +700,14 @@ internal class WuAgent {
 
           if (!update.IsUninstallable)
           {
-              AppLog.Line("Update cannot be uninstalled: {0}", update.Title);
+              AppLog.Line(Strings.Log_CannotUninstall, update.Title);
               continue;
           }
           mInstaller.Updates.Add(update);
       }
       if (mInstaller.Updates.Count == 0)
       {
-          AppLog.Line("No updates selected or eligible for uninstallation");
+          AppLog.Line(Strings.Log_NoUpdatesForUninstall);
           return RetCodes.NoUpdated;
       }
 
@@ -757,7 +758,7 @@ internal class WuAgent {
         }
       }
       catch (Exception e) {
-        AppLog.Line("Error hiding/unhiding update {0}: {1}", upd.Title, e.Message);
+        AppLog.Line(Strings.Log_HideError, upd.Title, e.Message);
       } // Hide update may throw an exception, if the user has hidden the update manually while the search was in progress.
 
     OnUpdatesChanged();
@@ -774,7 +775,7 @@ internal class WuAgent {
       searchResults = mUpdateSearcher.EndSearch(searchJob);
     }
     catch (Exception err) {
-      AppLog.Line("Search for updates failed");
+      AppLog.Line(Strings.Log_SearchFailed);
       LogError(err);
       OnFinished(RetCodes.InternalError);
       return;
@@ -789,7 +790,7 @@ internal class WuAgent {
 
     // Partial results of an aborted or failed search must neither replace the lists nor count as a completed check.
     if (ret != RetCodes.Success) {
-      AppLog.Line("Search for updates did not complete");
+      AppLog.Line(Strings.Log_SearchIncomplete);
       OnFinished(ret);
       return;
     }
@@ -809,7 +810,7 @@ internal class WuAgent {
       Console.WriteLine(update.Title);
     }
 
-    AppLog.Line("Found {0} pending updates.", MPendingUpdates.Count);
+    AppLog.Line(Strings.Log_FoundPending, MPendingUpdates.Count);
 
     OnUpdatesChanged(true);
 
@@ -827,7 +828,7 @@ internal class WuAgent {
       downloadResults = mDownloader.EndDownload(downloadJob);
     }
     catch (Exception err) {
-      AppLog.Line("Downloading updates failed");
+      AppLog.Line(Strings.Log_DownloadUpdatesFailed);
       LogError(err);
       OnFinished(RetCodes.InternalError);
       return;
@@ -849,9 +850,9 @@ internal class WuAgent {
     }
     else {
       if (ret == RetCodes.Success)
-        AppLog.Line("Updates downloaded to %windir%\\SoftwareDistribution\\Download");
+        AppLog.Line(Strings.Log_DownloadedToWindir);
       else
-        AppLog.Line("Downloading updates failed");
+        AppLog.Line(Strings.Log_DownloadUpdatesFailed);
       OnFinished(ret);
     }
   }
@@ -872,7 +873,7 @@ internal class WuAgent {
           : mInstaller.EndInstall(installationJob);
     }
     catch (Exception err) {
-      AppLog.Line("(Un)Installing updates failed");
+      AppLog.Line(Strings.Log_InstallUninstallFailed2);
       LogError(err);
       OnFinished(RetCodes.InternalError);
       return;
@@ -880,13 +881,13 @@ internal class WuAgent {
 
     if (installationResults.ResultCode is OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors) {
       AppLog.Line(installationResults.ResultCode == OperationResultCode.orcSucceeded
-          ? "Updates (Un)Installed successfully"
-          : "Updates (Un)Installed with errors");
+          ? Strings.Log_InstallUninstallOk
+          : Strings.Log_InstallUninstallWithErrors);
 
       for (var i = 0; i < updates.Count; i++) {
         var update = updates[i];
         if (GetUpdateResultCode(installationResults, i) is not (OperationResultCode.orcSucceeded or OperationResultCode.orcSucceededWithErrors)) {
-          AppLog.Line("Failed to (un)install: {0}", update.Title);
+          AppLog.Line(Strings.Log_FailedToInstallUpdate, update.Title);
           continue;
         }
 
@@ -905,10 +906,10 @@ internal class WuAgent {
       }
 
       if (installationResults.RebootRequired)
-        AppLog.Line("Reboot is required for one or more updates");
+        AppLog.Line(Strings.Log_RebootRequired);
     }
     else {
-      AppLog.Line("Updates failed to (Un)Install");
+      AppLog.Line(Strings.Log_InstallUninstallFailed);
     }
 
     OnUpdatesChanged();
@@ -928,7 +929,7 @@ internal class WuAgent {
       return results.GetUpdateResult(index).ResultCode;
     }
     catch (Exception err) {
-      AppLog.Line("Failed to read the installation result of update #{0}: {1}", index + 1, err.Message);
+      AppLog.Line(Strings.Log_InstallResultReadFailed, index + 1, err.Message);
       return OperationResultCode.orcFailed;
     }
   }
@@ -948,7 +949,7 @@ internal class WuAgent {
       }
     }
     catch (Exception err) {
-      AppLog.Line("Error: " + err.Message);
+      AppLog.Line(Strings.Log_GenericError, err.Message);
     }
   }
 
@@ -1012,7 +1013,7 @@ internal class WuAgent {
       File.WriteAllText(iniPath, ini.ToString(), Encoding.Unicode);
     }
     catch (Exception err) {
-      AppLog.Line("Failed to store the update list: {0}", err.Message);
+      AppLog.Line(Strings.Log_StoreUpdateListFailed, err.Message);
     }
   }
 
@@ -1061,7 +1062,7 @@ internal class WuAgent {
           DateTime.TryParse(date, out parsedDate))
         update.Date = parsedDate;
       else
-        AppLog.Line("Error parsing stored date for update {0}: {1}", update.Kb, date);
+        AppLog.Line(Strings.Log_DateParseError, update.Kb, date);
 
       if (decimal.TryParse(Read("Size", "0"), NumberStyles.Number, CultureInfo.InvariantCulture, out var size))
         update.Size = size;

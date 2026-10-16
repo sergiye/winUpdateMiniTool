@@ -61,25 +61,8 @@ internal partial class MainForm : Form {
     if (!OSHelper.IsRunningAsUwp())
       Text = Updater.ApplicationTitle;
 
-    btnWinUpd.Text = string.Format("Windows Updates ({0})", 0);
-    btnInstalled.Text = string.Format("Installed Updates ({0})", 0);
-    btnHidden.Text = string.Format("Hidden Updates ({0})", 0);
-    btnHistory.Text = string.Format("Update History ({0})", 0);
-
-    toolTip.SetToolTip(btnSearch, "Search");
-    toolTip.SetToolTip(btnInstall, "Install");
-    toolTip.SetToolTip(btnDownload, "Download");
-    toolTip.SetToolTip(btnHide, "Hide");
-    toolTip.SetToolTip(btnGetLink, "Get Links");
-    toolTip.SetToolTip(btnUnInstall, "Uninstall");
-    toolTip.SetToolTip(btnCancel, "Cancel");
-
     AppLog.Logger += LineLogger;
-    var cm = new ContextMenuStrip();
-    cm.Items.Add(new ToolStripMenuItem("Copy", null, (s, ev) => {
-      logBox.Copy();
-    }));
-    logBox.ContextMenuStrip = cm;
+    ReplaceContextMenu(logBox, BuildLogContextMenu());
 
     foreach (var line in AppLog.GetLog())
       logBox.AppendText(line + Environment.NewLine);
@@ -90,11 +73,13 @@ internal partial class MainForm : Form {
     agent.UpdatesChanged += OnUpdates;
     agent.Finished += OnFinished;
 
+    ApplyLocalization();
+
     if (!agent.IsActive()) {
       // Started in the tray, typically at logon: do not pop up a dialog before the user opens the window.
       if (Program.TestArg("-tray"))
-        AppLog.Line("The Windows Update Service is not available. It can be started from Options > Tools > Windows Update Service.");
-      else if (MessageBox.Show("The Windows Update Service is not available. Do you want to start it?", Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+        AppLog.Line(Strings.Log_WuServiceUnavailableHint);
+      else if (MessageBox.Show(Strings.Msg_WuServiceUnavailable, Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
         agent.EnableWuAuServ();
         agent.Init();
       }
@@ -113,7 +98,7 @@ internal partial class MainForm : Form {
     if (mGpoRespect == Gpo.Respect.Partial || mGpoRespect == Gpo.Respect.None)
       radSchedule.Enabled = radDownload.Enabled = radNotify.Enabled = false;
     else if (mGpoRespect == Gpo.Respect.Unknown)
-      AppLog.Line("Unrecognized Windows Edition, respect for GPO settings is unknown.");
+      AppLog.Line(Strings.Log_UnknownEdition);
 
     if (mGpoRespect == Gpo.Respect.None)
       chkBlockMS.Enabled = false;
@@ -217,7 +202,7 @@ internal partial class MainForm : Form {
 
     try {
       lastCheck = DateTime.Parse(GetConfig("LastCheck"), CultureInfo.InvariantCulture);
-      AppLog.Line("Last Checked for updates: {0}",
+      AppLog.Line(Strings.Log_LastChecked,
           lastCheck.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern));
     }
     catch {
@@ -234,14 +219,7 @@ internal partial class MainForm : Form {
     if (Program.TestArg("-provisioned"))
       gbxAutoUpdate.Enabled = false;
 
-    notifyIcon.ContextMenuStrip = new ContextMenuStrip();
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Show/Hide", null, notifyIcon1_MouseDoubleClick));
-    notifyIcon.ContextMenuStrip.Items.Add("-");
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Site", null, siteToolStripMenuItem_Click));
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Check for new version", null, checkForNewVersionToolStripMenuItem_Click));
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, aboutToolStripMenuItem_Click));
-    notifyIcon.ContextMenuStrip.Items.Add("-");
-    notifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, menuExit_Click));
+    BuildTrayMenu();
 
     BuildToolsMenu();
 
@@ -323,6 +301,210 @@ internal partial class MainForm : Form {
     Updater.VisitAppSite();
   }
 
+  #region localization
+
+  /// <summary>
+  ///     Applies every user interface text from the resources of the current language. Called again after
+  ///     the user switches the language, so the whole window is translated without restarting.
+  /// </summary>
+  private void ApplyLocalization() {
+
+    fileToolStripMenuItem.Text = Strings.Menu_File;
+    cleanToolStripMenuItem.Text = Strings.Menu_CleanCache;
+    optimizeToolStripMenuItem.Text = Strings.Menu_OptimizeKernel;
+    restoreDefaultsToolStripMenuItem.Text = Strings.Menu_RestoreDefaults;
+    exitToolStripMenuItem.Text = Strings.Menu_Exit;
+
+    optionsToolStripMenuItem.Text = Strings.Menu_Options;
+    toolsToolStripMenuItem.Text = Strings.Menu_Tools;
+    chkAutoRun.Text = Strings.Menu_AutoRun;
+    chkAutoUpdateApp.Text = Strings.Menu_AutoUpdateApp;
+    chkNoUAC.Text = Strings.Menu_AlwaysAdmin;
+    chkLoadLists.Text = Strings.Menu_RestoreLists;
+    themeMenuItem.Text = Strings.Menu_Themes;
+    selectUIFontToolStripMenuItem.Text = Strings.Menu_SelectFont;
+    languageMenuItem.Text = Strings.Menu_Language;
+
+    helpToolStripMenuItem.Text = Strings.Menu_Help;
+    siteToolStripMenuItem.Text = Strings.Menu_Site;
+    checkForNewVersionToolStripMenuItem.Text = Strings.Menu_CheckUpdates;
+    aboutToolStripMenuItem.Text = Strings.Menu_About;
+
+    gbxOptions.Text = Strings.Group_Options;
+    gbxAutoUpdate.Text = Strings.Group_AutoUpdate;
+    gbStartup.Text = Strings.Group_BackgroundTasks;
+
+    chkOffline.Text = Strings.Opt_OfflineMode;
+    chkDownload.Text = Strings.Opt_DownloadCab;
+    chkManual.Text = Strings.Opt_ManualDownloadInstall;
+    chkOld.Text = Strings.Opt_IncludeSuperseded;
+    chkMsUpd.Text = Strings.Opt_RegisterMicrosoftUpdate;
+    chkAutoRestart.Text = Strings.Opt_AutoRestart;
+
+    chkBlockMS.Text = Strings.Opt_BlockWuServers;
+    chkDrivers.Text = Strings.Opt_IncludeDrivers;
+    chkStore.Text = Strings.Opt_DisableStoreAutoUpdate;
+    chkHideWU.Text = Strings.Opt_HideWuSettingsPage;
+    chkDisableAU.Text = Strings.Opt_DisableFacilitators;
+    radDefault.Text = Strings.Radio_AutoDefault;
+    radDisable.Text = Strings.Radio_DisableAuto;
+    radNotify.Text = Strings.Radio_NotifyOnly;
+    radDownload.Text = Strings.Radio_DownloadOnly;
+    radSchedule.Text = Strings.Radio_ScheduledInstall;
+
+    lblSearch.Text = Strings.Label_SearchFilter;
+    lblSupport.Text = Strings.Link_SupportUrl;
+    chkGrupe.Text = Strings.Check_GroupUpdates;
+    chkAll.Text = Strings.Check_SelectAll;
+
+    updateView.Columns[0].Text = Strings.Col_Title;
+    updateView.Columns[1].Text = Strings.Col_Category;
+    updateView.Columns[2].Text = currentList == UpdateLists.UpdateHistory
+        ? Strings.Col_ApplicationId
+        : Strings.Col_KbArticle;
+    updateView.Columns[3].Text = Strings.Col_Date;
+    updateView.Columns[4].Text = Strings.Col_Size;
+    updateView.Columns[5].Text = Strings.Col_State;
+
+    // The item order is part of the persisted state, so the selection is restored after the refill.
+    var suspend = mSuspendUpdate;
+    mSuspendUpdate = true;
+    ReplaceItems(dlAutoCheck, [
+      Strings.AutoCheck_None, Strings.AutoCheck_Daily, Strings.AutoCheck_Weekly, Strings.AutoCheck_Monthly
+    ]);
+    ReplaceItems(dlShDay, [
+      Strings.Day_Daily, Strings.Day_Sunday, Strings.Day_Monday, Strings.Day_Tuesday, Strings.Day_Wednesday,
+      Strings.Day_Thursday, Strings.Day_Friday, Strings.Day_Saturday
+    ]);
+    ReplaceItems(cbRestartDelay, [
+      Strings.RestartDelay_Immediately, Strings.RestartDelay_1Min, Strings.RestartDelay_2Min, Strings.RestartDelay_5Min,
+      Strings.RestartDelay_10Min, Strings.RestartDelay_15Min, Strings.RestartDelay_30Min, Strings.RestartDelay_60Min
+    ]);
+    mSuspendUpdate = suspend;
+
+    toolTip.SetToolTip(btnSearch, Strings.Tip_Search);
+    toolTip.SetToolTip(btnInstall, Strings.Tip_Install);
+    toolTip.SetToolTip(btnDownload, Strings.Tip_Download);
+    toolTip.SetToolTip(btnHide, Strings.Tip_Hide);
+    toolTip.SetToolTip(btnGetLink, Strings.Tip_GetLinks);
+    toolTip.SetToolTip(btnUnInstall, Strings.Tip_Uninstall);
+    toolTip.SetToolTip(btnCancel, Strings.Tip_Cancel);
+
+    UpdateCounts();
+    BuildToolsMenu();
+    BuildTrayMenu();
+    ReplaceContextMenu(logBox, BuildLogContextMenu());
+    BuildLanguageMenu();
+  }
+
+  private static void ReplaceItems(ComboBox combo, object[] items) {
+    var index = combo.SelectedIndex;
+    combo.Items.Clear();
+    combo.Items.AddRange(items);
+    if (index >= 0 && index < items.Length)
+      combo.SelectedIndex = index;
+  }
+
+  private ContextMenuStrip BuildLogContextMenu() {
+    var cm = new ContextMenuStrip();
+    cm.Items.Add(new ToolStripMenuItem(Strings.Menu_Copy, null, (s, ev) => {
+      logBox.Copy();
+    }));
+    return cm;
+  }
+
+  private void BuildTrayMenu() {
+    var menu = new ContextMenuStrip();
+    menu.Items.Add(new ToolStripMenuItem(Strings.Menu_ShowHide, null, notifyIcon1_MouseDoubleClick));
+    menu.Items.Add("-");
+    menu.Items.Add(new ToolStripMenuItem(Strings.Menu_Site, null, siteToolStripMenuItem_Click));
+    menu.Items.Add(new ToolStripMenuItem(Strings.Menu_CheckUpdates, null, checkForNewVersionToolStripMenuItem_Click));
+    menu.Items.Add(new ToolStripMenuItem(Strings.Menu_About, null, aboutToolStripMenuItem_Click));
+    menu.Items.Add("-");
+    menu.Items.Add(new ToolStripMenuItem(Strings.Menu_Exit, null, menuExit_Click));
+
+    // a context menu owns a window handle, so the previous one has to be released
+    var previous = notifyIcon.ContextMenuStrip;
+    notifyIcon.ContextMenuStrip = menu;
+    previous?.Dispose();
+  }
+
+  /// <summary>
+  ///     Replaces the menu with a fresh one and releases the old one, so switching the language
+  ///     repeatedly does not keep the discarded context menus alive.
+  /// </summary>
+  private static void ReplaceContextMenu(Control owner, ContextMenuStrip menu) {
+    var previous = owner.ContextMenuStrip;
+    owner.ContextMenuStrip = menu;
+    previous?.Dispose();
+  }
+
+  /// <summary>
+  ///     Removes and disposes the items of a drop down, instead of dropping them for the
+  ///     garbage collector while they are still attached to the menu.
+  /// </summary>
+  private static void ClearItems(ToolStripItemCollection items) {
+    var old = items.Cast<ToolStripItem>().ToArray();
+    items.Clear();
+    foreach (var item in old)
+      item.Dispose();
+  }
+
+  private void BuildLanguageMenu() {
+    ClearItems(languageMenuItem.DropDownItems);
+    foreach (var (id, name) in Localization.GetLanguages()) {
+      var language = id;
+      var item = new ToolStripRadioButtonMenuItem(name, null, (s, ev) => OnLanguageSelected(language)) {
+        Checked = language == Localization.Setting
+      };
+      languageMenuItem.DropDownItems.Add(item);
+    }
+  }
+
+  private void OnLanguageSelected(string id) {
+    // rebuilding the list while an operation runs would fight with the result handler
+    if (agent.IsBusy()) {
+      MessageBox.Show(Strings.Msg_WaitForOperation, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      return;
+    }
+
+    // LoadList() clears the view, so keep the selection and where the user was scrolled to
+    var selected = updateView.SelectedIndices.Cast<int>().ToArray();
+    var topIndex = updateView.TopItem?.Index ?? -1;
+    var previous = Localization.Setting;
+
+    try {
+      SetConfig("Language", id);
+      Localization.Apply(id);
+      ApplyLocalization();
+      LoadList();
+    }
+    catch (Exception ex) {
+      AppLog.Line(Strings.Log_LanguageSwitchFailed, ex.Message);
+      try {
+        SetConfig("Language", previous);
+        Localization.Apply(previous);
+        ApplyLocalization();
+        LoadList();
+      }
+      catch {
+        // nothing else can be done here, the window simply keeps what it has
+      }
+
+      MessageBox.Show(Strings.Msg_LanguageSwitchFailed, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      return;
+    }
+
+    if (topIndex >= 0 && topIndex < updateView.Items.Count)
+      updateView.TopItem = updateView.Items[topIndex];
+    foreach (var index in selected.Where(i => i < updateView.Items.Count))
+      updateView.Items[index].Selected = true;
+    if (selected.Length > 0)
+      updateView.EnsureVisible(Math.Min(selected[0], updateView.Items.Count - 1));
+  }
+
+  #endregion
+
   private void checkForNewVersionToolStripMenuItem_Click(object sender, EventArgs e) {
     Updater.CheckForUpdates(Updater.CheckUpdatesMode.AllMessages);
   }
@@ -357,15 +539,15 @@ internal partial class MainForm : Form {
           // lastCheck only moves on success, so a failing check must not be retried on every tick.
           if (DateTime.Now >= nextAutoCheckAttempt && !resultShown) {
             nextAutoCheckAttempt = DateTime.Now.AddHours(1);
-            AppLog.Line("Starting automatic search for updates.");
+            AppLog.Line(Strings.Log_AutoSearchStart);
             updateNow = true;
           }
         }
         else if (daysDue > GetGraceDays()) {
           if (lastOverdueBalloon < DateTime.Now.AddHours(-4)) {
             lastOverdueBalloon = DateTime.Now;
-            notifyIcon.ShowBalloonTip(int.MaxValue, "Please Check for Updates",
-              $"{Updater.ApplicationTitle} has not been able to check for updates for {daysDue} days. Please check for updates manually and resolve any issues.", ToolTipIcon.Warning);
+            notifyIcon.ShowBalloonTip(int.MaxValue, Strings.Balloon_CheckUpdatesTitle,
+              string.Format(Strings.Balloon_Overdue, Updater.ApplicationTitle, daysDue), ToolTipIcon.Warning);
           }
         }
       }
@@ -373,8 +555,8 @@ internal partial class MainForm : Form {
       if (agent.MPendingUpdates.Count > 0)
         if (lastNewUpdatesBalloon < DateTime.Now.AddHours(-4)) {
           lastNewUpdatesBalloon = DateTime.Now;
-          notifyIcon.ShowBalloonTip(int.MaxValue, "New Updates Found",
-              string.Format("{0} has found {1} new update(s):\n{2}\n\nPlease review and install them.", Updater.ApplicationTitle,
+          notifyIcon.ShowBalloonTip(int.MaxValue, Strings.Balloon_NewUpdatesTitle,
+              string.Format(Strings.Balloon_NewUpdates, Updater.ApplicationTitle,
                   agent.MPendingUpdates.Count,
                   string.Join(Environment.NewLine, agent.MPendingUpdates.Select(x => $"- {x.Title}"))),
               ToolTipIcon.Info);
@@ -473,10 +655,10 @@ internal partial class MainForm : Form {
   }
 
   private void UpdateCounts() {
-    btnWinUpd.Text = string.Format("Windows Updates ({0})", agent.MPendingUpdates.Count);
-    btnInstalled.Text = string.Format("Installed Updates ({0})", agent.MInstalledUpdates.Count);
-    btnHidden.Text = string.Format("Hidden Updates ({0})", agent.MHiddenUpdates.Count);
-    btnHistory.Text = string.Format("Update History ({0})", agent.MUpdateHistory.Count);
+    btnWinUpd.Text = string.Format(Strings.Count_WindowsUpdates, agent.MPendingUpdates.Count);
+    btnInstalled.Text = string.Format(Strings.Count_InstalledUpdates, agent.MInstalledUpdates.Count);
+    btnHidden.Text = string.Format(Strings.Count_HiddenUpdates, agent.MHiddenUpdates.Count);
+    btnHistory.Text = string.Format(Strings.Count_UpdateHistory, agent.MUpdateHistory.Count);
   }
 
   private void LoadList() {
@@ -511,12 +693,12 @@ internal partial class MainForm : Form {
       switch (update.State) {
         case MsUpdate.UpdateState.History:
           state = (OperationResultCode) update.ResultCode switch {
-            OperationResultCode.orcNotStarted => "Not Started",
-            OperationResultCode.orcInProgress => "In Progress",
-            OperationResultCode.orcSucceeded => "Succeeded",
-            OperationResultCode.orcSucceededWithErrors => "Succeeded with Errors",
-            OperationResultCode.orcFailed => "Failed",
-            OperationResultCode.orcAborted => "Aborted",
+            OperationResultCode.orcNotStarted => Strings.State_NotStarted,
+            OperationResultCode.orcInProgress => Strings.State_InProgress,
+            OperationResultCode.orcSucceeded => Strings.State_Succeeded,
+            OperationResultCode.orcSucceededWithErrors => Strings.State_SucceededWithErrors,
+            OperationResultCode.orcFailed => Strings.State_Failed,
+            OperationResultCode.orcAborted => Strings.State_Aborted,
             _ => state
           };
 
@@ -526,34 +708,34 @@ internal partial class MainForm : Form {
 
         default:
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Beta) != 0)
-            state = "Beta ";
+            state = Strings.State_Beta;
 
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Installed) != 0) {
-            state += "Installed";
+            state += Strings.State_Installed;
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Uninstallable) != 0)
-              state += " Removable";
+              state += Strings.State_Removable;
           }
           else if ((update.Attributes & (int)MsUpdate.UpdateAttr.Hidden) != 0) {
-            state += "Hidden";
+            state += Strings.State_Hidden;
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Downloaded) != 0)
-              state += " Downloaded";
+              state += Strings.State_Downloaded;
           }
           else {
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Downloaded) != 0)
-              state += "Downloaded";
+              state += Strings.State_Downloaded;
             else
-              state += "Pending";
+              state += Strings.State_Pending;
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.AutoSelect) != 0)
-              state += " (!)";
+              state += Strings.State_AutoSelect;
             if ((update.Attributes & (int)MsUpdate.UpdateAttr.Mandatory) != 0)
-              state += " Mandatory";
+              state += Strings.State_Mandatory;
           }
 
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Exclusive) != 0)
-            state += ", Exclusive";
+            state += Strings.State_Exclusive;
 
           if ((update.Attributes & (int)MsUpdate.UpdateAttr.Reboot) != 0)
-            state += ", Needs Reboot";
+            state += Strings.State_NeedsReboot;
           break;
       }
 
@@ -632,8 +814,8 @@ internal partial class MainForm : Form {
     suspendChange = false;
 
     updateView.Columns[2].Text = currentList == UpdateLists.UpdateHistory
-        ? "Application ID"
-        : "KB Article";
+        ? Strings.Col_ApplicationId
+        : Strings.Col_KbArticle;
 
     LoadList();
 
@@ -666,8 +848,8 @@ internal partial class MainForm : Form {
   }
 
   private void BuildToolsMenu() {
-    toolsToolStripMenuItem.DropDownItems.Clear();
-    wuauMenu = new ToolStripMenuItem("Windows Update Service", null, menuWuAu_Click);
+    ClearItems(toolsToolStripMenuItem.DropDownItems);
+    wuauMenu = new ToolStripMenuItem(Strings.Menu_WuService, null, menuWuAu_Click);
     wuauMenu.Checked = agent.TestWuAuServ();
     toolsToolStripMenuItem.DropDownItems.Add(wuauMenu);
     toolsToolStripMenuItem.DropDownItems.Add("-");
@@ -712,19 +894,19 @@ internal partial class MainForm : Form {
       toolsToolStripMenuItem.DropDownItems.Add("-");
     }
 
-    toolsToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem("&Refresh", null, menuRefresh_Click));
+    toolsToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem(Strings.Menu_Refresh, null, menuRefresh_Click));
   }
 
   private void menuExec_Click(object sender, EventArgs e, string exec, string dir, bool silent = false) {
     // The tool definition may have been planted by a non-administrator, so show what is about to run elevated.
     if (OSHelper.IsAdministrator() && Program.IsAppDirWritableByUsers() &&
-        MessageBox.Show($"The application folder can be modified without administrator rights, so this tool definition may have been changed by another program. The following command will run with administrator rights:\r\n\r\n{exec}\r\n\r\nRun it?",
+        MessageBox.Show(string.Format(Strings.Msg_ToolElevatedConfirm, exec),
           Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
       return;
     var startInfo = Program.PrepExec(exec, silent);
     startInfo.WorkingDirectory = dir;
     if (!Program.DoExec(startInfo))
-      MessageBox.Show("Failed to start the tool.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      MessageBox.Show(Strings.Msg_ToolStartFailed, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   }
 
   private void menuExit_Click(object sender, EventArgs e) {
@@ -759,11 +941,11 @@ internal partial class MainForm : Form {
     // Maintenance tasks cannot be cancelled; exiting in the middle of the cache cleanup leaves the Windows
     // Update service stopped.
     if (maintenanceRunning)
-      return MessageBox.Show("Cache cleanup or system optimization is still running and cannot be cancelled. Exiting now may leave the Windows Update service stopped. Exit anyway?", Updater.ApplicationTitle,
+      return MessageBox.Show(Strings.Msg_CacheCleanupRunning, Updater.ApplicationTitle,
           MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
     if (!agent.IsBusy())
       return true;
-    if (MessageBox.Show("An operation is still in progress. Cancel it and exit?", Updater.ApplicationTitle,
+    if (MessageBox.Show(Strings.Msg_OperationInProgressExit, Updater.ApplicationTitle,
           MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
       return false;
     agent.CancelOperations();
@@ -794,12 +976,12 @@ internal partial class MainForm : Form {
 
   private void menuClean_Click(object sender, EventArgs e) {
     if (!OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required to clean the Windows Update cache.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_AdminRequiredCleanCache, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
     maintenanceRunning = true;
-    SetControlsState(false, "Cleaning Windows Update cache...");
+    SetControlsState(false, Strings.Log_CleaningCache);
     // Same as the Windows Update Service menu: drop the agent session before the service is stopped.
     agent.UnInit();
     Task.Run(CleanCache);
@@ -833,7 +1015,7 @@ internal partial class MainForm : Form {
       }
     }
     catch (Exception ex) {
-      LineLogger(null, new AppLog.LogEventArgs($"Error cleaning updates cache: {ex.Message}"));
+      LineLogger(null, new AppLog.LogEventArgs(string.Format(Strings.Log_CacheCleanError, ex.Message)));
     }
     finally {
       try {
@@ -841,7 +1023,7 @@ internal partial class MainForm : Form {
           service.Start();
       }
       catch (Exception ex) {
-        LineLogger(null, new AppLog.LogEventArgs($"Error restarting the Windows Update service: {ex.Message}"));
+        LineLogger(null, new AppLog.LogEventArgs(string.Format(Strings.Log_WuServiceRestartError, ex.Message)));
       }
     }
 
@@ -853,17 +1035,17 @@ internal partial class MainForm : Form {
     });
     SetControlsState(true);
     LineLogger(null, new AppLog.LogEventArgs(failedFiles == 0
-        ? $"Windows Update cache cleaned, freed {FileOps.FormatSize(freedBytes)}"
-        : $"Windows Update cache partially cleaned, freed {FileOps.FormatSize(freedBytes)}, {failedFiles} file(s) could not be deleted"));
+        ? string.Format(Strings.Log_CacheCleaned, FileOps.FormatSize(freedBytes))
+        : string.Format(Strings.Log_CachePartiallyCleaned, FileOps.FormatSize(freedBytes), failedFiles)));
     return Task.CompletedTask;
   }
 
   private void menuOptimize_Click(object sender, EventArgs e) {
-    if (MessageBox.Show("This will disable reserved storage, remove superseded component versions and compress the Windows system files. These changes cannot be easily undone.\r\n\r\nContinue?",
+    if (MessageBox.Show(Strings.Msg_OptimizeConfirm,
           Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
       return;
     maintenanceRunning = true;
-    SetControlsState(false, "Windows kernel optimization...");
+    SetControlsState(false, Strings.Log_KernelOptimization);
     Task.Run(OptimizeKernel);
   }
 
@@ -878,15 +1060,15 @@ compact.exe /CompactOS:always";
       });
     }
     catch (Exception ex) {
-      LineLogger(null, new AppLog.LogEventArgs($"Error optimizing kernel: {ex.Message}"));
+      LineLogger(null, new AppLog.LogEventArgs(string.Format(Strings.Log_OptimizeError, ex.Message)));
     }
-    LineLogger(null, new AppLog.LogEventArgs($"Windows kernel optimization finished."));
+    LineLogger(null, new AppLog.LogEventArgs(Strings.Log_OptimizeFinished));
     PostToUi(() => maintenanceRunning = false);
     SetControlsState(true);
   }
 
   private void restoreDefaults_Click(object sender, EventArgs e) {
-    if (MessageBox.Show("This will reset all options and Windows Update policy settings changed by this tool to their defaults. Continue?",
+    if (MessageBox.Show(Strings.Msg_RestoreDefaultsConfirm,
           Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
       return;
 
@@ -906,7 +1088,7 @@ compact.exe /CompactOS:always";
 
     dlAutoCheck.SelectedIndex = 0;
 
-    MessageBox.Show("Default settings restored.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+    MessageBox.Show(Strings.Msg_DefaultsRestored, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
   }
 
   private void SetControlsState(bool enabled, string status = null) {
@@ -931,7 +1113,7 @@ compact.exe /CompactOS:always";
 
   private void menuWuAu_Click(object sender, EventArgs e) {
     if (agent.IsBusy()) {
-      MessageBox.Show("Wait for the current operation to finish or cancel it first.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_WaitForOperation, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -982,7 +1164,7 @@ compact.exe /CompactOS:always";
 
   private void btnDownload_Click(object sender, EventArgs e) {
     if (!chkManual.Checked && !OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required to download updates using Windows Update services. Use 'Manual' download instead.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_AdminRequiredDownload, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -996,7 +1178,7 @@ compact.exe /CompactOS:always";
 
   private void btnInstall_Click(object sender, EventArgs e) {
     if (!OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required to install updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_AdminRequiredInstall, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -1010,7 +1192,7 @@ compact.exe /CompactOS:always";
 
   private void btnUnInstall_Click(object sender, EventArgs e) {
     if (!OSHelper.IsAdministrator()) {
-      MessageBox.Show("Administrator privileges are required to remove updates.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_AdminRequiredRemove, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       return;
     }
 
@@ -1044,10 +1226,10 @@ compact.exe /CompactOS:always";
 
     if (links.Length != 0) {
       Clipboard.SetText(links);
-      AppLog.Line("Update Download Links copied to clipboard");
+      AppLog.Line(Strings.Log_LinksCopied);
     }
     else {
-      AppLog.Line("No updates selected");
+      AppLog.Line(Strings.Log_NoUpdatesSelected);
     }
   }
 
@@ -1057,13 +1239,13 @@ compact.exe /CompactOS:always";
 
   private static string GetOpStr(WuAgent.AgentOperation op) {
     return op switch {
-      WuAgent.AgentOperation.CheckingUpdates => "Checking for Updates",
-      WuAgent.AgentOperation.PreparingCheck => "Preparing Check",
-      WuAgent.AgentOperation.PreparingUpdates or WuAgent.AgentOperation.DownloadingUpdates => "Downloading Updates",
-      WuAgent.AgentOperation.InstallingUpdates => "Installing Updates",
-      WuAgent.AgentOperation.RemovingUpdates => "Removing Updates",
-      WuAgent.AgentOperation.CancelingOperation => "Cancelling Operation",
-      _ => "Unknown Operation"
+      WuAgent.AgentOperation.CheckingUpdates => Strings.Op_CheckingUpdates,
+      WuAgent.AgentOperation.PreparingCheck => Strings.Op_PreparingCheck,
+      WuAgent.AgentOperation.PreparingUpdates or WuAgent.AgentOperation.DownloadingUpdates => Strings.Op_DownloadingUpdates,
+      WuAgent.AgentOperation.InstallingUpdates => Strings.Op_InstallingUpdates,
+      WuAgent.AgentOperation.RemovingUpdates => Strings.Op_RemovingUpdates,
+      WuAgent.AgentOperation.CancelingOperation => Strings.Op_CancelingOperation,
+      _ => Strings.Op_Unknown
     };
   }
 
@@ -1129,13 +1311,13 @@ compact.exe /CompactOS:always";
 
     if (op == WuAgent.AgentOperation.DownloadingUpdates && chkManual.Checked) {
       if (ret == WuAgent.RetCodes.Success) {
-        MessageBox.Show($"Updates were downloaded to {agent.DlPath} and are ready to be installed manually.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show(string.Format(Strings.Msg_ManualDownloadDone, agent.DlPath), Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.DownloadFailed) {
-        MessageBox.Show($"Updates were downloaded to {agent.DlPath}, but some updates failed to download.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show(string.Format(Strings.Msg_ManualDownloadPartial, agent.DlPath), Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -1147,7 +1329,7 @@ compact.exe /CompactOS:always";
         if (chkAutoRestart.Checked && ScheduleAutoRestart(autoRestartDelayMinutes)) {
           if (autoRestartDelayMinutes > 0) {
             var restartTime = DateTime.Now.AddMinutes(autoRestartDelayMinutes);
-            if (MessageBox.Show($"Updates successfully installed. The computer will restart at {restartTime:T}.",
+            if (MessageBox.Show(string.Format(Strings.Msg_RebootScheduled, restartTime.ToString("T")),
                   Updater.ApplicationTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Information) ==
                 DialogResult.Cancel) {
               ScheduleAutoRestart(0, true);
@@ -1155,13 +1337,13 @@ compact.exe /CompactOS:always";
           }
           return;
         }
-        MessageBox.Show("Updates were installed successfully, but a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show(Strings.Msg_RebootRequired, Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Information);
         return;
       }
 
       if (ret == WuAgent.RetCodes.InstallFailed) {
-        MessageBox.Show("Installation of some updates failed, and a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK,
+        MessageBox.Show(Strings.Msg_InstallFailedReboot, Updater.ApplicationTitle, MessageBoxButtons.OK,
             MessageBoxIcon.Exclamation);
         return;
       }
@@ -1173,25 +1355,25 @@ compact.exe /CompactOS:always";
       case WuAgent.RetCodes.Aborted:
       case WuAgent.RetCodes.InProgress: return;
       case WuAgent.RetCodes.AccessError:
-        status = "Required privileges are not available";
+        status = Strings.Result_AccessError;
         break;
       case WuAgent.RetCodes.Busy:
-        status = "Another operation is already in progress";
+        status = Strings.Result_Busy;
         break;
       case WuAgent.RetCodes.DownloadFailed:
-        status = "Download failed";
+        status = Strings.Result_DownloadFailed;
         break;
       case WuAgent.RetCodes.InstallFailed:
-        status = "Installation failed";
+        status = Strings.Result_InstallFailed;
         break;
       case WuAgent.RetCodes.NoUpdated:
-        status = "No selected updates or no updates eligible for the operation";
+        status = Strings.Result_NoUpdates;
         break;
       case WuAgent.RetCodes.InternalError:
-        status = "Internal error";
+        status = Strings.Result_InternalError;
         break;
       case WuAgent.RetCodes.FileNotFound:
-        status = "Required file(s) could not be found";
+        status = Strings.Result_FileNotFound;
         break;
     }
 
@@ -1199,12 +1381,12 @@ compact.exe /CompactOS:always";
 
     // Background checks are retried later and reported by the overdue balloon, so do not pop up dialogs.
     if (silent) {
-      AppLog.Line("Automatic {0} failed: {1}.", action.ToLowerInvariant(), status);
+      AppLog.Line(Strings.Log_AutoOperationFailed, action.ToLowerInvariant(), status);
       return;
     }
 
     resultShown = true;
-    MessageBox.Show($"{action} failed: {status}.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    MessageBox.Show(string.Format(Strings.Msg_OperationFailed, action, status), Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
     resultShown = false;
   }
 
@@ -1276,7 +1458,7 @@ compact.exe /CompactOS:always";
         var test = Gpo.GetDisableAu();
         Gpo.DisableAu(true);
         if (!test)
-          MessageBox.Show("For the new configuration to fully take effect, a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+          MessageBox.Show(Strings.Msg_RebootNeededForConfig, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
 
       Gpo.ConfigAu(Gpo.AuOptions.Disabled);
@@ -1305,7 +1487,7 @@ compact.exe /CompactOS:always";
       }
       else {
         if (!chkDisableAU.Checked)
-          switch (MessageBox.Show("Your version of Windows does not respect the standard GPOs. To keep automatic Windows updates blocked, update facilitation services must also be disabled.", Updater.ApplicationTitle, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+          switch (MessageBox.Show(Strings.Msg_GpoNotRespected, Updater.ApplicationTitle, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
             case DialogResult.Yes:
               chkDisableAU.Checked = true; // Note: this triggers chkDisableAU_CheckedChanged
               break;
@@ -1341,20 +1523,20 @@ compact.exe /CompactOS:always";
     var test = Gpo.GetDisableAu();
     Gpo.DisableAu(chkDisableAU.Checked);
     if (test != chkDisableAU.Checked)
-      MessageBox.Show("For the new configuration to fully take effect, a reboot is required.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_RebootNeededForConfig, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
   }
 
   private static bool ConfirmElevatedStart(string feature) {
     if (!Program.IsAppDirWritableByUsers())
       return true;
-    return MessageBox.Show($"The application folder can be modified without administrator rights. With {feature} enabled, any program running under your account could replace this tool or its Tools settings and run code with administrator rights without a UAC prompt.\r\n\r\nMove the tool to a protected folder such as Program Files to avoid this. Enable {feature} anyway?",
+    return MessageBox.Show(string.Format(Strings.Msg_ConfirmElevatedStart, feature),
         Updater.ApplicationTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
   }
 
   private void chkAutoRun_CheckedChanged(object sender, EventArgs e) {
     // Elevated auto-start uses a highest-privilege logon task, which carries the same risk as the UAC skip task.
     if (!mSuspendUpdate && !chkAutoRun.Checked && !OSHelper.IsRunningAsUwp() && OSHelper.IsAdministrator() &&
-        !ConfirmElevatedStart("auto-start"))
+        !ConfirmElevatedStart(Strings.Word_AutoStart))
       return;
     chkAutoRun.Checked = !chkAutoRun.Checked;
     notifyIcon.Visible = dlAutoCheck.Enabled = chkAutoRun.Checked;
@@ -1379,7 +1561,7 @@ compact.exe /CompactOS:always";
     chkAutoRun.Checked = !chkAutoRun.Checked;
     notifyIcon.Visible = dlAutoCheck.Enabled = chkAutoRun.Checked;
     autoUpdate = chkAutoRun.Checked ? (AutoUpdateOptions)dlAutoCheck.SelectedIndex : AutoUpdateOptions.No;
-    MessageBox.Show("Auto-start could not be changed. See the log for details.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    MessageBox.Show(Strings.Msg_AutoStartFailed, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
   }
 
   private void chkLoadLists_Click(object sender, EventArgs e) {
@@ -1404,12 +1586,12 @@ compact.exe /CompactOS:always";
     if (mSuspendUpdate)
       return;
     var newChecked = !chkNoUAC.Checked;
-    if (newChecked && !ConfirmElevatedStart("the UAC skip task"))
+    if (newChecked && !ConfirmElevatedStart(Strings.Word_FeatureUacTask))
       return;
     if (Program.SkipUacEnable(newChecked))
       chkNoUAC.Checked = newChecked;
     else
-      AppLog.Line("Failed to {0} the UAC skip task.", newChecked ? "enable" : "disable");
+      AppLog.Line(Strings.Log_UacTaskFailed, newChecked ? Strings.Word_Enable : Strings.Word_Disable);
   }
 
   private void chkMsUpd_CheckedChanged(object sender, EventArgs e) {
@@ -1420,7 +1602,7 @@ compact.exe /CompactOS:always";
       mSuspendUpdate = true;
       chkMsUpd.Checked = agent.TestService(WuAgent.MsUpdGuid);
       mSuspendUpdate = false;
-      MessageBox.Show("The Microsoft Update service could not be changed. See the log for details.", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      MessageBox.Show(Strings.Msg_MsUpdateServiceFailed, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
     LoadProviders(source);
   }
@@ -1513,16 +1695,16 @@ compact.exe /CompactOS:always";
       });
       if (p != null && p.WaitForExit(5000) && p.ExitCode == 0) {
         AppLog.Line(cancel
-          ? "Automatic restart cancellation requested."
-          : "Automatic restart scheduled in {0} minute(s).",
+          ? Strings.Log_RestartCancelled
+          : Strings.Log_RestartScheduled,
           delayMinutes);
         return true;
       }
-      AppLog.Line("Failed to {0} automatic restart.", cancel ? "cancel" : "schedule");
+      AppLog.Line(Strings.Log_RestartFailed, cancel ? Strings.Word_Cancel : Strings.Word_Schedule);
     }
     catch (Exception ex) {
-      AppLog.Line("Failed to {0} automatic restart: {1}", cancel ? "cancel" : "schedule", ex.Message);
-      MessageBox.Show($"Automatic restart could not be {(cancel ? "cancelled" : "scheduled")}: {ex.Message}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      AppLog.Line(Strings.Log_RestartFailedDetails, cancel ? Strings.Word_Cancel : Strings.Word_Schedule, ex.Message);
+      MessageBox.Show(string.Format(cancel ? Strings.Msg_AutoRestartCancelFailed : Strings.Msg_AutoRestartScheduleFailed, ex.Message), Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
     return false;
   }
@@ -1702,7 +1884,7 @@ compact.exe /CompactOS:always";
       Font = new Font(name, size, style);
     }
     catch (Exception ex) {
-      AppLog.Line($"Error restoring saved UI font: {ex.Message}");
+      AppLog.Line(Strings.Log_FontRestoreError, ex.Message);
     }
   }
 

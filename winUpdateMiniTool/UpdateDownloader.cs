@@ -1,4 +1,5 @@
-﻿using sergiye.Common;
+﻿using winUpdateMiniTool.Properties;
+using sergiye.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -108,9 +109,9 @@ internal class UpdateDownloader {
     if (!args.Cancelled) {
       var download = mDownloads[mCurrentTask];
       if (!args.Success) {
-        AppLog.Line("Download failed: {0}", args.GetError());
+        AppLog.Line(Strings.Log_DownloadFailedItem, args.GetError());
         if (mCurTask.DlName != null && File.Exists(mCurTask.DlPath + @"\" + mCurTask.DlName))
-          AppLog.Line("An older version is present and will be used.");
+          AppLog.Line(Strings.Log_OlderVersionUsed);
         else
           download.Failed = true;
       }

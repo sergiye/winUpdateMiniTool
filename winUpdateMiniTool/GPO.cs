@@ -1,4 +1,5 @@
-﻿using System;
+﻿using winUpdateMiniTool.Properties;
+using System;
 using System.Globalization;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -66,7 +67,7 @@ internal abstract class Gpo {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Error configuring Automatic Update settings: {0}", e.Message);
+      AppLog.Line(Strings.Log_ConfigAuError, e.Message);
     }
   }
 
@@ -126,7 +127,7 @@ internal abstract class Gpo {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Error configuring driver Automatic Update settings: {0}", e.Message);
+      AppLog.Line(Strings.Log_ConfigDriverAuError, e.Message);
     }
   }
 
@@ -147,7 +148,7 @@ internal abstract class Gpo {
       return 1; // CheckState.Checked
     }
     catch (Exception e) {
-      AppLog.Line("Error reading driver Automatic Update settings: {0}", e.Message);
+      AppLog.Line(Strings.Log_ReadDriverAuError, e.Message);
     }
 
     return 2;
@@ -168,7 +169,7 @@ internal abstract class Gpo {
         subKey.DeleteValue("SettingsPageVisibility", false);
     }
     catch (Exception e) {
-      AppLog.Line("Error configuring the Windows Update settings page visibility: {0}", e.Message);
+      AppLog.Line(Strings.Log_ConfigUpdatePageError, e.Message);
     }
   }
 
@@ -184,7 +185,7 @@ internal abstract class Gpo {
       return value != null && value.Contains("hide:windowsupdate");
     }
     catch (Exception e) {
-      AppLog.Line("Error reading the Windows Update settings page visibility: {0}", e.Message);
+      AppLog.Line(Strings.Log_ReadUpdatePageError, e.Message);
     }
 
     return false;
@@ -218,7 +219,7 @@ internal abstract class Gpo {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Error configuring Microsoft Update server blocking: {0}", e.Message);
+      AppLog.Line(Strings.Log_ConfigMsBlockError, e.Message);
     }
   }
 
@@ -244,7 +245,7 @@ internal abstract class Gpo {
       return 2; // CheckState.Indeterminate;
     }
     catch (Exception e) {
-      AppLog.Line("Error reading Microsoft Update server blocking status: {0}", e.Message);
+      AppLog.Line(Strings.Log_ReadMsBlockError, e.Message);
     }
 
     return 2;
@@ -263,7 +264,7 @@ internal abstract class Gpo {
         subKey.DeleteValue("AutoDownload", false);
     }
     catch (Exception e) {
-      AppLog.Line("Error configuring Windows Store Automatic Update settings: {0}", e.Message);
+      AppLog.Line(Strings.Log_ConfigStoreAuError, e.Message);
     }
   }
 
@@ -278,7 +279,7 @@ internal abstract class Gpo {
       return valueBlock != null && (int)valueBlock == 2;
     }
     catch (Exception e) {
-      AppLog.Line("Error reading Windows Store Automatic Update settings: {0}", e.Message);
+      AppLog.Line(Strings.Log_ReadStoreAuError, e.Message);
     }
 
     return false;
@@ -300,7 +301,7 @@ internal abstract class Gpo {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Error disabling/enabling Automatic Updates: {0}", e.Message);
+      AppLog.Line(Strings.Log_ConfigAuEnableError, e.Message);
     }
   }
 
@@ -315,14 +316,14 @@ internal abstract class Gpo {
       if (mode == ServiceStartMode.Disabled && svc.Status == ServiceControllerStatus.Running) svc.Stop();
     }
     catch (Exception e) {
-      AppLog.Line("Error stopping service {0}: {1}", name, e.Message);
+      AppLog.Line(Strings.Log_StopServiceError, name, e.Message);
     }
 
     using var subKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\" + name,
         RegistryKeyPermissionCheck.ReadWriteSubTree,
         RegistryRights.ReadPermissions | RegistryRights.SetValue | RegistryRights.ChangePermissions | RegistryRights.TakeOwnership);
     if (subKey == null) {
-      AppLog.Line("Service {0} does not exist", name);
+      AppLog.Line(Strings.Log_ServiceMissing, name);
       return;
     }
 
@@ -351,7 +352,7 @@ internal abstract class Gpo {
       subKey.SetAccessControl(ac);
     }
     catch (Exception e) {
-      AppLog.Line("Error updating permissions for service {0}: {1}", name, e.Message);
+      AppLog.Line(Strings.Log_ServicePermError, name, e.Message);
     }
   }
 
@@ -375,7 +376,7 @@ internal abstract class Gpo {
           (int)ServiceStartMode.Disabled;
     }
     catch (Exception e) {
-      AppLog.Line("Error reading service {0} state: {1}", name, e.Message);
+      AppLog.Line(Strings.Log_ServiceStateError, name, e.Message);
     }
 
     return false;
@@ -406,7 +407,7 @@ internal abstract class Gpo {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Error determining GPO respect level: {0}", e.Message);
+      AppLog.Line(Strings.Log_GpoRespectError, e.Message);
     }
 
     return Respect.Unknown;
@@ -434,7 +435,7 @@ internal abstract class Gpo {
       return versionNum;
     }
     catch (Exception e) {
-      AppLog.Line("Error determining Windows version: {0}", e.Message);
+      AppLog.Line(Strings.Log_WinVersionError, e.Message);
     }
 
     return 0.0f;
