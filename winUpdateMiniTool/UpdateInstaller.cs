@@ -1,4 +1,5 @@
-﻿using sergiye.Common;
+﻿using winUpdateMiniTool.Properties;
+using sergiye.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -92,7 +93,7 @@ internal class UpdateInstaller {
           mCurProcess.Kill();
       }
       catch (Exception e) {
-        AppLog.Line("Error cancelling the running installer process: {0}", e.Message);
+        AppLog.Line(Strings.Log_CancelInstallerError, e.Message);
       }
     }
   }
@@ -175,7 +176,7 @@ internal class UpdateInstaller {
     var reboot = false;
 
     if (files.Count == 0) {
-      AppLog.Line("No downloaded files to install");
+      AppLog.Line(Strings.Log_NoFilesToInstall);
       ok = false;
     }
 
@@ -186,7 +187,7 @@ internal class UpdateInstaller {
       }
       catch (Exception e) {
         ok = false;
-        AppLog.Line("Error unpacking update {0}: {1}", file, e.Message);
+        AppLog.Line(Strings.Log_UnpackError, file, e.Message);
       }
     }
 
@@ -196,13 +197,13 @@ internal class UpdateInstaller {
         break;
       }
 
-      AppLog.Line("Installing: {0}", file);
+      AppLog.Line(Strings.Log_InstallingFile, file);
 
       try {
         var ext = Path.GetExtension(file);
 
         if (!SignatureVerifier.IsMicrosoftSigned(file, out var signatureError))
-          throw new InvalidDataException($"Refusing to install {Path.GetFileName(file)}: {signatureError}");
+          throw new InvalidDataException(string.Format(Strings.Err_RefuseInstall, Path.GetFileName(file), signatureError));
 
         int exitCode;
 
@@ -215,32 +216,32 @@ internal class UpdateInstaller {
         else if (ext.Equals(".cab", StringComparison.CurrentCultureIgnoreCase))
           exitCode = InstallCab(file);
         else
-          throw new FileFormatException("Unknown update format: " + ext);
+          throw new FileFormatException(Strings.Err_UnknownFormat + ext);
 
         if (exitCode == 3010) {
           reboot = true; // reboot required
         }
         else if (exitCode == 1641) {
-          AppLog.Line("Error, reboot got initiated: {0}", file);
+          AppLog.Line(Strings.Log_RebootInitiated, file);
           reboot = true; // reboot initiated
           ok = false;
         }
         else if (exitCode == WuSAlreadyInstalled) {
-          AppLog.Line("Already installed: {0}", file);
+          AppLog.Line(Strings.Log_AlreadyInstalled, file);
         }
         else if (exitCode == WuENotApplicable) {
-          AppLog.Line("Update is not applicable to this system: {0}", file);
+          AppLog.Line(Strings.Log_NotApplicable, file);
           ok = false;
         }
         // For msiexec, 1 is ERROR_INVALID_FUNCTION rather than a success code.
         else if (exitCode != 0 && (exitCode != 1 || ext.Equals(".msi", StringComparison.OrdinalIgnoreCase))) {
-          AppLog.Line("Installer exit code 0x{0:X8}: {1}", exitCode, file);
+          AppLog.Line(Strings.Log_InstallerExitCode, exitCode, file);
           ok = false; // some error
         }
       }
       catch (Exception e) {
         ok = false;
-        AppLog.Line("Error installing update: {0}", e.Message);
+        AppLog.Line(Strings.Log_InstallError, e.Message);
       }
     }
 
@@ -272,7 +273,7 @@ internal class UpdateInstaller {
         .OrderBy(s => s, StringComparer.OrdinalIgnoreCase)
         .ToList();
     if (foundFiles.Count == 0)
-      throw new FileNotFoundException("No supported update file found in the zip archive");
+      throw new FileNotFoundException(Strings.Err_NoSupportedFileInZip);
     return foundFiles;
   }
 
@@ -288,7 +289,7 @@ internal class UpdateInstaller {
 
     var ext = DetectFileType(file);
     if (ext == null) {
-      AppLog.Line("Cannot determine the type of update file {0}", file);
+      AppLog.Line(Strings.Log_UnknownFileType, file);
       return file;
     }
 
@@ -422,7 +423,7 @@ internal class UpdateInstaller {
       }
     }
     catch (Exception e) {
-      AppLog.Line("Dism error: {0}", e.Message);
+      AppLog.Line(Strings.Log_DismError, e.Message);
     }
     finally {
       lock (mProcessLock) {
@@ -499,13 +500,13 @@ internal class UpdateInstaller {
   private void RunUnInstall(object parameters) {
     var kb = (string)parameters;
 
-    AppLog.Line("Uninstalling: {0}", kb);
+    AppLog.Line(Strings.Log_Uninstalling, kb);
 
     var ok = true;
     var reboot = false;
 
     if (!kb.StartsWith("KB", StringComparison.OrdinalIgnoreCase) || !int.TryParse(kb.Substring(2), out _)) {
-      AppLog.Line("Cannot uninstall update with no known KB article: {0}", kb);
+      AppLog.Line(Strings.Log_NoKbForUninstall, kb);
       ok = false;
     }
     else {
@@ -525,16 +526,16 @@ internal class UpdateInstaller {
           reboot = true;
         }
         else if (exitCode == WuSNotInstalled) {
-          AppLog.Line("Update is not installed: {0}", kb);
+          AppLog.Line(Strings.Log_NotInstalled, kb);
         }
         else if (exitCode != 1 && exitCode != 0) {
-          AppLog.Line("Error, exit code: 0x{0:X8}", exitCode);
+          AppLog.Line(Strings.Log_ExitCode, exitCode);
           ok = false; // some error
         }
       }
       catch (Exception e) {
         ok = false;
-        AppLog.Line("Error removing update: {0}", e.Message);
+        AppLog.Line(Strings.Log_RemoveError, e.Message);
       }
     }
 

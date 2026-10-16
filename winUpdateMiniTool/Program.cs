@@ -1,4 +1,5 @@
-﻿using System;
+﻿using winUpdateMiniTool.Properties;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -45,14 +46,16 @@ internal static class Program {
     }
 
     if (TestArg("-dbg_wait"))
-      MessageBox.Show("Waiting for debugger. (Press OK once attached.)", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      MessageBox.Show(Strings.Msg_DebuggerWait, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
     Console.WriteLine(@"Starting...");
 
     WrkPath = appPath = Path.GetDirectoryName(Updater.CurrentFileLocation);
 
-    AppLog.Line("{0}, Version v{1}", Updater.ApplicationTitle, Updater.CurrentVersion);
-    AppLog.Line("This tool is open source under the GNU General Public License, Version 3.\r\n");
+    Localization.Apply(IniReadValue("Options", "Language"));
+
+    AppLog.Line(Strings.Log_AppVersion, Updater.ApplicationTitle, Updater.CurrentVersion);
+    AppLog.Line(Strings.Log_License);
 
     if (!OSHelper.IsCompatible(false, out var errorMessage, out var fixAction)) {
       if (fixAction != null) {
@@ -68,7 +71,7 @@ internal static class Program {
 
     if (WinApiHelper.CheckRunningInstances(true, true)) {
       // fallback
-      MessageBox.Show($"{Updater.ApplicationName} is already running.", Updater.ApplicationName,
+      MessageBox.Show(string.Format(Strings.Msg_AlreadyRunning, Updater.ApplicationName), Updater.ApplicationName,
         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
       return;
     }
@@ -96,7 +99,7 @@ internal static class Program {
           return;
         }
         catch {
-          AppLog.Line("Administrator privileges are required to install updates.");
+          AppLog.Line(Strings.Log_AdminRequiredForUpdates);
         }
       }
     }
@@ -113,11 +116,11 @@ internal static class Program {
           Directory.CreateDirectory(WrkPath);
       }
       catch {
-        MessageBox.Show($"Cannot write to working directory: {WrkPath}", Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageBox.Show(string.Format(Strings.Msg_WorkingDirNotWritable, WrkPath), Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
     }
 
-    AppLog.Line("Working Directory: {0}", WrkPath);
+    AppLog.Line(Strings.Log_WorkingDirectory, WrkPath);
     RepairRegistrations();
     agent = new WuAgent();
     ExecOnStart();
@@ -173,7 +176,7 @@ internal static class Program {
   private static bool IsToolsCommandAllowed(string section, string command) {
     if (!OSHelper.IsAdministrator() || !IsAppDirWritableByUsers())
       return true;
-    AppLog.Line("Skipped the Tools.ini {0} command because the application folder can be modified without administrator rights: {1}", section, command);
+    AppLog.Line(Strings.Log_SkippedToolsCommand, section, command);
     return false;
   }
 
@@ -381,13 +384,13 @@ internal static class Program {
     try {
       var manager = new StartupManager(AutoStartArguments);
       if (!manager.IsAvailable) {
-        AppLog.Line("Auto-start is not available");
+        AppLog.Line(Strings.Log_AutoStartUnavailable);
         return false;
       }
 
       // Without admin rights StartupManager manages only the Run value and cannot remove the elevated logon task.
       if (!enable && !OSHelper.IsAdministrator() && GetTaskExecPath(GetStartupTaskPath()) != null) {
-        AppLog.Line("Administrator rights are required to disable auto-start.");
+        AppLog.Line(Strings.Log_AutoStartDisableAdminRequired);
         return false;
       }
 
@@ -399,7 +402,7 @@ internal static class Program {
       return true;
     }
     catch (Exception err) {
-      AppLog.Line("Failed to {0} auto-start: {1}", enable ? "enable" : "disable", err.Message);
+      AppLog.Line(Strings.Log_AutoStartFailed, enable ? Strings.Word_Enable : Strings.Word_Disable, err.Message);
       return false;
     }
   }
@@ -417,7 +420,7 @@ internal static class Program {
              string.Equals(GetTaskExecPath(GetStartupTaskPath()), Updater.CurrentFileLocation, StringComparison.OrdinalIgnoreCase);
     }
     catch (Exception err) {
-      AppLog.Line("Failed to read the auto-start state: {0}", err.Message);
+      AppLog.Line(Strings.Log_AutoStartStateFailed, err.Message);
       return false;
     }
   }
@@ -438,7 +441,7 @@ internal static class Program {
       subKey.SetValue(Updater.ApplicationName, command);
     }
     catch (Exception err) {
-      AppLog.Line("Failed to restore the auto-start entry: {0}", err.Message);
+      AppLog.Line(Strings.Log_AutoStartEntryRestoreFailed, err.Message);
     }
   }
 
@@ -475,13 +478,13 @@ internal static class Program {
         if (command != null && manager.IsAvailable && !manager.Startup) {
           var path = GetCommandPath(command);
           if (IsStaleExecutable(path) || string.Equals(path, Updater.CurrentFileLocation, StringComparison.OrdinalIgnoreCase)) {
-            AppLog.Line("Updating the auto-start entry: {0}", command);
+            AppLog.Line(Strings.Log_AutoStartEntryUpdate, command);
             manager.Startup = true;
           }
         }
       }
       catch (Exception err) {
-        AppLog.Line("Failed to update the auto-start entry: {0}", err.Message);
+        AppLog.Line(Strings.Log_AutoStartEntryUpdateFailed, err.Message);
         // Older StartupManager versions remove the Run value before creating the task, so restore it
         // rather than silently losing auto-start.
         if (command != null && GetAutoStartRunCommand() == null)
@@ -494,18 +497,18 @@ internal static class Program {
 
     var startupTaskPath = GetTaskExecPath(GetStartupTaskPath());
     if (startupTaskPath != null && IsStaleExecutable(startupTaskPath)) {
-      AppLog.Line("Updating the outdated auto-start task: {0}", startupTaskPath);
+      AppLog.Line(Strings.Log_AutoStartTaskUpdate, startupTaskPath);
       try {
         new StartupManager(AutoStartArguments).Startup = true;
       }
       catch (Exception err) {
-        AppLog.Line("Failed to update the auto-start task: {0}", err.Message);
+        AppLog.Line(Strings.Log_AutoStartTaskUpdateFailed, err.Message);
       }
     }
 
     var skipUacPath = GetTaskExecPath(MF_APP_TASK_NAME);
     if (skipUacPath != null && IsStaleExecutable(skipUacPath)) {
-      AppLog.Line("Updating the outdated UAC skip task: {0}", skipUacPath);
+      AppLog.Line(Strings.Log_SkipUacTaskUpdate, skipUacPath);
       SkipUacEnable(true);
     }
   }
@@ -596,7 +599,7 @@ internal static class Program {
       }
     }
     catch (Exception err) {
-      AppLog.Line("Enable SkipUAC Error {0}", err.ToString());
+      AppLog.Line(Strings.Log_SkipUacEnableError, err.ToString());
       return false;
     }
 
@@ -623,7 +626,7 @@ internal static class Program {
              Directory.Exists(toolsPath) && GrantsWrite(new DirectoryInfo(toolsPath).GetAccessControl(), userSids);
     }
     catch (Exception err) {
-      AppLog.Line("Failed to check application directory permissions: {0}", err.Message);
+      AppLog.Line(Strings.Log_AppDirPermCheckFailed, err.Message);
       return true;
     }
   }
@@ -656,7 +659,7 @@ internal static class Program {
       service.Connect();
       var folder = service.GetFolder(@"\");
       var task = folder.GetTask(MF_APP_TASK_NAME);
-      AppLog.Line("Trying to SkipUAC ...");
+      AppLog.Line(Strings.Log_TryingSkipUac);
       var action = (IExecAction)task.Definition.Actions[1];
       if (action.Path.Equals(Updater.CurrentFileLocation, StringComparison.OrdinalIgnoreCase)) {
         var arguments = string.Join(" ", args.Select(EscapeArg));
@@ -674,7 +677,7 @@ internal static class Program {
       }
     }
     catch (Exception err) {
-      AppLog.Line("SkipUAC Error {0}", err.ToString());
+      AppLog.Line(Strings.Log_SkipUacError, err.ToString());
     }
 
     return false;
@@ -684,14 +687,14 @@ internal static class Program {
   ///     Shows the help message.
   /// </summary>
   private static void ShowHelp() {
-    var message = "Available command line options\r\n";
+    var message = Strings.Help_Title;
     string[] help =
     [
-        "-tray\t\tStart in Tray",
-            "-onclose [cmd]\tExecute commands when closing",
-            "-update\t\tSearch for updates on start",
-            "-console\t\tShow console (for debugging)",
-            "-help\t\tShow this help message"
+        Strings.Help_Tray,
+            Strings.Help_OnClose,
+            Strings.Help_Update,
+            Strings.Help_Console,
+            Strings.Help_Help
     ];
     if (!mConsole) {
       MessageBox.Show(message + string.Join("\r\n", help), Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
