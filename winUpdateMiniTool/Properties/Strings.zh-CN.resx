@@ -436,6 +436,12 @@
   <data name="Msg_WaitForOperation" xml:space="preserve">
     <value>请先等待当前操作完成，或先将其取消。</value>
   </data>
+  <data name="Log_LanguageSwitchFailed" xml:space="preserve">
+    <value>切换语言时出错：{0}</value>
+  </data>
+  <data name="Msg_LanguageSwitchFailed" xml:space="preserve">
+    <value>无法切换语言。已恢复为原来的语言。</value>
+  </data>
   <data name="Msg_AdminRequiredDownload" xml:space="preserve">
     <value>通过 Windows 更新服务下载更新需要管理员权限。请改用“手动”下载。</value>
   </data>

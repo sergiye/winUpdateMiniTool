@@ -436,6 +436,12 @@
   <data name="Msg_WaitForOperation" xml:space="preserve">
     <value>Wait for the current operation to finish or cancel it first.</value>
   </data>
+  <data name="Log_LanguageSwitchFailed" xml:space="preserve">
+    <value>Failed to switch the language: {0}</value>
+  </data>
+  <data name="Msg_LanguageSwitchFailed" xml:space="preserve">
+    <value>The language could not be switched. The previous language was restored.</value>
+  </data>
   <data name="Msg_AdminRequiredDownload" xml:space="preserve">
     <value>Administrator privileges are required to download updates using Windows Update services. Use 'Manual' download instead.</value>
   </data>

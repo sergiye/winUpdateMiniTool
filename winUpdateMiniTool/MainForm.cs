@@ -462,10 +462,45 @@ internal partial class MainForm : Form {
   }
 
   private void OnLanguageSelected(string id) {
-    SetConfig("Language", id);
-    Localization.Apply(id);
-    ApplyLocalization();
-    LoadList();
+    // rebuilding the list while an operation runs would fight with the result handler
+    if (agent.IsBusy()) {
+      MessageBox.Show(Strings.Msg_WaitForOperation, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+      return;
+    }
+
+    // LoadList() clears the view, so keep the selection and where the user was scrolled to
+    var selected = updateView.SelectedIndices.Cast<int>().ToArray();
+    var topIndex = updateView.TopItem?.Index ?? -1;
+    var previous = Localization.Setting;
+
+    try {
+      SetConfig("Language", id);
+      Localization.Apply(id);
+      ApplyLocalization();
+      LoadList();
+    }
+    catch (Exception ex) {
+      AppLog.Line(Strings.Log_LanguageSwitchFailed, ex.Message);
+      try {
+        SetConfig("Language", previous);
+        Localization.Apply(previous);
+        ApplyLocalization();
+        LoadList();
+      }
+      catch {
+        // nothing else can be done here, the window simply keeps what it has
+      }
+
+      MessageBox.Show(Strings.Msg_LanguageSwitchFailed, Updater.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      return;
+    }
+
+    if (topIndex >= 0 && topIndex < updateView.Items.Count)
+      updateView.TopItem = updateView.Items[topIndex];
+    foreach (var index in selected.Where(i => i < updateView.Items.Count))
+      updateView.Items[index].Selected = true;
+    if (selected.Length > 0)
+      updateView.EnsureVisible(Math.Min(selected[0], updateView.Items.Count - 1));
   }
 
   #endregion

@@ -1190,6 +1190,24 @@ namespace winUpdateMiniTool.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to the value of Strings.Log_LanguageSwitchFailed.
+        /// </summary>
+        internal static string Log_LanguageSwitchFailed {
+            get {
+                return ResourceManager.GetString("Log_LanguageSwitchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the value of Strings.Msg_LanguageSwitchFailed.
+        /// </summary>
+        internal static string Msg_LanguageSwitchFailed {
+            get {
+                return ResourceManager.GetString("Msg_LanguageSwitchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to the value of Strings.Msg_AdminRequiredDownload.
         /// </summary>
         internal static string Msg_AdminRequiredDownload {
